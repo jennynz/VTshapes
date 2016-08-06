@@ -1,0 +1,1037 @@
+# March 13th 2014
+
+## Formally assigning names to PCA of resonances - bark scaled, and linear.
+
+> pc.resfreqbIV=prcomp(bark(resfreqIV[,1:4]))
+> pc.resfreqIV=prcomp(resfreqIV[,1:4])
+
+
+
+
+>summary(pc.resfreqbIV)
+Importance of components:
+                         PC1    PC2     PC3    PC4
+Standard deviation     1.982 1.4592 0.79192 0.2956
+Proportion of Variance 0.580 0.3145 0.09262 0.0129
+Cumulative Proportion  0.580 0.8945 0.98710 1.0000
+
+> summary(pc.resfreqIV)
+Importance of components:
+                            PC1      PC2       PC3     PC4
+Standard deviation     633.7446 364.4156 180.48126 130.125
+Proportion of Variance   0.6878   0.2274   0.05578   0.029
+Cumulative Proportion    0.6878   0.9152   0.97100   1.000
+
+
+## SO note first two principle components do account for more variance in the lienarly scaled resonances, than the bark ones, however the variable accounted 
+## for is separating speakers, not vowels
+
+
+## Correlation analysis
+
+
+> cor.test(pc.VTareas$x[,1],pc.resfreqIV$x[,1])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqIV$x[, 1] 
+t = 4.0104, df = 108, p-value = 0.0001119
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.1852739 0.5127049 
+sample estimates:
+      cor 
+0.3600258 
+
+> cor.test(pc.VTareas$x[,1],pc.resfreqbIV$x[,1])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqbIV$x[, 1] 
+t = 11.209, df = 108, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6329898 0.8094193 
+sample estimates:
+      cor 
+0.7333171 
+
+## SO considerably more correlation between the first PCAs of the areas and the resonances when the resonances are bark scaled.
+
+> cor.test(pc.VTareas$x[,2],pc.resfreqbIV$x[,2])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqbIV$x[, 2] 
+t = -3.75, df = 108, p-value = 0.0002862
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4951895 -0.1625053 
+sample estimates:
+      cor 
+-0.339419 
+
+> cor.test(pc.VTareas$x[,2],pc.resfreqIV$x[,2])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqIV$x[, 2] 
+t = -3.4539, df = 108, p-value = 0.0007904
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4746042 -0.1361913 
+sample estimates:
+       cor 
+-0.3153901 
+
+
+## not so much correlation with between the 2nd PCAs of the areas and resonances, but there is more correlation (numerically) when 
+## the resonances are bark scaled.
+
+
+## Interestingly there is more correlation between the 2nd PCA of the areas and that of the third resonance
+> cor.test(pc.VTareas$x[,2],pc.resfreqbIV$x[,3])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqbIV$x[, 3] 
+t = 8.7746, df = 108, p-value = 2.798e-14
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5207996 0.7426623 
+sample estimates:
+      cor 
+0.6451309 
+
+> cor.test(pc.VTareas$x[,2],pc.resfreqIV$x[,3])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqIV$x[, 3] 
+t = -6.5234, df = 108, p-value = 2.283e-09
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.6538091 -0.3824868 
+sample estimates:
+       cor 
+-0.5316527 
+
+### THis is actually quite strong, for both the barked scaled and linearly scaled resonances, but the bark scaled resonances are stronger.
+
+
+
+> cor.test(pc.VTareas$x[,1],pc.resfreqbIV$x[,3])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqbIV$x[, 3] 
+t = 0.2084, df = 108, p-value = 0.8353
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.1678227  0.2065150 
+sample estimates:
+       cor 
+0.02004878 
+
+> cor.test(pc.VTareas$x[,1],pc.resfreqIV$x[,3])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqIV$x[, 3] 
+t = -2.1984, df = 108, p-value = 0.03005
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.37949909 -0.02051771 
+sample estimates:
+       cor 
+-0.2069641 
+
+
+## I wouldn't expect any correlation between the 1st PC of the areas, and the 3rd of the resonances - but I thought I should just check. - I was right.
+
+
+Basically I don't think the correlation approach is the best way to go.
+
+## September 15th - a sudden thought - should be comparing Area Pc1 with res 2, and Area Pc2 with res 1. Not as listed above. The results are listed below
+
+
+> cor.test(pc.VTareas$x[,1],pc.resfreqbIV$x[,2])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqbIV$x[, 2] 
+t = -8.4154, df = 108, p-value = 1.795e-13
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.7304806 -0.5011221 
+sample estimates:
+       cor 
+-0.6293145 
+
+> cor.test(pc.VTareas$x[,2],pc.resfreqbIV$x[,1])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqbIV$x[, 1] 
+t = -3.5617, df = 108, p-value = 0.0005496
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4821804 -0.1458206 
+sample estimates:
+       cor 
+-0.3242099 
+
+## this results are more in keeping with what I expect - Area PC1 strongly inversely correlated with Res 2, and Area Pc2 inversely correlated to Res 1 - the above are barked scaled. Below are linearly scaled.
+> cor.test(pc.VTareas$x[,1],pc.resfreqIV$x[,2])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 1] and pc.resfreqIV$x[, 2] 
+t = 11.4636, df = 108, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6428089 0.8150528 
+sample estimates:
+     cor 
+0.740878 
+
+> cor.test(pc.VTareas$x[,2],pc.resfreqIV$x[,1])
+
+        Pearson's product-moment correlation
+
+data:  pc.VTareas$x[, 2] and pc.resfreqIV$x[, 1] 
+t = -1.5485, df = 108, p-value = 0.1244
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.32563065  0.04099793 
+sample estimates:
+       cor 
+-0.1473749 
+
+## so its interesting that the correlation between PC Area 1 and res 2 increases, but it weaken between Pc area 2 and res 1 - to the extent they aren't correlated, and the result isn't significant.
+
+## March 27th
+
+
+## IN this study I do correaltions bettwen the actual resonances themselves - the tables are in my note book.
+
+> temp=allMRI.df$spk=="VT03"
+> temp2=allMRI.df$spk=="VT05"
+> sum(temp)
+
+
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 9.8324, df = 20, p-value = 4.201e-09
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7929874 0.9624931 
+sample estimates:
+      cor 
+0.9102663 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 5.26, df = 20, p-value = 3.792e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5012507 0.8957459 
+sample estimates:
+      cor 
+0.7618551 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 0.1506, df = 20, p-value = 0.8818
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.3935453  0.4488865 
+sample estimates:
+       cor 
+0.03364568 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 0.5681, df = 20, p-value = 0.5763
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.3121784  0.5199972 
+sample estimates:
+      cor 
+0.1260158 
+
+> temp2=allMRI.df$spk=="VT08"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 5.3408, df = 20, p-value = 3.156e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5099313 0.8980268 
+sample estimates:
+      cor 
+0.7667048 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 4.9039, df = 20, p-value = 8.575e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.4608388 0.8848467 
+sample estimates:
+      cor 
+0.7388864 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 2.6799, df = 20, p-value = 0.0144
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.1179820 0.7689801 
+sample estimates:
+      cor 
+0.5140219 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 2.3498, df = 20, p-value = 0.02916
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.0541372 0.7413560 
+sample estimates:
+      cor 
+0.4651292 
+
+> temp2=allMRI.df$spk=="VT09"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 13.1316, df = 20, p-value = 2.722e-11
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.8736911 0.9779286 
+sample estimates:
+      cor 
+0.9466104 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 5.7146, df = 20, p-value = 1.362e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5477866 0.9077356 
+sample estimates:
+      cor 
+0.7875169 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 0.9986, df = 20, p-value = 0.3299
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.2242991  0.5857127 
+sample estimates:
+     cor 
+0.217917 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 0.5862, df = 20, p-value = 0.5643
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.3085515  0.5229194 
+sample estimates:
+      cor 
+0.1299637 
+
+> temp2=allMRI.df$spk=="VT10"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 8.615, df = 20, p-value = 3.644e-08
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7445309 0.9526662 
+sample estimates:
+    cor 
+0.88754 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 5.7599, df = 20, p-value = 1.231e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5521243 0.9088240 
+sample estimates:
+      cor 
+0.7898673 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 0.9989, df = 20, p-value = 0.3298
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.2242247  0.5857642 
+sample estimates:
+      cor 
+0.2179916 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = -0.3616, df = 20, p-value = 0.7214
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4857045  0.3530029 
+sample estimates:
+        cor 
+-0.08060134 
+
+> temp2=allMRI.df$spk=="VT08"
+> temp=allMRI.df$spk=="VT05"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 7.5873, df = 20, p-value = 2.616e-07
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6907744 0.9412307 
+sample estimates:
+      cor 
+0.8614866 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 7.3326, df = 20, p-value = 4.358e-07
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6751492 0.9377954 
+sample estimates:
+      cor 
+0.8537414 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = -1.323, df = 20, p-value = 0.2008
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.6299499  0.1566593 
+sample estimates:
+       cor 
+-0.2836863 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = -0.5948, df = 20, p-value = 0.5587
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.5243012  0.3068279 
+sample estimates:
+       cor 
+-0.1318348 
+
+> temp2=allMRI.df$spk=="VT09"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 10.4261, df = 20, p-value = 1.561e-09
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.8120640 0.9662435 
+sample estimates:
+      cor 
+0.9190235 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 8.0525, df = 20, p-value = 1.053e-07
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7168265 0.9468453 
+sample estimates:
+      cor 
+0.8742262 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 0.6629, df = 20, p-value = 0.515
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.2930998  0.5351535 
+sample estimates:
+     cor 
+0.146628 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = -3.6429, df = 20, p-value = 0.001619
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.8317106 -0.2861492 
+sample estimates:
+      cor 
+-0.631564 
+
+> temp2=allMRI.df$spk=="VT10"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 6.9696, df = 20, p-value = 9.155e-07
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6510455 0.9323934 
+sample estimates:
+      cor 
+0.8416363 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 6.8515, df = 20, p-value = 1.17e-06
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6426971 0.9304926 
+sample estimates:
+      cor 
+0.8373985 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = -0.3405, df = 20, p-value = 0.7371
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4820885  0.3571292 
+sample estimates:
+        cor 
+-0.07590867 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = -2.1712, df = 20, p-value = 0.04212
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.72488047 -0.01855841 
+sample estimates:
+       cor 
+-0.4367496 
+
+> temp2=allMRI.df$spk=="VT09"
+> temp=allMRI.df$spk=="VT08"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 6.5881, df = 20, p-value = 2.036e-06
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6231405 0.9259784 
+sample estimates:
+      cor 
+0.8273789 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 10.4488, df = 20, p-value = 1.504e-09
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.8127447 0.9663761 
+sample estimates:
+      cor 
+0.9193341 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 2.1869, df = 20, p-value = 0.0408
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.02171026 0.72637337 
+sample estimates:
+      cor 
+0.4392977 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 1.649, df = 20, p-value = 0.1148
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.08855855  0.66986709 
+sample estimates:
+      cor 
+0.3459673 
+
+> temp2=allMRI.df$spk=="VT10"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 4.6844, df = 20, p-value = 0.0001425
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.4340649 0.8773608 
+sample estimates:
+      cor 
+0.7233047 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 8.8415, df = 20, p-value = 2.404e-08
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7546476 0.9547544 
+sample estimates:
+     cor 
+0.892343 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 0.4365, df = 20, p-value = 0.6671
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.3383187  0.4983439 
+sample estimates:
+      cor 
+0.0971465 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 1.1152, df = 20, p-value = 0.278
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.2000527  0.6021451 
+sample estimates:
+      cor 
+0.2419639 
+
+> temp=allMRI.df$spk=="VT09"
+> cor.test(bark(resfreqIV[temp,1]),bark(resfreqIV[temp2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 1]) and bark(resfreqIV[temp2, 1]) 
+t = 9.6983, df = 20, p-value = 5.282e-09
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7883091 0.9615633 
+sample estimates:
+      cor 
+0.9081026 
+
+> cor.test(bark(resfreqIV[temp,2]),bark(resfreqIV[temp2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 2]) and bark(resfreqIV[temp2, 2]) 
+t = 11.5875, df = 20, p-value = 2.516e-10
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.8428332 0.9721580 
+sample estimates:
+      cor 
+0.9329293 
+
+> cor.test(bark(resfreqIV[temp,3]),bark(resfreqIV[temp2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 3]) and bark(resfreqIV[temp2, 3]) 
+t = 3.2597, df = 20, p-value = 0.003923
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.2227237 0.8095815 
+sample estimates:
+      cor 
+0.5890217 
+
+> cor.test(bark(resfreqIV[temp,4]),bark(resfreqIV[temp2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[temp, 4]) and bark(resfreqIV[temp2, 4]) 
+t = 2.7205, df = 20, p-value = 0.01317
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.1256326 0.7721348 
+sample estimates:
+     cor 
+0.519713 
+
+> temp=allMRI.df$spk=="VT03" & allMRI.df$set="set1"
+Error in allMRI.df$spk == "VT03" & allMRI.df$set = "set1" : 
+  could not find function "&<-"
+> table(allMRI.df$set)
+
+set1 set2 
+  55   55 
+> which=allMRI.df$spk=="VT09" & allMRI.df$set=="set1"
+> sum9which)
+Error: unexpected ')' in "sum9which)"
+> sum(which)
+[1] 11
+> which2=allMRI.df$spk=="VT09" & allMRI.df$set=="set2"
+> cor.test(bark(resfreqIV[which,1]),bark(resfreqIV[which2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 1]) and bark(resfreqIV[which2, 1]) 
+t = 18.3424, df = 9, p-value = 1.945e-08
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.9485805 0.9967043 
+sample estimates:
+      cor 
+0.9868873 
+
+> cor.test(bark(resfreqIV[which,2]),bark(resfreqIV[which2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 2]) and bark(resfreqIV[which2, 2]) 
+t = 26.601, df = 9, p-value = 7.25e-10
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.9750480 0.9984208 
+sample estimates:
+      cor 
+0.9937006 
+
+> cor.test(bark(resfreqIV[which,3]),bark(resfreqIV[which2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 3]) and bark(resfreqIV[which2, 3]) 
+t = 3.1069, df = 9, p-value = 0.01258
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.2102193 0.9215638 
+sample estimates:
+      cor 
+0.7193771 
+
+> cor.test(bark(resfreqIV[which,4]),bark(resfreqIV[which2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 4]) and bark(resfreqIV[which2, 4]) 
+t = 4.5286, df = 9, p-value = 0.001429
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.4676687 0.9556329 
+sample estimates:
+     cor 
+0.833665 
+
+> which=allMRI.df$spk=="VT03" & allMRI.df$set=="set1"
+> which2=allMRI.df$spk=="VT03" & allMRI.df$set=="set2"
+> cor.test(bark(resfreqIV[which,1]),bark(resfreqIV[which2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 1]) and bark(resfreqIV[which2, 1]) 
+t = 5.6131, df = 9, p-value = 0.0003287
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5989266 0.9691053 
+sample estimates:
+     cor 
+0.881938 
+
+> cor.test(bark(resfreqIV[which,2]),bark(resfreqIV[which2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 2]) and bark(resfreqIV[which2, 2]) 
+t = 3.2853, df = 9, p-value = 0.009449
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.2487688 0.9274731 
+sample estimates:
+      cor 
+0.7384455 
+
+> cor.test(bark(resfreqIV[which,3]),bark(resfreqIV[which2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 3]) and bark(resfreqIV[which2, 3]) 
+t = 0.8033, df = 9, p-value = 0.4425
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4038783  0.7432175 
+sample estimates:
+      cor 
+0.2586652 
+
+> cor.test(bark(resfreqIV[which,4]),bark(resfreqIV[which2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 4]) and bark(resfreqIV[which2, 4]) 
+t = 0.741, df = 9, p-value = 0.4776
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.4205794  0.7340752 
+sample estimates:
+      cor 
+0.2397946 
+
+> which=allMRI.df$spk=="VT05" & allMRI.df$set=="set1"
+> which2=allMRI.df$spk=="VT05" & allMRI.df$set=="set2"
+> cor.test(bark(resfreqIV[which,1]),bark(resfreqIV[which2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 1]) and bark(resfreqIV[which2, 1]) 
+t = 10.3719, df = 9, p-value = 2.638e-06
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.8513313 0.9900044 
+sample estimates:
+      cor 
+0.9606233 
+
+> cor.test(bark(resfreqIV[which,2]),bark(resfreqIV[which2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 2]) and bark(resfreqIV[which2, 2]) 
+t = 6.5747, df = 9, p-value = 0.0001022
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.6821955 0.9766423 
+sample estimates:
+      cor 
+0.9097654 
+
+> cor.test(bark(resfreqIV[which,3]),bark(resfreqIV[which2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 3]) and bark(resfreqIV[which2, 3]) 
+t = 2.3478, df = 9, p-value = 0.04346
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.02606396 0.88791252 
+sample estimates:
+     cor 
+0.616303 
+
+> cor.test(bark(resfreqIV[which,4]),bark(resfreqIV[which2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 4]) and bark(resfreqIV[which2, 4]) 
+t = 1.4428, df = 9, p-value = 0.1829
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.2249323  0.8200790 
+sample estimates:
+      cor 
+0.4334253 
+
+> which=allMRI.df$spk=="VT08" & allMRI.df$set=="set1"
+> which2=allMRI.df$spk=="VT08" & allMRI.df$set=="set2"
+> cor.test(bark(resfreqIV[which,1]),bark(resfreqIV[which2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 1]) and bark(resfreqIV[which2, 1]) 
+t = 5.267, df = 9, p-value = 0.0005159
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.5620005 0.9655261 
+sample estimates:
+      cor 
+0.8689323 
+
+> cor.test(bark(resfreqIV[which,2]),bark(resfreqIV[which2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 2]) and bark(resfreqIV[which2, 2]) 
+t = 8.0023, df = 9, p-value = 2.208e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7677091 0.9836952 
+sample estimates:
+      cor 
+0.9363619 
+
+> cor.test(bark(resfreqIV[which,3]),bark(resfreqIV[which2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 3]) and bark(resfreqIV[which2, 3]) 
+t = 1.744, df = 9, p-value = 0.1151
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.1392877  0.8470748 
+sample estimates:
+      cor 
+0.5025805 
+
+> cor.test(bark(resfreqIV[which,4]),bark(resfreqIV[which2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 4]) and bark(resfreqIV[which2, 4]) 
+t = -0.5941, df = 9, p-value = 0.5671
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.7112486  0.4591215 
+sample estimates:
+       cor 
+-0.1942542 
+
+> which=allMRI.df$spk=="VT10" & allMRI.df$set=="set1"
+> which2=allMRI.df$spk=="VT10" & allMRI.df$set=="set2"
+> cor.test(bark(resfreqIV[which,1]),bark(resfreqIV[which2,1]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 1]) and bark(resfreqIV[which2, 1]) 
+t = 7.9757, df = 9, p-value = 2.268e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7664298 0.9835944 
+sample estimates:
+      cor 
+0.9359777 
+
+> cor.test(bark(resfreqIV[which,2]),bark(resfreqIV[which2,2]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 2]) and bark(resfreqIV[which2, 2]) 
+t = 6.9373, df = 9, p-value = 6.78e-05
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.7075564 0.9788023 
+sample estimates:
+      cor 
+0.9178529 
+
+> cor.test(bark(resfreqIV[which,3]),bark(resfreqIV[which2,3]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 3]) and bark(resfreqIV[which2, 3]) 
+t = 2.6041, df = 9, p-value = 0.02855
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ 0.09169738 0.90106618 
+sample estimates:
+      cor 
+0.6555145 
+
+> cor.test(bark(resfreqIV[which,4]),bark(resfreqIV[which2,4]))
+
+        Pearson's product-moment correlation
+
+data:  bark(resfreqIV[which, 4]) and bark(resfreqIV[which2, 4]) 
+t = 2.1747, df = 9, p-value = 0.05767
+alternative hypothesis: true correlation is not equal to 0 
+95 percent confidence interval:
+ -0.02001555  0.87775113 
+sample estimates:
+      cor 
+0.5869064 
+
+> 
+
+

@@ -1,0 +1,395 @@
+## Oct 14th
+
+# Plotting Vocal tract Shape areas derived from MRI function. With this set of functions, it should now be possible to compare the vocal tract shapes of the different vowels for each speaker. And will be able to do this for the two sets. Assumes identical file structure for each vowel.
+
+"maxVTvals"<-function(path="D:\\Daniel\\Data run", spk="VT03", set="set1",Helen=FALSE)
+{
+	if(Helen)
+	{
+		Dirpath=paste(path,spk,"distance_area",sep="\\")
+	} 
+	else
+	{
+		Dirpath=paste(path,spk,set,"distance_area",sep="\\")
+	} 
+	filesInDir=dir(Dirpath)
+	alldat=NULL
+	for(i in 1:length(filesInDir))
+	{
+		filepath=paste(Dirpath,filesInDir[i],sep="\\")
+		datfile=read.table(filepath)
+		alldat=rbind(alldat,datfile)
+	}
+	return(apply(alldat,2,max))
+}
+
+
+
+"plotMRI"<-function(path="D:\\Daniel\\Data run", spk="VT03", set="set1",vow="had",col="red",xlim=c(0,180),ylim=c(0,250),Helen=FALSE)
+{
+	if(Helen)
+	{
+		fullpath=paste(path,spk,"distance_area",paste(vow,"txt",sep="."),sep="\\")
+	} 
+	else
+	{
+		fullpath=paste(path,spk,set,"distance_area",paste(vow,"txt",sep="."),sep="\\")
+	}
+	datfile=read.table(fullpath)
+	plot(datfile[,1],datfile[,2],type="l",col=col,xlim=xlim,ylim=ylim,xlab="distance from lips",ylab="cross-sectional area")
+}
+
+"plotMRI.all"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{
+	
+	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="head",col="orange",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="had",col="yellow",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hud",col="green1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hard",col="green4",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hod",col="aquamarine3",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hoard",col="aquamarine1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="whod",col="blue1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="herd",col="purple",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	title(paste("All vowels for ",spk))
+}
+
+
+"plotMRI.front"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{	
+	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="head",col="orange",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="had",col="yellow",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	title(paste("Front vowels for ",spk))
+}
+
+
+"plotMRI.back"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{
+	plotMRI(vow="hud",col="green1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hard",col="green4",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hod",col="aquamarine3",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hoard",col="aquamarine1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	title(paste("Back vowels for ",spk))
+}
+
+
+"plotMRI.mid"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{
+	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)	
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="whod",col="blue1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="herd",col="purple",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	title(paste("Mid vowels for ",spk))
+}
+
+
+"plotMRI.high"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{
+	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hoard",col="aquamarine1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="whod",col="blue1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	title(paste("High vowels for ",spk))
+}
+
+"plotMRI.cen"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="D:\\Daniel\\Data run",Helen=FALSE)
+{
+	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="head",col="orange",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="had",col="yellow",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="herd",col="purple",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	plotMRI(vow="hud",col="green1",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
+	par(new=T)
+	title(paste("Central vowels for ",spk))
+}
+## all frontvowels
+
+maxVTvals(spk="vt03",set="set1")
+maxVTvals(spk="vt03",set="set2")
+
+maxVTvals(spk="vt05",set="set1")
+maxVTvals(spk="vt05",set="set2")
+
+maxVTvals(spk="vt08",set="set1")
+maxVTvals(spk="vt08",set="set2")
+
+maxVTvals(spk="vt09",set="set1")
+maxVTvals(spk="vt09",set="set2")
+
+maxVTvals(spk="vt10",set="set1")
+maxVTvals(spk="vt10",set="set2")
+
+> maxVTvals(spk="vt03",set="set1")
+      V1       V2 
+170.9145 408.8282 
+> maxVTvals(spk="vt03",set="set2")
+      V1       V2 
+167.4696 506.8966 
+> 
+> maxVTvals(spk="vt05",set="set1")
+      V1       V2 
+159.9842 371.8640 
+> maxVTvals(spk="vt05",set="set2")
+      V1       V2 
+157.1658 316.2499 
+> 
+> maxVTvals(spk="vt08",set="set1")
+      V1       V2 
+172.3850 633.3151 
+> maxVTvals(spk="vt08",set="set2")
+      V1       V2 
+155.1128 303.5782 
+> 
+> maxVTvals(spk="vt09",set="set1")
+      V1       V2 
+209.5603 853.1306 
+> maxVTvals(spk="vt09",set="set2")
+      V1       V2 
+200.5276 766.3714 
+> 
+> maxVTvals(spk="vt10",set="set1")
+      V1       V2 
+185.5792 636.2460 
+> maxVTvals(spk="vt10",set="set2")
+      V1       V2 
+181.1514 652.6135 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt01")
+      V1       V2 
+192.0983 535.5777 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt02")
+      V1       V2 
+166.8425 603.1806 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt06")
+      V1       V2 
+161.8172 368.3801 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt11")
+      V1       V2 
+185.1744 528.7701 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt12")
+      V1       V2 
+193.1526 882.2141 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt03")
+      V1       V2 
+172.3850 633.3151 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt08")
+      V1       V2 
+154.6612 241.6323 
+> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt09")
+      V1       V2 
+209.5603 853.1306 
+
+
+## high Vowels
+par(mfrow=c(2,3),lwd=2)
+plotMRI.front(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.front(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.front(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.front(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.front(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.front(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.front(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.front(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.front(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.front(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.front(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.front(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.front(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.front(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.front(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+
+
+
+## Back vowels
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.back(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.back(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.back(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.back(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.back(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.back(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.back(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.back(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.back(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.back(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.back(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.back(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.back(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.back(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.back(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+
+
+
+# Mid vowels
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.mid(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.mid(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.mid(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.mid(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.mid(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.mid(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.mid(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.mid(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.mid(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.mid(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.mid(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.mid(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.mid(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.mid(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.mid(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+
+
+
+## high Vowels
+par(mfrow=c(2,3),lwd=2)
+plotMRI.high(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.high(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.high(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.high(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.high(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.high(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.high(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.high(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.high(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.high(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.high(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.high(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.high(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.high(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.high(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+
+
+## 
+par(mfrow=c(2,3),lwd=2)
+plotMRI.all(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.all(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.all(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.all(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.all(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.all(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.all(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.all(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.all(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.all(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.all(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.all(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.all(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.all(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.all(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.cen(spk="vt03",set="set1",xlim=c(0,175),ylim=c(0,510))
+par(new=T)
+plotMRI.cen(spk="vt03",set="set2",xlim=c(0,175),ylim=c(0,510))
+
+plotMRI.cen(spk="vt05",set="set1",xlim=c(0,155),ylim=c(0,400))
+par(new=T)
+plotMRI.cen(spk="vt05",set="set2",xlim=c(0,155),ylim=c(0,400))
+
+plotMRI.cen(spk="vt08",set="set1",xlim=c(0,160),ylim=c(0,640))
+par(new=T)
+plotMRI.cen(spk="vt08",set="set2",xlim=c(0,160),ylim=c(0,640))
+
+plotMRI.cen(spk="vt09",set="set1",xlim=c(0,205),ylim=c(0,780))
+par(new=T)
+plotMRI.cen(spk="vt09",set="set2",xlim=c(0,205),ylim=c(0,780))
+
+plotMRI.cen(spk="vt10",set="set1",xlim=c(0,190),ylim=c(0,650))
+par(new=T)
+plotMRI.cen(spk="vt10",set="set2",xlim=c(0,190),ylim=c(0,650))
+
+par(mfrow=c(2,3),lwd=2)
+plotMRI.cen(spk="vt01",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.cen(spk="vt02",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.cen(spk="vt06",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.cen(spk="vt11",set="set1",xlim=c(0,190),ylim=c(0,650),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+plotMRI.cen(spk="vt12",set="set1",xlim=c(0,195),ylim=c(0,890),path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE)
+

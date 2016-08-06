@@ -1,0 +1,102 @@
+## Oct 16th- doing principle components on cross-sectional areas
+
+## need to normalise for maximum area in each shape - other wize you get speaker effects - Vt09 shapes much bigger than every one elses.
+maxArea=apply(allMRI.df[,4:31],1,max)
+
+foo3=prcomp(allMRI.df[,4:31]/maxArea,scale=T)
+
+> summary(foo3)
+Importance of components:
+                          PC1    PC2    PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10    PC11    PC12    PC13    PC14    PC15    PC16    PC17
+Standard deviation     3.3314 2.4123 1.7448 1.48830 1.26196 1.01178 0.97355 0.64387 0.60509 0.50183 0.49899 0.43411 0.36320 0.33630 0.31794 0.27439 0.25864
+Proportion of Variance 0.3963 0.2078 0.1087 0.07911 0.05688 0.03656 0.03385 0.01481 0.01308 0.00899 0.00889 0.00673 0.00471 0.00404 0.00361 0.00269 0.00239
+Cumulative Proportion  0.3963 0.6042 0.7129 0.79202 0.84889 0.88545 0.91930 0.93411 0.94718 0.95618 0.96507 0.97180 0.97651 0.98055 0.98416 0.98685 0.98924
+                          PC18    PC19    PC20    PC21    PC22    PC23    PC24    PC25    PC26    PC27    PC28
+Standard deviation     0.24039 0.22017 0.20721 0.18481 0.16378 0.16186 0.14357 0.13682 0.11325 0.08299 0.07652
+Proportion of Variance 0.00206 0.00173 0.00153 0.00122 0.00096 0.00094 0.00074 0.00067 0.00046 0.00025 0.00021
+Cumulative Proportion  0.99130 0.99304 0.99457 0.99579 0.99675 0.99768 0.99842 0.99909 0.99954 0.99979 1.00000
+
+
+## So 60 % of variance accounted for with first two principle components. Including the 3rd and 4th accoutns for a further 18% of the variance.
+
+ 
+>names(foo3)
+[1] "sdev"     "rotation" "center"   "scale"    "x" 
+
+###(Descriptions from Manual)
+
+sdev 	
+the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the covariance/correlation matrix, though the calculation is actually done with the singular values of the data matrix).
+
+rotation 	
+the matrix of variable loadings (i.e., a matrix whose columns contain the eigenvectors). The function princomp returns this in the element loadings.
+
+x 	
+if retx is true the value of the rotated data (the centred (and scaled if requested) data multiplied by the rotation matrix) is returned. Hence, cov(x) is the diagonal matrix diag(sdev^2). For the formula method, napredict() is applied to handle the treatment of values omitted by the na.action.
+
+center, scale 	
+the centering and scaling used, or FALSE.
+
+
+## Key thing to note the $x data is the rotatedd data, and the thing to look at.
+
+## What happens if I just look at the first two columns of the rotated data - which account for 60% of the variance?
+
+
+	
+eplot(foo3$x[,1:2],labs=allMRI.df[,3],centroid=TRUE,formant=T)
+plot(foo3$x[,1],foo3$x[,2],type="n")
+text(foo3$x[,1],foo3$x[		,2],labels=allMRI.df[,3])
+
+plot(1:length(foo3$sdev),foo3$sdev,type="p")
+
+
+#I wondered what would happen if I didn't linearly interpolate the data, so I tried that, but the results weren't nearly as powerful.The first two principle components only accounted for 45% of the data. So I think some speaker effects were being included in the analysis.
+
+
+eplot(foo4$x[,1:2],labs=allMRI.df[,3],centroid=TRUE,formant=T)
+plot(foo4$x[,1],foo4$x[,2],type="n")
+text(foo4$x[,1],foo4$x[		,2],labels=allMRIn.df[,3])
+
+
+## Now going to add the index of the maximum value for each area
+
+maxAreaIndex=NULL
+for(i in 1:length(maxArea))
+{
+maxAreaIndex[i]= order(allMRI.df[i,4:31],decreasing=T)[2]
+}
+
+
+> foo5<-prcomp(cbind(allMRI.df[,4:31]/maxArea,maxAreaIndex),scale=T)
+
+> summary(foo5)
+Importance of components:
+                          PC1    PC2    PC3     PC4     PC5     PC6     PC7    PC8     PC9   PC10    PC11   PC12    PC13    PC14    PC15    PC16   PC17
+Standard deviation     3.3818 2.4162 1.7476 1.52615 1.29727 1.03905 0.97763 0.6769 0.63331 0.5899 0.50062 0.4695 0.41205 0.35855 0.33354 0.31714 0.2744
+Proportion of Variance 0.3944 0.2013 0.1053 0.08031 0.05803 0.03723 0.03296 0.0158 0.01383 0.0120 0.00864 0.0076 0.00585 0.00443 0.00384 0.00347 0.0026
+Cumulative Proportion  0.3944 0.5957 0.7010 0.78129 0.83932 0.87655 0.90951 0.9253 0.93914 0.9511 0.95978 0.9674 0.97324 0.97767 0.98150 0.98497 0.9876
+                          PC18    PC19    PC20    PC21    PC22    PC23    PC24   PC25    PC26    PC27    PC28    PC29
+Standard deviation     0.25522 0.23631 0.21852 0.20654 0.18290 0.16376 0.15998 0.1428 0.13456 0.11020 0.08232 0.07645
+Proportion of Variance 0.00225 0.00193 0.00165 0.00147 0.00115 0.00092 0.00088 0.0007 0.00062 0.00042 0.00023 0.00020
+Cumulative Proportion  0.98981 0.99174 0.99339 0.99486 0.99601 0.99694 0.99782 0.9985 0.99915 0.99956 0.99980 1.00000
+	
+eplot(foo5$x[,1:2],labs=allMRI.df[,3],centroid=TRUE,formant=T)
+plot(foo5$x[,1],foo5$x[,2],type="n")
+text(foo5$x[,1],foo5$x[		,2],labels=allMRIn.df[,3])
+
+
+
+
+eplot(fdat$x[,1:2],labs=label(daniel.seg),centroid=TRUE,formant=T)
+plot(fdat$x[,1],fdat$x[,2],type="n")
+text(fdat$x[,1],fdat$x[,2],labels=label(daniel.seg))
+
+
+
+
+
+
+
+
+

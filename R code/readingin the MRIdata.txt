@@ -1,0 +1,149 @@
+.df
+
+readMRI<-function(path="D:\\Daniel\\Data run", vow=1,Dir=TRUE,spk="VT03", set="set1",Helen=FALSE)
+{
+## reads MRI derived area cross-section into R, linearly interpolating the data first.Have the same number of points as original matrix
+	if(Helen)
+		{
+			Dirpath=paste(path,spk,"distance_area",sep="\\")
+		} 
+		else
+		{
+			Dirpath=paste(path,spk,set,"distance_area",sep="\\")
+		} 
+		filesInDir=dir(Dirpath)
+	if(Dir)
+		{
+			cat(filesInDir)
+			return()
+		}
+	else
+	{
+		filepath=paste(Dirpath,filesInDir[vow],sep="\\")
+		mrifile=read.table(filepath)
+		## NB length mrifile is currently expected to be 29.
+		return(approx(mrifile[,1],mrifile[,2],n=nrow(mrifile)))
+	}
+}
+
+
+compileMRIAreas<-function(path="D:\\Daniel\\Data run", spk="VT03", set="set1",Helen=FALSE)
+{
+	# assign correct directory path
+	if(Helen)
+	{
+		Dirpath=paste(path,spk,"distance_area",sep="\\")
+	} 
+	else
+	{
+		Dirpath=paste(path,spk,set,"distance_area",sep="\\")
+	} 
+	#read the speaker names - which are the file names in the directory path
+	filesInDir=dir(Dirpath)
+	#make data matrix
+	alldat=matrix(nrow=length(filesInDir),ncol=29,byrow=T)
+	#and vowelname vector
+	vowname=vector(mode="character",length=length(filesInDir))
+	#for each speaker, go into their directory, reading the vocal tract data for each vowel, interpolate the cross-sectional areas
+	#use file name to determine vowel name, write the cross-sectional areas - only to data matrix
+	for(i in 1:length(filesInDir))
+	{
+		filepath=paste(Dirpath,filesInDir[i],sep="\\")
+		datfile=read.table(filepath)
+		#Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
+		LinDatfil=approx(datfile[,1],datfile[,2],n=nrow(datfile))
+		vowname[i]=unlist(strsplit(filesInDir[i],"\\."))
+		alldat[i,]=LinDatfil$y
+	}
+	#create data frame with speaker labels, set label, vowel labels, and cross-sectional areas. 
+	alldat.df=data.frame(spk=factor(rep(spk,length(filesInDir))),set=factor(rep(set,length(filesInDir))),vow=factor(vowname),alldat)
+	return(alldat.df)
+}
+
+compileMRIAreas.n<-function(path="D:\\Daniel\\Data run", spk="VT03", set="set1",Helen=FALSE,n=16)
+{
+## same as compileMRIareas - but lets you decide how many values to interpolate over.
+	if(Helen)
+	{
+		Dirpath=paste(path,spk,"distance_area",sep="\\")
+	} 
+	else
+	{
+		Dirpath=paste(path,spk,set,"distance_area",sep="\\")
+	} 
+	filesInDir=dir(Dirpath)
+
+	alldat=matrix(nrow=length(filesInDir),ncol=n,byrow=T)
+	vowname=vector(mode="character",length=length(filesInDir))
+	for(i in 1:length(filesInDir))
+	{
+		filepath=paste(Dirpath,filesInDir[i],sep="\\")
+		datfile=read.table(filepath)
+		#Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
+		LinDatfil=approx(datfile[,1],datfile[,2],n=n)
+		vowname[i]=unlist(strsplit(filesInDir[i],"\\."))
+		alldat[i,]=LinDatfil$y
+	}
+	alldat.df=data.frame(spk=factor(rep(spk,length(filesInDir))),set=factor(rep(set,length(filesInDir))),vow=factor(vowname),alldat)
+	return(alldat.df)
+}
+
+makeMRIDataframe<-function(path="D:\\Daniel\\Data run", spk="VT03", set="set1",Helen=FALSE)
+{
+	areadat=compileMRIAreas(path=path, spk=spk, set=set)
+	areadf=data.frame(spk=factor(areadat[,1]),set=factor(areadat[,2]),vow=factor(areadat[,3]),a1=numeric(areadat[,4]),a2=numeric(areadat[,5]),a3=numeric(areadat[,6]),a4=numeric(areadat[,7]),a5=numeric(areadat[,8]),a6=numeric(areadat[,9]),a7=numeric(areadat[,10]),a8=numeric(areadat[,11]),a9=numeric(areadat[,12]),a10=numeric(areadat[,13]),a11=numeric(areadat[,14]),a12=numeric(areadat[,15]),a13=numeric(areadat[,16]),a14=numeric(areadat[,17]),a15=numeric(areadat[,18]),a16=numeric(areadat[,19]),a17=numeric(areadat[,20]),a18=numeric(areadat[,21]),a19=numeric(areadat[,22]),a20=numeric(areadat[,23]),a21=numeric(areadat[,24]),numeric(a22=areadat[,25]),a23=numeric(areadat[,26]),a24=numeric(areadat[,27]),a25=numeric(areadat[,28]),a26=numeric(areadat[,29]),a27=numeric(areadat[,30]),a28=numeric(areadat[,31]),a29=numeric(areadat[,32]))
+	return(areadf)
+}
+
+
+## when interpolating distances linearly - have changed names a bit - depending on what I've wanted to be printed out.
+
+foo=compileMRIAreas.n(spk="VT03", set="set1")
+foo2=compileMRIAreas.n(spk="VT03", set="set2")
+allMRI.df16=rbind(foo,foo2)
+
+foo=compileMRIAreas.n(spk="VT05", set="set1")
+foo2=compileMRIAreas.n(spk="VT05", set="set2")
+allMRI.df16=rbind(allMRI.df16,foo,foo2)
+
+foo=compileMRIAreas.n(spk="VT08", set="set1")
+foo2=compileMRIAreas.n(spk="VT08", set="set2")
+allMRI.df16=rbind(allMRI.df16,foo,foo2)
+
+foo=compileMRIAreas.n(spk="VT09", set="set1")
+foo2=compileMRIAreas.n(spk="VT09", set="set2")
+allMRI.df16=rbind(allMRI.df16,foo,foo2)
+
+foo=compileMRIAreas.n(spk="VT10", set="set1")
+foo2=compileMRIAreas.n(spk="VT10", set="set2")
+allMRI.df16=rbind(allMRI.df16,foo,foo2)
+
+
+
+##
+## interpolation
+
+foo=compileMRIAreas(spk="VT03", set="set1")
+foo2=compileMRIAreas(spk="VT03", set="set2")
+allMRI.df=rbind(foo,foo2)
+
+foo=compileMRIAreas(spk="VT05", set="set1")
+foo2=compileMRIAreas(spk="VT05", set="set2")
+allMRI.df=rbind(allMRI.df,foo,foo2)
+
+
+foo=compileMRIAreas(spk="VT08", set="set1")
+foo2=compileMRIAreas(spk="VT08", set="set2")
+allMRI.df=rbind(allMRI.df,foo,foo2)
+
+foo=compileMRIAreas(spk="VT09", set="set1")
+foo2=compileMRIAreas(spk="VT09", set="set2")
+allMRI.df=rbind(allMRI.df,foo,foo2)
+
+foo=compileMRIAreas(spk="VT10", set="set1")
+foo2=compileMRIAreas(spk="VT10", set="set2")
+allMRI.df=rbind(allMRI.df,foo,foo2)
+
+maxArea=apply(allMRI.df[,4:31],1,max)
+
+foo4=prcomp(allMRIn.df[,4:31]/maxArea,scale=T)	
