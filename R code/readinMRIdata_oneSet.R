@@ -76,3 +76,6 @@ for (i in 1:numVTs)
 	allVowels.df <- compileMRIAreas(spk=VTlist[i])
 	allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
 }
+
+# Omit VT01 hood.txt since they're all NAs.
+allSpeakers.df = allSpeakers.df[-9,]
