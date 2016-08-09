@@ -5,6 +5,9 @@
 # Adapted by Jenny Sahng
 # 07/08/2016
 
+.libPaths('H:/Documents/Rlibraries')
+library('emuR')
+
 # Normalise for maximum area in each shape to eliminate interspeaker effects
 # e.g. VT09 shapes much bigger than others.
 maxArea=apply(allSpeakers.df[,4:30],1,max)
@@ -13,20 +16,25 @@ maxArea=apply(allSpeakers.df[,4:30],1,max)
 pca <- prcomp(~., data=na.omit(allSpeakers.df[,4:30]/maxArea), scale=T)	
 pca.summ <- summary(pca)
 
-# Centroids only
+# Plot of PC1 and PC2, centroids only
 plot.new()
-eplot(pca$x[,1:2], labs=allSpeakers.df[,2], centroid=T, formant=T, col=T)
+eplot(pca$x[,1:2], labs=allSpeakers.df[,2], centroid=T, formant=T, col=T, xlim=c(-4,4), ylim=c(-4,4))
+title(main="Centroids of combined vowel properties from 12 vocal tracts", xlab="PC1", ylab="PC2")
 
-# Plot first two principal components
+# Plot of PC1 and PC2, all vowels
 plot.new()
+eplot(pca$x[,1:2], labs=allSpeakers.df[,2], centroid=F, formant=T, col=T, xlim=c(-7,6), ylim=c(-6,6))
 text(pca$x[,1],pca$x[,2],labels=allSpeakers.df[,2])
+title(main="Combined vowel properties from 12 vocal tracts", xlab="PC1", ylab="PC2")
 
 # Plot of standard deviations 
-plot(1:length(pca$sdev),pca$sdev,type="p")
+plot(1:length(pca$sdev),pca$sdev,type="p", xlab="Principal component #", ylab="Standard deviation")
+title(main="Standard deviations of principal components from combined dataset")
 
 # Plot of proportions of variance
 pca.var <- pca.summ$importance[2,]
-plot(1:length(pca.var),pca.var, type="p")
+plot(1:length(pca.var),pca.var, type="p", xlab="Principal component #", ylab="% Variance")
+title(main="Proportion of variance explained by principal components")
 
 # Add the index of the maximum value for each area
 maxAreaIndex=NULL
@@ -39,5 +47,10 @@ pca.max<-prcomp(~., data=cbind(na.omit(allSpeakers.df[,4:30]/maxArea),maxAreaInd
 
 summary(pca.max)
 
-eplot(pca.max$x[,1:2],labs=allSpeakers.df[,2],centroid=TRUE,formant=T)
+plot.new()
+eplot(pca.max$x[,1:2], labs=allSpeakers.df[,2], centroid=T, formant=T, col=T, xlim=c(-4,4), ylim=c(-4,4))
+title(main="Centroids of combined vowel properties with max value indexes joined", xlab="PC1", ylab="PC2")
+
+eplot(pca.max$x[,1:2], labs=allSpeakers.df[,2], centroid=F, formant=T, col=T, xlim=c(-7,6), ylim=c(-6,6))
 text(pca.max$x[,1],pca.max$x[,2],labels=allSpeakers.df[,2])
+title(main="Combined vowel properties from 12 vocal tracts with max value indexes", xlab="PC1", ylab="PC2")
