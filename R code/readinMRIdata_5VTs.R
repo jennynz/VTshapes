@@ -51,7 +51,7 @@ compileMRIAreas<-function(spk,interpN=FALSE)
   }
   
   # Create data frame with speaker labels, set labels, vowel labels, and cross-sectional areas. 
-  alldat.df=data.frame(spk = factor(rep(spk,numVowels*numSets)), set = factor(rep(SetList,numVowels)), vow = factor(rep(VowelList, each=2)), alldat)
+  alldat.df=data.frame(spk = factor(rep(spk,numVowels*numSets)), set = factor(rep(SetList,numVowels)), vow = factor(rep(vowelNames, each=2)), alldat)
   return(alldat.df)
 }
 
