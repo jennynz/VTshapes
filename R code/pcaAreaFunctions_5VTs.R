@@ -25,7 +25,7 @@ title(main="Centroids of combined vowel properties from 5 vocal tracts", xlab="P
 plot.new()
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=T, doellipse = T)
 text(pca$x[,1],pca$x[,2],labels=allSpeakers.df[,2])
-title(main="Combined vowel properties from 12 vocal tracts", xlab="PC1", ylab="PC2")
+title(main="Combined vowel properties from 5 vocal tracts", xlab="PC1", ylab="PC2")
 
 # Plot of standard deviations 
 plot(1:length(pca$sdev),pca$sdev,type="p", xlab="Principal component #", ylab="Standard deviation")

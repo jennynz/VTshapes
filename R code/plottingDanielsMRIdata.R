@@ -2,7 +2,7 @@
 
 # Plotting Vocal tract Shape areas derived from MRI function. With this set of functions, it should now be possible to compare the vocal tract shapes of the different vowels for each speaker. And will be able to do this for the two sets. Assumes identical file structure for each vowel.
 
-"maxVTvals"<-function(path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run", spk="VT03", set="set1",Helen=FALSE)
+maxVTvals<-function(path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run", spk="VT03", set="set1",Helen=FALSE)
 {
 	if(Helen)
 	{
@@ -25,7 +25,7 @@
 
 
 
-"plotMRI"<-function(path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run", spk="VT03", set="set1",vow="had",col="red",xlim=c(0,180),ylim=c(0,250),Helen=FALSE)
+plotMRI<-function(path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run", spk="VT03", set="set1",vow="had",col="red",xlim=c(0,180),ylim=c(0,250),Helen=FALSE)
 {
 	if(Helen)
 	{
@@ -39,7 +39,7 @@
 	plot(datfile[,1],datfile[,2],type="l",col=col,xlim=xlim,ylim=ylim,xlab="distance from lips",ylab="cross-sectional area")
 }
 
-"plotMRI.all"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run",Helen=FALSE)
+plotMRI.all<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510),set="set1",path="H:\\Documents\\Part IV Project\\Daniel2012\\Data run",Helen=FALSE)
 {
 	
 	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk,set=set,path=path,Helen=Helen)
@@ -150,64 +150,62 @@ maxVTvals(spk="vt09",set="set2")
 maxVTvals(spk="vt10",set="set1")
 maxVTvals(spk="vt10",set="set2")
 
-> maxVTvals(spk="vt03",set="set1")
-      V1       V2 
-170.9145 408.8282 
-> maxVTvals(spk="vt03",set="set2")
-      V1       V2 
-167.4696 506.8966 
-> 
-> maxVTvals(spk="vt05",set="set1")
-      V1       V2 
-159.9842 371.8640 
-> maxVTvals(spk="vt05",set="set2")
-      V1       V2 
-157.1658 316.2499 
-> 
-> maxVTvals(spk="vt08",set="set1")
-      V1       V2 
-172.3850 633.3151 
-> maxVTvals(spk="vt08",set="set2")
-      V1       V2 
-155.1128 303.5782 
-> 
-> maxVTvals(spk="vt09",set="set1")
-      V1       V2 
-209.5603 853.1306 
-> maxVTvals(spk="vt09",set="set2")
-      V1       V2 
-200.5276 766.3714 
-> 
-> maxVTvals(spk="vt10",set="set1")
-      V1       V2 
-185.5792 636.2460 
-> maxVTvals(spk="vt10",set="set2")
-      V1       V2 
-181.1514 652.6135 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt01")
-      V1       V2 
-192.0983 535.5777 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt02")
-      V1       V2 
-166.8425 603.1806 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt06")
-      V1       V2 
-161.8172 368.3801 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt11")
-      V1       V2 
-185.1744 528.7701 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt12")
-      V1       V2 
-193.1526 882.2141 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt03")
-      V1       V2 
-172.3850 633.3151 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt08")
-      V1       V2 
-154.6612 241.6323 
-> maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt09")
-      V1       V2 
-209.5603 853.1306 
+maxVTvals(spk="vt03",set="set1")
+maxVTvals(spk="vt03",set="set2")
+#      V1       V2 
+#167.4696 506.8966 
+
+maxVTvals(spk="vt05",set="set1")
+#      V1       V2 
+#159.9842 371.8640 
+maxVTvals(spk="vt05",set="set2")
+#      V1       V2 
+#157.1658 316.2499 
+
+maxVTvals(spk="vt08",set="set1")
+#      V1       V2 
+#172.3850 633.3151 
+maxVTvals(spk="vt08",set="set2")
+#      V1       V2 
+#155.1128 303.5782 
+
+maxVTvals(spk="vt09",set="set1")
+#      V1       V2 
+#209.5603 853.1306 
+maxVTvals(spk="vt09",set="set2")
+#      V1       V2 
+#200.5276 766.3714 
+
+maxVTvals(spk="vt10",set="set1")
+#      V1       V2 
+#185.5792 636.2460 
+maxVTvals(spk="vt10",set="set2")
+#      V1       V2 
+#181.1514 652.6135 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt01")
+#      V1       V2 
+#192.0983 535.5777 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt02")
+#      V1       V2 
+#166.8425 603.1806 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt06")
+#      V1       V2 
+#161.8172 368.3801 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt11")
+#      V1       V2 
+#185.1744 528.7701 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt12")
+#      V1       V2 
+#193.1526 882.2141 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt03")
+#      V1       V2 
+#172.3850 633.3151 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt08")
+#      V1       V2 
+#154.6612 241.6323 
+maxVTvals(path="Z:\\ECE\\Signal Processing\\Catherine Watson\\MRI studies\\Helen Summer Work\\Summer\\Vocal Tracts from Varadha",Helen=TRUE,spk="vt09")
+#      V1       V2 
+#209.5603 853.1306 
 
 
 ## high Vowels
