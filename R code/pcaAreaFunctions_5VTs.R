@@ -16,6 +16,8 @@ maxArea=apply(allSpeakers.df[,5:30],1,max)
 pca <- prcomp(~., data=na.omit(allSpeakers.df[,5:30]/maxArea), scale=T)	
 pca.summ <- summary(pca)
 
+# IPA symbols and custom colors for eplot
+levels(allSpeakers.df$vow)= c("æ","ɑː","e","iː","ɜː","ɪ","ɔː","ɒ","ʊ","ʌ","u")
 colpalette = c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4","darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
 
 # Plot of PC1 and PC2, centroids only
