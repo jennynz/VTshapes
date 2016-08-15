@@ -18,12 +18,12 @@ pca.summ <- summary(pca)
 
 # Plot of PC1 and PC2, centroids only
 plot.new()
-eplot(pca$x[,1:2], labs=allSpeakers.df[,2], centroid=T, formant=T, col=T, xlim=c(-4,4), ylim=c(-4,4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T, col=T, xlim=c(-4,4), ylim=c(-4,4))
 title(main="Centroids of combined vowel properties from 12 vocal tracts", xlab="PC1", ylab="PC2")
 
 # Plot of PC1 and PC2, all vowels
 plot.new()
-eplot(pca$x[,1:2], labs=allSpeakers.df[,2], centroid=F, formant=T, col=T, xlim=c(-7,6), ylim=c(-6,6))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=T, xlim=c(-7,6), ylim=c(-6,6))
 text(pca$x[,1],pca$x[,2],labels=allSpeakers.df[,2])
 title(main="Combined vowel properties from 12 vocal tracts", xlab="PC1", ylab="PC2")
 
@@ -35,22 +35,3 @@ title(main="Standard deviations of principal components from combined dataset")
 pca.var <- pca.summ$importance[2,]
 plot(1:length(pca.var),pca.var, type="p", xlab="Principal component #", ylab="% Variance")
 title(main="Proportion of variance explained by principal components")
-
-# Add the index of the maximum value for each area
-maxAreaIndex=NULL
-for(i in 1:length(maxArea))
-{
-  maxAreaIndex[i]= order(allSpeakers.df[i,4:30],decreasing=T)[2]
-}
-
-pca.max<-prcomp(~., data=cbind(na.omit(allSpeakers.df[,4:30]/maxArea),maxAreaIndex),scale=T)
-
-summary(pca.max)
-
-plot.new()
-eplot(pca.max$x[,1:2], labs=allSpeakers.df[,2], centroid=T, formant=T, col=T, xlim=c(-4,4), ylim=c(-4,4))
-title(main="Centroids of combined vowel properties with max value indexes joined", xlab="PC1", ylab="PC2")
-
-eplot(pca.max$x[,1:2], labs=allSpeakers.df[,2], centroid=F, formant=T, col=T, xlim=c(-7,6), ylim=c(-6,6))
-text(pca.max$x[,1],pca.max$x[,2],labels=allSpeakers.df[,2])
-title(main="Combined vowel properties from 12 vocal tracts with max value indexes", xlab="PC1", ylab="PC2")
