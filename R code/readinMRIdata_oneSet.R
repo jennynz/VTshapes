@@ -22,7 +22,7 @@ numVTs <- length(VTlist)
 # List of vowel names (hadd, heed...)
 areaFiles <- dir(paste(path,VTlist[1],"distance_area",sep="\\"))
 numVowels <- length(areaFiles)
-vowelNames <- vector(, length=numVowels)
+vowelNames <- vector(length=numVowels)
 for(i in 1:numVowels) {
 	vowelNames[i]<- unlist(strsplit(areaFiles[i],"\\."))[1] # Remove .txt
 }
