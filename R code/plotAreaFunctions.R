@@ -14,7 +14,7 @@ graphics.off() # close all graphics windows
 
 path<<-"H:\\Documents\\Part IV Project\\All VT data"
 
-"maxVTvals"<-function(spk="VT03")
+"maxVTvals"<-function(spk)
 {
 	Dirpath=paste(path,spk,"distance_area",sep="\\")
 	filesInDir=dir(Dirpath)
@@ -28,14 +28,14 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 	return(apply(alldat,2,max))
 }
 
-"plotMRI"<-function(spk="VT03",vow="had",col="red",xlim=c(0,180),ylim=c(0,250))
+"plotMRI"<-function(spk,vow="had",col="red",xlim=c(0,180),ylim=c(0,250))
 {
 	fullpath=paste(path,spk,"distance_area",paste(vow,"txt",sep="."),sep="\\")
 	datfile=read.table(fullpath)
 	plot(datfile[,1],datfile[,2],type="l",col=col,xlim=xlim,ylim=ylim,xlab="distance from lips",ylab="cross-sectional area")
 }
 
-"plotMRI.all"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.all"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {
 	
 	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk)
@@ -54,11 +54,8 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 	par(new=T)
 	plotMRI(vow="hoard",col="aquamarine1",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
-	if(spk != "VT01")
-	{
-		plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
-		par(new=T)
-	}
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
+	par(new=T)
 	plotMRI(vow="whod",col="blue1",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
 	plotMRI(vow="herd",col="purple",xlim=xlim,ylim=ylim,spk=spk)
@@ -66,7 +63,7 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 }
 
 
-"plotMRI.front"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.front"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {	
 	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
@@ -79,7 +76,7 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 }
 
 
-"plotMRI.back"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.back"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {
 	plotMRI(vow="hud",col="green1",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
@@ -88,24 +85,18 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 	plotMRI(vow="hod",col="aquamarine3",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
 	plotMRI(vow="hoard",col="aquamarine1",xlim=xlim,ylim=ylim,spk=spk)
-	if(spk != "VT01")
-	{
-		par(new=T)
-		plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
-	}
+	par(new=T)
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
 	title(paste("Back vowels for ",spk))
 }
 
 
-"plotMRI.mid"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.mid"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {
 	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)	
-	if(spk != "VT01")
-	{
-		plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
-		par(new=T)
-	}
+	plotMRI(vow="hood",col="blue4",xlim=xlim,ylim=ylim,spk=spk)
+	par(new=T)
 	plotMRI(vow="whod",col="blue1",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
 	plotMRI(vow="herd",col="purple",xlim=xlim,ylim=ylim,spk=spk)
@@ -113,7 +104,7 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 }
 
 
-"plotMRI.high"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.high"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {
 	plotMRI(vow="heed",col="red",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
@@ -124,7 +115,7 @@ path<<-"H:\\Documents\\Part IV Project\\All VT data"
 	title(paste("High vowels for ",spk))
 }
 
-"plotMRI.cen"<-function(spk="VT03",xlim=c(0,175),ylim=c(0,510))
+"plotMRI.cen"<-function(spk,xlim=c(0,175),ylim=c(0,510))
 {
 	plotMRI(vow="hid",col="maroon",xlim=xlim,ylim=ylim,spk=spk)
 	par(new=T)
