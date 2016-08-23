@@ -21,19 +21,17 @@ pca.summ <- summary(pca)
 levels(allSpeakers.df$vow)= c("æ", "????", "e", "i??", "????", "??", "????", "??", "??", "??", "u??")
 colpalette = c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4","darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
 
-# Plot of PC1 and PC2 centroids only
-plot.new()
-# For comparing with Catherine's plots on powerpoints
-#eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=T, formant=F, col=colpalette, doellipse = F)
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=T, formant=T, col=colpalette, doellipse = T)
-title(main = "Centroids of combined vowel properties (5 VTs x 2 Sets)", xlab = "PC1", ylab = "PC2")
-
 # Plot of PC1 and PC2, all vowels
-plot.new()
 # For comparing with Catherine's plots on powerpoints
 #eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=F, formant=F, col=colpalette, doellipse = F, dopoints = T, ylim = c(-5,5))
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=F, formant=T, col=colpalette, doellipse = T, dopoints = T)
 title(main = "Vowel properties (5 VTs x 2 Sets)", xlab = "PC1", ylab = "PC2")
+
+# Plot of PC1 and PC2 centroids only
+# For comparing with Catherine's plots on powerpoints
+#eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=T, formant=F, col=colpalette, doellipse = F)
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,3]), centroid=T, formant=T, col=colpalette, doellipse = T)
+title(main = "Centroids of combined vowel properties (5 VTs x 2 Sets)", xlab = "PC1", ylab = "PC2")
 
 # Plot of standard deviations
 plot(pca$sdev, type="p", xlab="Principal component #", ylab="Standard deviation accounted")
