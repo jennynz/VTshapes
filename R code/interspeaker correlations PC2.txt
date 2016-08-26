@@ -1,0 +1,263 @@
+	 VT1 and VT2
+	 Correlation: 0.8471284
+	 P-value: 2.510999e-08
+
+	 VT1 and VT3
+	 Correlation: 0.8209097
+	 P-value: 1.56262e-07
+
+	 VT1 and VT4
+	 Correlation: -0.8386882
+	 P-value: 4.684366e-08
+
+	 VT1 and VT5
+	 Correlation: -0.6530201
+	 P-value: 0.0002220296
+
+	 VT1 and VT6
+	 Correlation: 0.5915394
+	 P-value: 0.001154974
+
+	 VT1 and VT7
+	 Correlation: 0.5440165
+	 P-value: 0.003353815
+
+	 VT1 and VT8
+	 Correlation: 0.740116
+	 P-value: 1.020584e-05
+
+	 VT1 and VT9
+	 Correlation: 0.9116484
+	 P-value: 3.809468e-11
+
+	 VT1 and VT10
+	 Correlation: -0.7041745
+	 P-value: 4.146595e-05
+
+	 VT1 and VT11
+	 Correlation: 0.8650824
+	 P-value: 5.832983e-09
+
+	 VT1 and VT12
+	 Correlation: 0.8689393
+	 P-value: 4.148636e-09
+
+	 VT2 and VT3
+	 Correlation: 0.6829481
+	 P-value: 8.657279e-05
+
+	 VT2 and VT4
+	 Correlation: -0.7134966
+	 P-value: 2.941022e-05
+
+	 VT2 and VT5
+	 Correlation: -0.580589
+	 P-value: 0.001497879
+
+	 VT2 and VT6
+	 Correlation: 0.6164386
+	 P-value: 0.0006171044
+
+	 VT2 and VT7
+	 Correlation: 0.5278782
+	 P-value: 0.004655216
+
+	 VT2 and VT8
+	 Correlation: 0.6976004
+	 P-value: 5.242952e-05
+
+	 VT2 and VT9
+	 Correlation: 0.8721449
+	 P-value: 3.099742e-09
+
+	 VT2 and VT10
+	 Correlation: -0.8572774
+	 P-value: 1.127182e-08
+
+	 VT2 and VT11
+	 Correlation: 0.8295388
+	 P-value: 8.858387e-08
+
+	 VT2 and VT12
+	 Correlation: 0.7763147
+	 P-value: 1.940856e-06
+
+	 VT3 and VT4
+	 Correlation: -0.9048719
+	 P-value: 9.241235e-11
+
+	 VT3 and VT5
+	 Correlation: -0.7408806
+	 P-value: 9.881974e-06
+
+	 VT3 and VT6
+	 Correlation: 0.3444283
+	 P-value: 0.0785266
+
+	 VT3 and VT7
+	 Correlation: 0.7740473
+	 P-value: 2.172399e-06
+
+	 VT3 and VT8
+	 Correlation: 0.6368552
+	 P-value: 0.0003544497
+
+	 VT3 and VT9
+	 Correlation: 0.7206561
+	 P-value: 2.238501e-05
+
+	 VT3 and VT10
+	 Correlation: -0.6664518
+	 P-value: 0.0001473761
+
+	 VT3 and VT11
+	 Correlation: 0.7790972
+	 P-value: 1.687156e-06
+
+	 VT3 and VT12
+	 Correlation: 0.9596164
+	 P-value: 2.785219e-15
+
+	 VT4 and VT5
+	 Correlation: 0.7926164
+	 P-value: 8.293891e-07
+
+	 VT4 and VT6
+	 Correlation: -0.4981722
+	 P-value: 0.008180519
+
+	 VT4 and VT7
+	 Correlation: -0.7319057
+	 P-value: 1.433134e-05
+
+	 VT4 and VT8
+	 Correlation: -0.6291179
+	 P-value: 0.0004393369
+
+	 VT4 and VT9
+	 Correlation: -0.7819074
+	 P-value: 1.461599e-06
+
+	 VT4 and VT10
+	 Correlation: 0.6626485
+	 P-value: 0.0001658491
+
+	 VT4 and VT11
+	 Correlation: -0.8337742
+	 P-value: 6.627144e-08
+
+	 VT4 and VT12
+	 Correlation: -0.9040284
+	 P-value: 1.027115e-10
+
+	 VT5 and VT6
+	 Correlation: -0.5119661
+	 P-value: 0.006335199
+
+	 VT5 and VT7
+	 Correlation: -0.6126061
+	 P-value: 0.0006819176
+
+	 VT5 and VT8
+	 Correlation: -0.3819676
+	 P-value: 0.04928441
+
+	 VT5 and VT9
+	 Correlation: -0.6643859
+	 P-value: 0.0001571716
+
+	 VT5 and VT10
+	 Correlation: 0.4435328
+	 P-value: 0.02048686
+
+	 VT5 and VT11
+	 Correlation: -0.6408981
+	 P-value: 0.0003161021
+
+	 VT5 and VT12
+	 Correlation: -0.7370003
+	 P-value: 1.162598e-05
+
+	 VT6 and VT7
+	 Correlation: 0.3056746
+	 P-value: 0.1210084
+
+	 VT6 and VT8
+	 Correlation: 0.5754968
+	 P-value: 0.001685199
+
+	 VT6 and VT9
+	 Correlation: 0.766725
+	 P-value: 3.099437e-06
+
+	 VT6 and VT10
+	 Correlation: -0.292359
+	 P-value: 0.1389236
+
+	 VT6 and VT11
+	 Correlation: 0.7157531
+	 P-value: 2.700958e-05
+
+	 VT6 and VT12
+	 Correlation: 0.4852634
+	 P-value: 0.01029684
+
+	 VT7 and VT8
+	 Correlation: 0.5426991
+	 P-value: 0.003446884
+
+	 VT7 and VT9
+	 Correlation: 0.5515019
+	 P-value: 0.002864722
+
+	 VT7 and VT10
+	 Correlation: -0.5564454
+	 P-value: 0.002576336
+
+	 VT7 and VT11
+	 Correlation: 0.6214001
+	 P-value: 0.0005412166
+
+	 VT7 and VT12
+	 Correlation: 0.7431564
+	 P-value: 8.971658e-06
+
+	 VT8 and VT9
+	 Correlation: 0.7950901
+	 P-value: 7.242587e-07
+
+	 VT8 and VT10
+	 Correlation: -0.6253317
+	 P-value: 0.0004870004
+
+	 VT8 and VT11
+	 Correlation: 0.8957985
+	 P-value: 2.743868e-10
+
+	 VT8 and VT12
+	 Correlation: 0.7322278
+	 P-value: 1.414498e-05
+
+	 VT9 and VT10
+	 Correlation: -0.6740567
+	 P-value: 0.0001157953
+
+	 VT9 and VT11
+	 Correlation: 0.8899931
+	 P-value: 5.231332e-10
+
+	 VT9 and VT12
+	 Correlation: 0.8131811
+	 P-value: 2.534007e-07
+
+	 VT10 and VT11
+	 Correlation: -0.707166
+	 P-value: 3.71904e-05
+
+	 VT10 and VT12
+	 Correlation: -0.7446237
+	 P-value: 8.42524e-06
+
+	 VT11 and VT12
+	 Correlation: 0.8615744
+	 P-value: 7.881686e-09
