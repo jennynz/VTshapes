@@ -1,10 +1,11 @@
 # Principal Components Analysis on area functions of combined dataset of 12 VTs
 
 # 5 VTs (VT03, VT05, VT08, VT09, VT10), both Set 1 and Set 2.
-# Run readAreaFunctions_5VT2Set.R first
 
 # Adapted by Jenny Sahng
 # 07/08/2016
+
+source('~/Part IV Project/R code/readAreaFunctions_2Set.R', echo=TRUE)
 
 .libPaths('H:/Documents/Rlibraries')
 library('emuR')

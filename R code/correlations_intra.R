@@ -8,10 +8,16 @@
 # Written by Jenny Sahng
 # 26/08/2016
 
-source('~/Part IV Project/R code/readAreaFunctions_5VT2Set.R', echo=TRUE)
-source('~/Part IV Project/R code/pca_5VT2Set_combined.R', echo=TRUE)
+source('~/Part IV Project/R code/readAreaFunctions_2Set.R', echo=TRUE)
+source('~/Part IV Project/R code/pca_2Set_combined.R', echo=TRUE)
 
-## Inter-speaker correlations
+corr <- matrix(data = NA, nrow = numVTs-1, ncol = numVTs-1, byrow = TRUE)
+colnames(corr) <- VTlist[-1]
+rownames(corr) <- VTlist[-numVTs]
+
+pvalues <- matrix(data = NA, nrow = numVTs-1, ncol = numVTs-1, byrow = TRUE)
+colnames(pvalues) <- VTlist[-1]
+rownames(pvalues) <- VTlist[-numVTs]
 
 for(i in 1:numVTs) {
   j <- i + 1
