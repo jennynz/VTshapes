@@ -1,8 +1,9 @@
 ## Inter-speaker Correlations
 
-# Performs Pearson's product-moment correlations between principal component #p
-# of each speaker with all other speakers.
-# Run readAreaFunctions_12VT1Set.R and pca_12VT1Set_combined.R first
+# Performs Pearson's product-moment correlations between principal component #p 
+# of each speaker with all other speakers. When changing the principal component
+# number to compare, make sure to change the name of the file that the tables
+# are written to as well.
 
 # Written by Jenny Sahng
 # 16/08/2016
@@ -21,7 +22,7 @@ colnames(pvalues) <- VTlist[-1]
 rownames(pvalues) <- VTlist[-numVTs]
 
 # Principal component number
-p <- 3
+p <- 1
 
 for(i in 1:numVTs) {
   j <- i + 1
@@ -46,15 +47,15 @@ for(i in 1:numVTs) {
     pvalues[i,j-1] <- unname(cor$p.value)
     
     # Print to console
-    # cat("\n\t VT", i, " and VT", j, 
-        # "\n\t Correlation: ", cor$estimate,
-        # "\n\t P-value: ", cor$p.value,
-        # "\n", sep="")
+    cat("\n\t VT", i, " and VT", j,
+      "\n\t Correlation: ", cor$estimate,
+      "\n\t P-value: ", cor$p.value,
+      "\n", sep="")
     
     j <- j + 1
   }
 }
 
 # Write table to file
-write.csv(corr, file="correlationResults_inter_PC3.csv")
-write.csv(pvalues, file="correlationResults_inter_PC3_pvalues.csv")
+# write.csv(corr, file="correlationResults_inter_PC1.csv")
+# write.csv(pvalues, file="correlationResults_inter_PC1_pvalues.csv")

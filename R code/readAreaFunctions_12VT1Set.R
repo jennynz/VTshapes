@@ -1,8 +1,7 @@
 # Reading in area function data derived from MRI images.
 
 # Area functions (cross-sectional area vs. distance from lips)are read into R and interpolated with the same number of points as the original matrix.
-# Specific to the current file structure in project directory.
-# Assumes one set only. See the original file plottingDanielsMRIdata.txt to use both sets.
+# Specific to the current file structure in project directory. Reads Set 1 only.
 
 # Adapted by Jenny Sahng
 # 05/08/2016
@@ -19,7 +18,7 @@ VTlist <- list.dirs(path, recursive=FALSE, full.names=FALSE)
 numVTs <- length(VTlist)
 
 # List of vowel names (hadd, heed...)
-areaFiles <- dir(paste(path,VTlist[1],"distance_area",sep="\\"))
+areaFiles <- dir(paste(path,VTlist[1],"Set1","distance_area",sep="\\"))
 numVowels <- length(areaFiles)
 vowelNames <- vector(length=numVowels)
 for(i in 1:numVowels) {
@@ -37,7 +36,7 @@ compileMRIAreas<-function(spk,interpN=FALSE)
 	#use file name to determine vowel name, write the cross-sectional areas - only to data matrix
 	for(i in 1:numVowels)
 	{
-		filepath <- paste(path,spk,"distance_area",areaFiles[i],sep="\\")
+		filepath <- paste(path,spk,"Set1","distance_area",areaFiles[i],sep="\\")
 		datfile <- read.table(filepath)
 
 		if (interpN) { n <- interpN }

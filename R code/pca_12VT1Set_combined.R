@@ -44,7 +44,7 @@ title(main = "Proportion of variance explained by principal components (12 VTs x
 # VT02 head: Comparing linearly interpolated area function with raw distance_area txt from MATLAB
 plot (c(0,29),c(0,300),type="n", xlab="Data point", ylab="Cross-sectional area (mm^2)")
 lines(unlist(allSpeakers.df[14,-(1:2)]), col="red")
-vt02e <- read.table(paste(path,VTlist[2],"distance_area","head.txt",sep="\\"))
+vt02e <- read.table(paste(path,VTlist[2],"Set1","distance_area","head.txt",sep="\\"))
 lines(vt02e[,2], col="blue")
 title(main = "VT02 'head' vowel area functions")
 legend(0, 40, c("Interpolated on R","Raw area function"), lty=c(1,1), col=c("red","blue"))
@@ -52,7 +52,7 @@ legend(0, 40, c("Interpolated on R","Raw area function"), lty=c(1,1), col=c("red
 # VT09 had: Comparing linearly interpolated area function with raw distance_area txt from MATLAB
 plot (c(0,29),c(0,700),type="n", xlab="Data point", ylab="Cross-sectional area (mm^2)")
 lines(unlist(allSpeakers.df[89,-(1:2)]), col="red")
-vt02e <- read.table(paste(path,VTlist[9],"distance_area","had.txt",sep="\\"))
+vt02e <- read.table(paste(path,VTlist[9],"Set1","distance_area","had.txt",sep="\\"))
 lines(vt02e[,2], col="blue")
 title(main = "VT09 'had' vowel area functions")
 legend(0, 100, c("Interpolated on R","Raw area function"), lty=c(1,1), col=c("red","blue"))

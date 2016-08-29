@@ -1,9 +1,9 @@
-## Inter-speaker and Intra-speaker Correlations
+## Intra-speaker Correlations
 
-# Performs Pearson's product-moment correlations between the first and second
-# principal components of each speaker with all other speakers, and then between
-# the two sets of each speaker.
-# Run readAreaFunctions_5VT2Set.R and pca_5VT2Set_combined.R first
+# Performs Pearson's product-moment correlations between principal component #p 
+# of each set within each speakers (the ones which have two datasets available
+# and analysed). When changing the principal component number to compare, make
+# sure to change the name of the file that the tables are written to as well.
 
 # Written by Jenny Sahng
 # 26/08/2016
