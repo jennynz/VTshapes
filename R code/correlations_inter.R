@@ -12,8 +12,16 @@ source('~/Part IV Project/R code/pca_12VT1Set_combined.R', echo=TRUE)
 
 ## Inter-speaker correlations
 
+corr <- matrix(data = NA, nrow = 11, ncol = 11, byrow = TRUE)
+colnames(corr) <- VTlist[-1]
+rownames(corr) <- VTlist[-numVTs]
+
+pvalues <- matrix(data = NA, nrow = 11, ncol = 11, byrow = TRUE)
+colnames(pvalues) <- VTlist[-1]
+rownames(pvalues) <- VTlist[-numVTs]
+
 # Principal component number
-p <- 2
+p <- 1
 
 for(i in 1:numVTs) {
   j <- i + 1
@@ -33,11 +41,20 @@ for(i in 1:numVTs) {
     # title(main = "PC1 for VT01 and VT02 area function data points")
     # legend(0, -0.3, c("VT01","VT02"), lty=c(1,1), col=c("red","blue"))
     
-    cat("\n\t VT", i, " and VT", j, 
-        "\n\t Correlation: ", cor$estimate,
-        "\n\t P-value: ", cor$p.value,
-        "\n", sep="")
+    # Write to tables
+    corr[i,j-1] <- unname(cor$estimate)
+    pvalues[i,j-1] <- unname(cor$p.value)
+    
+    # Print to console
+    # cat("\n\t VT", i, " and VT", j, 
+        # "\n\t Correlation: ", cor$estimate,
+        # "\n\t P-value: ", cor$p.value,
+        # "\n", sep="")
     
     j <- j + 1
   }
 }
+
+# Write table to file
+write.csv(corr, file="correlationResults_inter_PC1.csv")
+write.csv(pvalues, file="correlationResults_inter_PC1_pvalues.csv")
