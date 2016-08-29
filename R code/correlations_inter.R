@@ -9,7 +9,6 @@
 # 16/08/2016
 
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
-source('~/Part IV Project/R code/pca_1Set_combined.R', echo=TRUE)
 
 corr <- matrix(data = NA, nrow = numVTs-1, ncol = numVTs-1, byrow = TRUE)
 colnames(corr) <- VTlist[-1]
@@ -22,13 +21,16 @@ rownames(pvalues) <- VTlist[-numVTs]
 # Principal component number
 p <- 1
 
+# Maximum areas for normalising
+maxArea=apply(allSpeakers.df[,4:30],1,max)
+
 for(i in 1:numVTs) {
   j <- i + 1
   while(j <= numVTs) {
     
     # Individual speaker PCAs
-    pca1 <- prcomp(~., data=na.omit(allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30]/maxArea), scale=T)
-    pca2 <- prcomp(~., data=na.omit(allSpeakers.df[((j-1)*10 + j):(j*10 + j),4:30]/maxArea), scale=T)
+    pca1 <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30]/maxArea, scale=T)
+    pca2 <- prcomp(~., data = allSpeakers.df[((j-1)*10 + j):(j*10 + j),4:30]/maxArea, scale=T)
     
     # Interspeaker correlations
     cor <- cor.test(pca1$rotation[,p], pca2$rotation[,p])
