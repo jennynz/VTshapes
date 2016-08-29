@@ -21,7 +21,7 @@ colnames(pvalues) <- VTlist[-1]
 rownames(pvalues) <- VTlist[-numVTs]
 
 # Principal component number
-p <- 1
+p <- 3
 
 for(i in 1:numVTs) {
   j <- i + 1
@@ -56,5 +56,5 @@ for(i in 1:numVTs) {
 }
 
 # Write table to file
-write.csv(corr, file="correlationResults_inter_PC1.csv")
-write.csv(pvalues, file="correlationResults_inter_PC1_pvalues.csv")
+write.csv(corr, file="correlationResults_inter_PC3.csv")
+write.csv(pvalues, file="correlationResults_inter_PC3_pvalues.csv")
