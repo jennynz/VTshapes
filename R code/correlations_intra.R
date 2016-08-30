@@ -21,8 +21,13 @@ rownames(pvalues) <- VTlist[-numVTs]
 # Principal component number
 p <- 1
 
-# Maximum areas for normalising
-maxArea=apply(allSpeakers.df[,4:30],1,max)
+# Normalise?
+isNorm <- F
+
+# Maximum areas for normalising. X1 is omitted since it is unreliable (MRI
+# showed little of mouth opening at front of lips) and X29 omitted since it is
+# the glottis which is always zero.
+if (isNorm == T) { maxArea <- apply(allSpeakers.df[,4:30],1,max) }
 
 for(i in 1:numVTs) {
     
