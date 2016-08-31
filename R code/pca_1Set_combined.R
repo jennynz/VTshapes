@@ -7,6 +7,10 @@
 
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
 
+# IPA symbols and custom colours for eplot
+levels(allSpeakers.df$vow) <- c()
+colpalette <- c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4","darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
+
 .libPaths('H:/Documents/Rlibraries')
 library('emuR')
 
@@ -17,10 +21,6 @@ maxArea <- apply(allSpeakers.df[,4:30],1,max)
 
 pca <- prcomp(~., data = allSpeakers.df[,4:30]/maxArea, scale=T)	
 pca.summ <- summary(pca)
-
-# IPA symbols and custom colours for eplot
-levels(allSpeakers.df$vow) <- c()
-colpalette <- c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4","darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
 
 # Plot of PC1 and PC2, all vowels
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette, doellipse = T, dopoints = T)

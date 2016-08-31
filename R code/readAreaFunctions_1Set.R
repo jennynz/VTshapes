@@ -7,10 +7,9 @@
 # Adapted by Jenny Sahng
 # 05/08/2016
 
-
-
 rm(list=ls()) # clear workspace
 graphics.off() # close all graphics windows
+setwd("~/Part IV Project/R code")
 
 path<<-"H:\\Documents\\Part IV Project\\All VT data"
 

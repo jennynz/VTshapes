@@ -38,11 +38,13 @@ combined.pca.summ <- summary(combined.pca)
 vt02.pca <- prcomp(~., data = (allSpeakers.df[12:22,4:30] / maxArea[12:22]), scale=T)
 vt02.pca.summ <- summary(vt02.pca)
 
-# Plot of PC1 and PC2, centroids of combined dataset excluding VT02
+# Plot of PC1 and PC2, centroids of combined dataset with VT02 superimposed
 eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, formant=T, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
-
-# Superimpose VT02
 par(new=TRUE)
 eplot(vt02.pca$x[,1:2], labs=as.character(allSpeakers.df[12:22,2]), centroid=T, col="red", formant=T, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
-
 title(main = "Comparison against vowel PCs for NZE and AE", xlab = "PC1", ylab = "PC2")
+legend(x="bottomleft", legend=c("Centroids", "VT02"), col=c("black","red"), lwd=1, pch=c(NA,NA))
+
+# More comparable to vowel quad
+eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, formant=F, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
+points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")
