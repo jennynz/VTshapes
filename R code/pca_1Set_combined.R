@@ -15,11 +15,11 @@ library('emuR')
 # e.g. VT09 shapes much bigger than others.
 maxArea <- apply(allSpeakers.df[,4:30],1,max)
 
-pca <- prcomp(~., data=na.omit(allSpeakers.df[,4:30]/maxArea), scale=T)	
+pca <- prcomp(~., data = allSpeakers.df[,4:30]/maxArea, scale=T)	
 pca.summ <- summary(pca)
 
 # IPA symbols and custom colours for eplot
-levels(allSpeakers.df$vow) <- c("æ", "????", "e", "i??", "????", "??", "????", "??", "??", "??", "u??")
+levels(allSpeakers.df$vow) <- c()
 colpalette <- c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4","darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
 
 # Plot of PC1 and PC2, all vowels

@@ -15,7 +15,7 @@ library('emuR')
 # e.g. VT09 shapes much bigger than others.
 maxArea=apply(allSpeakers.df[,5:30],1,max)
 
-pca <- prcomp(~., data=na.omit(allSpeakers.df[,5:30]/maxArea), scale=T)	
+pca <- prcomp(~., data = (allSpeakers.df[,5:30]/maxArea), scale=T)	
 pca.summ <- summary(pca)
 
 # IPA symbols and custom colours for eplot
