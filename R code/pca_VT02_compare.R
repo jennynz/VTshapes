@@ -31,6 +31,9 @@ library('emuR')
 maxArea <- apply(allSpeakers.df[,4:30],1,max)
 
 # PCA
+all.pca <- prcomp(~., data = allSpeakers.df[,4:30]/maxArea, scale=T)	
+all.pca.summ <- summary(all.pca)
+
 noVT2 <- c(1:11,23:132)
 combined.pca <- prcomp(~., data = (allSpeakers.df[noVT2,4:30] / maxArea[noVT2]), scale=T)	
 combined.pca.summ <- summary(combined.pca)
@@ -48,3 +51,9 @@ legend(x="bottomleft", legend=c("Centroids", "VT02"), col=c("black","red"), lwd=
 # More comparable to vowel quad
 eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, formant=F, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
 points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")
+
+# Variance accounted for when VT02 is excluded
+all.pca.var <- all.pca.summ$importance[2,]
+combined.pca.var <- combined.pca.summ$importance[2,]
+plot(combined.pca.var, type="p", xlab="Principal component #", ylab="% Variance")
+title(main = "Variance explained by principal components when VT02 is excluded")
