@@ -52,6 +52,24 @@ legend(x="bottomleft", legend=c("Centroids", "VT02"), col=c("black","red"), lwd=
 eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, formant=F, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
 points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")
 
+# Bark scaling
+eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, doellipse = F, xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.45), scaling = "bark")
+par(new=TRUE)
+eplot(vt02.pca$x[,1:2], labs=as.character(allSpeakers.df[12:22,2]), centroid=T, col="red", xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.45), scaling = "bark")
+
+# F1 vs F2-F1
+f1 <- cbind(combined.pca$x[,1], (combined.pca$x[,2] - combined.pca$x[,1]))
+eplot(f1, labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, doellipse = F, xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.40), scaling = "bark")
+eplot(f1, labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, doellipse = F, scaling = "mel")
+par(new=TRUE)
+f1f2 <- cbind(vt02.pca$x[,1], (vt02.pca$x[,2] - vt02.pca$x[,1]))
+eplot(f1f2, labs=as.character(allSpeakers.df[12:22,2]), centroid=T, col="red", xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.40), scaling = "bark")
+eplot(f1f2, labs=as.character(allSpeakers.df[12:22,2]), centroid=T, col="red", scaling = "mel")
+
+# Just try plotting without eplot at all, clusters
+plot(combined.pca$x[,1], combined.pca$x[,2], pch=as.character(allSpeakers.df[noVT2,2]), col="black")
+points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")
+
 # Variance accounted for when VT02 is excluded
 all.pca.var <- all.pca.summ$importance[2,]
 combined.pca.var <- combined.pca.summ$importance[2,]

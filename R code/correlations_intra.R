@@ -81,7 +81,7 @@ for (p in 1:np) {
 
 # Write table to file
 if (isNorm == T) {
-  write.csv(corr, file = "correlationResults_intra_norm.csv")
+  write.csv(rbind(corr, abs(corr)), file = "correlations_intra_norm.csv")
 } else {
-  write.csv(corr, file = "correlationResults_intra.csv")
+  write.csv(rbind(corr, abs(corr)), file = "correlations_intra.csv")
 }
