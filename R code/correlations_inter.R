@@ -1,6 +1,6 @@
 ## Inter-speaker Correlations
 
-# Performs Pearson's product-moment correlations between principal component #p 
+# Performs Pearson's product-moment correlations between principal component p 
 # of each speaker with all other speakers.
 
 # Written by Jenny Sahng
@@ -17,7 +17,7 @@ colnames(pvalues) <- VTlist[-1]
 rownames(pvalues) <- VTlist[-numVTs]
 
 # Principal component number
-p <- 1
+p <- 2
 
 # Normalise?
 isNorm <- T
@@ -51,7 +51,7 @@ for(i in 1:numVTs) {
     #car::ncvTest(pca1$rotation[,p])
     
     # Interspeaker correlations
-    cor <- cor.test(pca1$x[,p], pca2$x[,p])
+    cor <- cor.test(pca1$rotation[,p], pca2$rotation[,p])
     
     # Write to tables
     corr[i,j-1] <- unname(cor$estimate)
@@ -75,10 +75,9 @@ for(i in 1:numVTs) {
 }
 
 # Write table to file
+table <- rbind(corr, abs(corr), pvalues)
 if (isNorm == T) {
-  write.csv(corr, file = paste("correlationResults_inter_PC",p,"_norm.csv",sep=""))
-  write.csv(pvalues, file = paste("correlationResults_inter_PC",p,"_norm_pvalues.csv",sep=""))
+  write.csv(table, file = paste("pc",p,"_normalised.csv",sep=""))
 } else {
-  write.csv(corr, file = paste("correlationResults_inter_PC",p,".csv",sep=""))
-  write.csv(pvalues, file = paste("correlationResults_inter_PC",p,"_pvalues.csv",sep=""))
+  write.csv(table, file = paste("pc",p,"_unnormalised.csv",sep=""))
 }

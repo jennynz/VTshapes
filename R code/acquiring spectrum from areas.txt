@@ -145,7 +145,7 @@ summary(barkspec.pc)
 
 I think I need to make the frequency bands bigger.
 
-November 11th - remembered I didn't take logs of spectrum - results much better.
+# November 11th - remembered I didn't take logs of spectrum - results much better.
 
 ## had to first replace zero ammplitude in spectrrum with very small number
 
@@ -718,9 +718,9 @@ Rotation:
 
 
 ###
-(Checked plots for non bark scaled freq - PC1 vs PC2 does not give typical vowel plot - so not useful)
+#(Checked plots for non bark scaled freq - PC1 vs PC2 does not give typical vowel plot - so not useful)
 
-(Also checked if adding spectral values at res freq helped (log scaled) - it didn't really PC1 and PC2 accounted for less variance; in the rotation vectors R2 and R1 were the most important features - the amplitudes were all given low weights) Looked at PC1 vs PC2 plot - looked pretty similar to res freq only - Still a resonable spk variation)
+#(Also checked if adding spectral values at res freq helped (log scaled) - it didn't really PC1 and PC2 accounted for less variance; in the rotation vectors R2 and R1 were the most important features - the amplitudes were all given low weights) Looked at PC1 vs PC2 plot - looked pretty similar to res freq only - Still a resonable spk variation)
 
 > temp=prcomp(cbind(bark(resfreqIV[,1:4]),log10(vtresIV[,1:4])))
 > temp
