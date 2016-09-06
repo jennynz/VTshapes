@@ -52,10 +52,30 @@ legend(x="bottomleft", legend=c("Centroids", "VT02"), col=c("black","red"), lwd=
 eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, formant=F, doellipse = F, xlim=c(-5,5), ylim=c(-6,6))
 points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")
 
-# Bark scaling
-eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), centroid=T, col=F, doellipse = F, xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.45), scaling = "bark")
+## Bark scaling
+eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), axes=F, centroid=T, col=F, doellipse = F, xlim=c(-0.62,-0.46), ylim=c(-0.61,-0.47), scaling = "bark")
 par(new=TRUE)
-eplot(vt02.pca$x[,1:2], labs=as.character(allSpeakers.df[12:22,2]), centroid=T, col="red", xlim=c(-0.65,-0.45), ylim=c(-0.65,-0.45), scaling = "bark")
+eplot(vt02.pca$x[,1:2], labs=as.character(allSpeakers.df[12:22,2]), axes=F, centroid=T, col="red", xlim=c(-0.62,-0.46), ylim=c(-0.61,-0.47), scaling = "bark")
+title(main = "Comparison of vowel PCs in NZE and AE (Bark scaled)", xlab = "PC1", ylab = "PC2")
+legend(x=-0.62, y=-0.47, legend=c("NZE Centroids", "VT02"), col=c("black","red"), lwd=1, pch=c(NA,NA))
+xticks = seq(-0.62,-0.46,by=0.02)
+yticks = seq(-0.60,-0.48,by=0.02)
+axis(side = 1, at = xticks, labels = xticks)
+axis(side = 2, at = yticks, labels = yticks)
+
+# Try rotating Australian data 90 degrees anticlockwise
+theta <-  -50 * (pi/180)
+rotation.matrix <- matrix(c(cos(theta), -sin(theta), sin(theta), cos(theta)), ncol=2, nrow=2, byrow=T)
+vt02rotated <- vt02.pca$x[,1:2] %*% rotation.matrix
+eplot(combined.pca$x[,1:2], labs=as.character(allSpeakers.df[noVT2,2]), axes=F, centroid=T, col=F, doellipse = F, xlim=c(-0.62,-0.46), ylim=c(-0.65,-0.47), scaling = "bark")
+par(new=TRUE)
+eplot(vt02rotated, labs=as.character(allSpeakers.df[12:22,2]), axes=F, centroid=T, col="red", xlim=c(-0.62,-0.46), ylim=c(-0.65,-0.47), scaling = "bark")
+title(main = "Comparison of vowel PCs in NZE and AE (Bark scaled)", xlab = "PC1", ylab = "PC2")
+legend(x=-0.62, y=-0.47, legend=c("NZE Centroids", "VT02"), col=c("black","red"), lwd=1, pch=c(NA,NA))
+xticks = seq(-0.62,-0.46,by=0.02)
+yticks = seq(-0.64,-0.48,by=0.02)
+axis(side = 1, at = xticks, labels = xticks)
+axis(side = 2, at = yticks, labels = yticks)
 
 # F1 vs F2-F1
 f1 <- cbind(combined.pca$x[,1], (combined.pca$x[,2] - combined.pca$x[,1]))
