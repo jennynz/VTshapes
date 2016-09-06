@@ -17,10 +17,10 @@ colnames(pvalues) <- VTlist[-1]
 rownames(pvalues) <- VTlist[-numVTs]
 
 # Principal component number
-p <- 3
+p <- 1
 
 # Normalise?
-isNorm <- F
+isNorm <- T
 
 # Maximum areas for normalising. X1 is omitted since it is unreliable (MRI
 # showed little of mouth opening at front of lips) and X29 omitted since it is
@@ -40,8 +40,18 @@ for(i in 1:numVTs) {
       pca2 <- prcomp(~., data = allSpeakers.df[((j-1)*10 + j):(j*10 + j),4:30], scale=T) 
     }
     
+    # Normality tests
+    # shapiro.test(pca1$rotation[,p])
+    # shapiro.test(pca2$rotation[,p])
+    # qqnorm(pca1$rotation[,p])
+    # qqnorm(pca2$rotation[,p])
+    
+    # Heteroscedasticity tests
+    #lmtest::bptest(pca1$rotation[,p])
+    #car::ncvTest(pca1$rotation[,p])
+    
     # Interspeaker correlations
-    cor <- cor.test(pca1$rotation[,p], pca2$rotation[,p])
+    cor <- cor.test(pca1$x[,p], pca2$x[,p])
     
     # Write to tables
     corr[i,j-1] <- unname(cor$estimate)

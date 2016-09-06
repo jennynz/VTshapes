@@ -56,7 +56,7 @@ for (p in 1:np) {
     pca2 <- prcomp(~., data = set2, scale = T)
     
     # intraspeaker correlations
-    cor <- cor.test(pca1$rotation[,p], pca2$rotation[,p])
+    cor <- cor.test(pca1$x[,p], pca2$x[,p])
     
     # Write to tables
     corr[p*2-1,i] <- unname(cor$estimate)

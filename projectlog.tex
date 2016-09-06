@@ -1,0 +1,1820 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{tipa} 
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[colorlinks=true]{hyperref}
+
+\setlistdepth{5}
+\setlist[itemize,1]{label=$\bullet$}
+\setlist[itemize,2]{label=-}
+\setlist[itemize,3]{label=-}
+\setlist[itemize,4]{label=-}
+\setlist[itemize,5]{label=-}
+
+\title{Part IV Project log}
+\author{Jenny Sahng (Part IV BME, 5882233, jsah166)\\
+    Dr. Catherine Watson (Co-supervisor), Dr. Richard Clarke (Co-supervisor)}
+\date{April - September 2016}
+
+\begin{document}
+
+\maketitle
+
+\section*{12/04/16 Tuesday Week 7: Meeting with supervisors, data from previous research}
+\begin{itemize}
+    \item Data Analysis on CMISS
+    \begin{itemize}
+        \item Mark up vocal track for 7 extra speakers (Helen did the others)
+    \item Annotate MRI data (aim to get through at least one, may be time consuming)
+    \end{itemize}
+    \item Backing up data
+    \begin{itemize}
+        \item Probably unable to get direct access to R: drive, and H: drive won't have enough storage for the size of our data.
+        \item Back up to hard drive on laptop, and every once in a while, also back up to Richard's external hard drive.
+    \end{itemize}
+    \item Start on report with research question \& background
+    \item For our next meeting, 2pm next Thursday 21st April
+    \begin{itemize}
+        \item Give a talk on how I think the annotation process goes with the MRI data.
+        \item Speech signal processing
+        \item Install EMU speech database onto laptop (can be found on SourceForge, there might be a newer version out).
+    \end{itemize}
+\end{itemize}
+
+\section*{21/04/16 Thursday mid-semester break: Inventory of data and info \& how to calculate area from MRI data for VT04 and VT07}
+\begin{itemize}
+
+    \item Reading through Kalyan's work report.
+    \begin{itemize}
+        \item Analysing vocal tract shape from MRI data and seeing how the tract changes over time.
+        \item Speech production = source + filter = (vocal folds + glottis) + (oral cavity + pharyngeal region)
+        \item MRI scans during monophthong vowel anunciation
+        \begin{enumerate}
+            \item Develop a method of calculating cross-sectional areas from the vocal tract in MRI images.
+            \item Develop a method of creating 3D models of a vocal tract during vowel anunciation.
+        \end{enumerate}
+        \item Create snake command makes nodes along centre of vocal tract.
+        \begin{enumerate}
+            \item User places nodes in centre of vocal tract (manually), often enough to cover all the changes in gradients/to be able to give a fair representation of the airway path.
+            \item \texttt{create\_curve} places 15 equidistant nodes along manually placed data points, coordinates and derivative values written out to \texttt{curve.exnode}.
+        \end{enumerate}
+        \item \texttt{create\_slices.pl} makes planes (2D snapshots of vocal tract shape) in the position of each of the nodes from \texttt{create\_curve}. 
+        \item 3D volume texture viewed
+        \item Calculation of cross-sectional area
+        \begin{itemize}
+            \item Define border of vocal tract from the volume projections on each of the planes using \texttt{node placement command script}.
+            \item Vocal tract image from volume texture projected onto slice, user places nodes around vocal tract projections on each of the 15 planes/vocal tract segments.
+            \item \texttt{calculate\_area.pl} used to calculate cross-sectional area in each of the 15 segments.
+            \item Results plotted as area functions, cross-sectional area vs. distance from lips
+        \end{itemize}
+        \item Assumptions
+        \begin{itemize}
+            \item Number of segments requires to accurately describe vocal tract: validated by randomly choosing one subject to speak one vowel, and then calculating areas using 10, 15, 20 segments. Area functions from 10 segments was distorted/didn't capture all of the detail, but the graphs for 15 and 20 were quite similar.
+            \item Accuracy of \texttt{calculate\_area.pl}: tested by placing nodes around a square and circle of known size. 4\% tolerance found. \emph{But isn't this not a great test, because the shapes being calculated are much more irregular than a circle or square? It would be easy for the script to be more accurate on simple shapes, but maybe the accuracy degrades with increasing complexity?}
+            \item Accuracy of length calculation algorithm: limitation being that the segments make a linear, non-smooth estimate of length along the vocal tract, which would obviously become more accurate/smooth with more nodes. Tested the length difference between using 15 nodes and 1000 nodes, error value less than 1\%. \emph{But how were the nodes placed? They wouldn't have manually placed 1000 nodes, so it would have been done using \texttt{create\_curve} which just puts n equidistant nodes along manually placed data points. They're still non-smooth segments, the script doesn't automatically smooth things out, does it? But in any case, from the figures it looks like 15 nodes is pretty much enough for such a small space, and as long as length is measured consistently across speakers, should be all good.}
+        \end{itemize}
+        \item 3D modelling
+        \begin{itemize}
+            \item Using centreline of vocal tract from original 15 nodes and 200 autogenerated nodes defining border of vocal tract.
+            \item \texttt{place\_nodes.pl} linear fit model, 6 nodes on each plane.
+            \item Smooth the surface using a user-defined value for stiffness. Too stiff = linear, straight lines. Too low stiffness = too wavy. \emph{Not mentioned what the stiffness value should be, or if there's a good way to objectively decide on the best, most realistic value.}
+        \end{itemize}
+    \end{itemize}
+    
+    \item Comparison of Vocal Tract areas.docx
+    \begin{itemize}
+        \item Cross-sectional area / distance from lips plotted for various different monophthongs, for 5 different speakers.
+        \item Expected results: front vowels have low area in the front of the mouth and high area in the back, vice versa for back vowels.
+        \item Results fairly consistent across speakers.
+    \end{itemize}
+    
+    \item Talks/
+    \begin{itemize}
+    
+        \item FaB.VT.2012.pptx ``Not all Vocal Tracts are equal; but some are more equal than others''
+        \begin{itemize}
+            \item Intro on vocal tract, phonetics, vowel quadrilateral, spectrograms
+            \item Formant analysis: $F1 \alpha \frac{1}{\text{jaw height}}, F2 \alpha \frac{1}{\text{tongue frontness}}$
+            \item Difference in vowel spaces (when plotting F1/F2)
+            \begin{itemize}
+                \item Australian English vs. New Zealand English
+                \item Males vs Females (American English)
+                \item New Zealand English vs. American English
+            \end{itemize}
+            \item Acoustic Tube model of Vocal Tract
+            \begin{itemize}
+                \item Cross-sectional area represented as a series of lossless acoustic tubes of varying diameter, equal width.
+                \item Find the resonances of the acoustic tube. First two resonances are strongly related to the vowel formants.
+            \end{itemize}
+            \item Comparison of NZE and AmE vocal tracts
+            \begin{itemize}
+                \item Details on MRI procedure with hVd vowel frame, each vowel has 13 slices, took about 15 seconds.
+                \item AmE data obtained from Story et. al. 
+                \item Cross-sectional plane perpindicular to each node along oral cavity obtained, vocal tract border marked out to find cross-sectional area, repeated for the 15 planes in pharyngeal cavity.
+                \item NZE \& AmE vocal tract length analysis: varies depending on vowel due to lip rounding. 
+                \item NZE Oral Cavity Volume as \% of total volume.
+                \item Comparison of mean NZE and AmE vocal tract shapes: AmE has far largr \% oral cavity volume than NZE, which uses the mid-back a lot more (vowels are generally more back than in AmE).
+            \end{itemize}
+        \end{itemize}
+        
+        \item FaBTalkApril2014.pptx ``Mapping Area Functions to Vocal Tract Resonances and Speech Formants''
+        \begin{itemize}
+            \item Continuing on from the last presentation, this time combining the data using PCA.
+            \item PC1/PC2 data plotted together from different speakers, and then just the means for each vowel.
+            \item PC1 accounted for 39.6\% of variation, PC2 for 20.8\%.
+            \item \emph{Don't really understand the graph about normalised area vs distance. Is it saying that PC1 accounts for the backness in vowels, and PC2 sort of does both? Are these just for one particular vowel? If so, is it the mean result of all the speakers?}
+            \item PC3 seems to encode inter-speaker variation.
+            \item Vocal tract resonances with R1/R2 on Bark scale shows recognisable but kind of distarted vowel quadrilateral.
+            \item Speech formants of course are the standard that we compare with, by definition is the vowel quadrilateral.
+        \end{itemize}
+        
+        \item DES 2011 talk.pptx ``Modelling the impacts that age has on speech.''
+        \begin{itemize}
+            \item Potentially a really useful resource for project talk!
+            \item Speech Technology: recognition, generation, coding, forensics.
+            \item Speech Production Group at ECE: sound change, speech production in humans and machines (applications).
+            \item Source filter model of speech production
+            \begin{itemize}
+                \item Information encoded in speech: phonemes, prosody, emotion, intent, physical characteristics.
+                \item Respiratory system --> Glottal vibration (spectral power) --> Vocal tract filter and lip radiation (weights on certain frequencies) --> Sound propagation (filtered frequency spectrum)
+                \item Formant resonances change with tube shape (proportionalities)
+                \item F1/F2 vowel space differences: NZE vs AusE, old NZE and vowel change, Queen's vowels from 1960 to 1980 which changed along with BritE, effect of age - sound change or aging?
+                \item \textbf{Aging effect on vocal tract: loss of joint mobility, tongue muscular atrophy, tooth loss, dilation of pharyngeal muscles, lowering of larynx}
+                \item Acoustic reflectometry can be used to measure volumes.
+                \item Pharyngeal volumes high for front and back vowels, lowest for mid-vowels.
+            \end{itemize}
+            \item Incorporating effects of age into speech analysis and speech production models
+            \begin{itemize}
+                \item Two groups, 5 in each, 20-25 years and 40 years.
+                \item Recordings of hVd vowels and cross-sectional areas using acoustic reflectometer.
+                \item Differences in vowel spaces: F1 significantly less for /\ae/, F2 significantly greater for /i:, \textipa{E}, \textipa{\ae}, u, \textipa{3}/
+                \item MRI scans (results from Kalyan's report).
+                \item Impact of speaker positions (since acoustic & reflectometer data was sitting, and MRI daya was standing). Area functions smaller when supine (collapse of larynx and tongue slightly?) and the small middle cavity is moved forwards slightly (which vowel is this? Neutral schwa?)
+            \end{itemize}
+            \item Acoustic reflectometer: hypothesis was that as we age, pharyngeal region increases in volume and therefore F2 value should increase, but contradictory findings.
+            \item Further study
+            \begin{itemize}
+                \item Collect more reflectometry data inc. speakers in > 60 years age group.
+                \item Collect MRI data for more speakers (done by Helen?) measuring cross-sectional area and building 3D models of vocal tract.
+                \item Impact of speaker position and age on speech signal determined.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item 
+    
+    \item Helen Summer Work2012/
+    \begin{itemize}
+        \item Methodology Development/Processing for finding points.docx (incomplete, more elaboration in final report)
+        \begin{itemize}
+            \item Better anatomical reference point for identifying glottis rather than just cervical vertebrae, since larynx moves when speaker is supine.
+            \item Oral cavity more accurately identified from lips to uvula, pharyngeal cavity from uvula to vocal folds in glottis (Kalyan's end point was a bit further up than the glottis).
+            \item Start of the vocal tract modified to be forward slightly (relative to Kalyan's analysis) flush with lips. \emph{Reference for why this is important, other than being a more consistent way of marking the start? Any evidence that this portion of lips contributes to phonetics? Actually yeah I guess so, not only for lip rounding but pushing rounded lips out really far changes the sound.}
+        \end{itemize}
+        \item Report/Report Final.pdf
+        \begin{itemize}
+            \item Super comprehensive details on how to map out area functions from MRI data, great elaboration on Kalyan's report, with heaps of troubleshooting docs.
+            \item Length, area, volume measurements.
+            \item Not sure how she got the volume measurements, maybe the way that Kalyan did it?
+        \end{itemize}
+    \end{itemize}
+    
+    \item Other MRI Data/VT04 and VT07
+    \begin{itemize}
+        \item These are the two speakers whose data is get to be analysed.
+        \item MRI scan images in .bmp and .png formats.
+        \item 13 images per monophthong (initially thought they were across time, but they're saggital sections from jaw edge to jaw edge.), two instance of each monophthong, 11 monophthongs + one `test1'.
+        \item Assuming I just take the middle one, the one that looks the most clear in terms of tongue height etc.
+        \item Use methodologies in Kalyan's practical work report and Helen's final report to mark out the nodes along the vocal tract to create the 30 total segments (15 in vocal cavity, 15 in pharyngeal cavity).
+        \item Perpindicular planes projected through the 30 nodes.
+        \item Cross-sectional areas calculated by defining border of vocal track from volume projections and using \texttt{calculate\_area.pl}.
+        \item Plot Area vs distance from lips.
+        \item Calculate volumes using 3D modelling (as in Kalyan's report)? No mention in Helen's report of method for volume calculations. 
+    \end{itemize}
+    
+    \item Software required
+    \begin{itemize}
+        \item \href{http://emu.sourceforge.net/}{EMU}
+        \item \href{https://www.r-project.org/}{R}
+        \item \href{http://www.fon.hum.uva.nl/praat/}{Praat}
+        \item \href{http://www.cmiss.org/}{CMISS}
+    \end{itemize}
+\end{itemize}
+
+\section*{10/05/16 Tuesday Week 10: Meeting with supervisors}
+\begin{itemize}
+    \item Basically really need to get cracking.
+    \item Set aside weekly slots like a subject and don't deviate from it.
+    \item Do a mini-presentation each meeting to show what you've been working on and the results that have come out of it.
+    \begin{itemize}
+        \item Analyse the remaining two vocal tract data
+        \item Results from vocal tract - highlights, challenges
+        \item Presentation with diagram of steps to generate area functions
+        \item Background and start of lit review?
+    \end{itemize}
+\end{itemize}
+
+
+\section*{23/05/16 Monday Week 12: Panicked thing before P4P meeting tomorrow}
+\begin{itemize}
+    \item Oh man it's week 12, how did this even happen?! D: i hate myself
+    
+    \item Presentation for PHYSICS 780 on Watson (2011) paper
+    \begin{itemize}
+        \item Summary of paper
+        \item Was more from an imaging perspective, so content was delivered in a way that sounded relevant to MRI
+    \end{itemize}
+    
+    \item Calculating area functions of two remaining speakers VT04 and VT07 and getting stick on 1create\_snake
+    \begin{itemize}
+        \item For "had", select mid-saggital section (usually slice number 6 or 7 out of 13, chose 7 for this one since the uvula could be seen more clearly).
+        \item Copied the .bmp file into 1create\_snake folder and renamed to "middle\_slice.bmp" according to instructions.txt in folder.
+        \item Opened cmgui-wx.exe, File $\>$ Open $\>$ Com File, opened snake.com
+        \item Clicked "All" on comfile: snake.com
+        \item For the life of me, can't figure out how to get the MRI image on the Graphics window.
+        \item After reading through Kalyan and Helen's reports, going through Example a1 from CMISS docs to get familiar with it. \url{http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a1/index.html}
+        \item Got an error with the line "gfx modify g\_element cube lines coordinate coordinate material default;", ERROR: Unknown field : coordinate
+        \item Now trawling through cmgui documentation.
+        \item Still can't figure it out, even when tinkering with code. Trying another example.
+        \item Okay all the examples are either way advanced. Example 2 requires you to have got through Example 1. fml. 
+        \item I must be getting stuck on what is a really simple part of the process.
+    \end{itemize}
+    
+    \item Skipping to 2create\_slices
+    \begin{itemize}
+        \item Just having a play around with the perl scripts in the second step to understand it a bit better.
+        \item Installed Strawberry Perl (Perl environment for Windows)
+        \item Looks like we need the curve.exnode file from 1create\_snake, which defined the curve along the vocal tract, and use that with the perl script to create slices.
+        \item Other than the fact that the planes that got output were from a vowel/speaker that was already analysed, it worked with no hitches.
+    \end{itemize}
+    
+    \item 3check\_plane\_angle
+    \begin{itemize}
+        \item Works as expected when slices were copied over from 2create\_slices
+    \end{itemize}
+    
+    \item Thoughts on automation
+    \begin{itemize}
+        \item There must be a way to automate this whole process and just get it to spit out a bunch of these files. Through powershell with bash or something like that!
+        \item Many of the steps involved copying files between folders, perhaps for the sake of keeping things in clear numbered steps, but a lot of it seemed manual and unnecessary.
+        \item 
+    \end{itemize}
+    
+    \item Progress report presentation for tomorrow
+    \begin{itemize}
+        \item Quick slides on 780 presentation on INTERSPEECH paper, and the process described above.
+        \item Steps taken above and the issues arisen.
+    \end{itemize}
+    
+\end{itemize}
+
+\section*{24/05/16 Tuesday Week 12: Meeting with supervisors}
+\begin{itemize}
+    \item Suggested I talk to Xiao Bo about debugging CMGUI a bit.
+    \item Automation probably not worth it, since it wouldn't really be achieving anything in terms of the project, just speeding things up. Time spent debugging the automation code would probably be longer than just doing it.
+    \item Continue with weekly meetings and mini-presentations to stay on track.
+\end{itemize}
+
+\section*{27/05/16 Friday Week 12: Meeting with Stephen Waite \& Richard Christie for CMGUI help}
+\begin{itemize}
+    \item Met with Stephen (PhD student working in CMGUI) for help on the bugs I was having.
+    \begin{itemize}
+        \item 1create\_snake just worked on its own, it seemed. Typical.
+        \item Couldn't really figure out why the data points weren't placing halfway around the vocal tract projection, definitely not to do with the data, more the software. 
+        \item The points aren't being placed on different planes or not displaying etc. because when we try to export the nodes, they're not in the file at all. They're not being placed at all.
+        \item Suggested I talk to Richard Christie.
+    \end{itemize}
+    \item Met with Richard
+    \begin{itemize}
+        \item Basically said it's a bug (6vocaltractnodeplacement not working), but since I'm using an old version of CMGUI, they're not going to update it.
+        \item Could update to a newer version of CMGUI, but some of the commands in the com files might not work.
+        \item Not worth migrating since this is only a small part of the project.
+        \item \href{http://physiomeproject.org/software/opencmiss/cmgui/documentation}{Better documentation on the Physiome Project website}
+        \item \href{http://www.cmiss.org/cmgui}{Old documentation}
+    \end{itemize}
+\end{itemize}
+
+\section*{02/06/16 Friday Week 13: Another panicked thing before P4P meeting tomorrow}
+\begin{itemize}
+    \item I am a crappy human being and I'm going to fail
+    \item I do feel somewhat justified in this particular case those given our 5 major deadlines in the past two weeks.
+    \item But really, I'm still a crappy person who sucks at life.
+    
+    \item General FYI's
+    \begin{itemize}
+        \item When viewing com files in Sublime, Ruby, Perl and Python all use \# for comments, so it de-emphasises those nicely.
+        \item CMGUI generally works better when you close the whole thing then re-open for a new com file. Maybe there's a `clear all' sort of function somewhere.
+        \item I wonder if there's a difference between using bmp's and png's. I doubt it if it's just a visual thing to help recreate the volume shape.
+        \item curve.exnode is created in the first step and is copied across to 2, 3, 5, 6, 7. The slices/ folder is created in the second step and copied into 3, 5. 6. Write cmds to do this in one go.
+        \item Use regex or something to change all the names of images (like vt04\_hadd1\_00.bmp) to the appropriate vt and vowel in the com files.
+    \end{itemize}
+    
+    \item VT04 Had Oral
+    
+    \begin{itemize}
+        \item 1create\_snake
+        \begin{itemize}
+            \item Placed an arbitrary number of data points along middle of vocal tract, starting at start of lips and ending at uvula.
+            \item Type command create\_curve
+            \item This places 15 equidistant nodes along the path created by the data points. White nodes are autogenerated nodes, red nodes are the original user-placed data points.
+            \item curve.exnode with coordinates and derivative values is output successfully.
+        \end{itemize}
+        
+        \item 2create\_slices
+        \begin{itemize}
+            \item Copy curve.exnode into folder
+            \item In cmd, cd to directory, type \verb|perl CreateSlices.pl curve.exnode|
+            \item Creates \verb|planeXXX.exelem| and \verb|planeXXX.exnode| files in \verb|slices/| folder where XXX is 001, 002, 003, ..., 015.
+        \end{itemize}
+        
+        \item 3check\_planes
+        \begin{itemize}
+            \item Copy plane files into slices/ folder, and curve.exnode into main 3check\_planes folder.
+            \item When com file load\_slices was first run, it didn't work for some reason - only showed the first plane, and both red and white nodes for the rest.
+            \item Tried closing CMGUI completely and opening again, worked this time!
+            \item Visual check that things are in order - looks good!
+        \end{itemize}
+        
+        \item 4view 3d image
+        \begin{itemize}
+            \item Need to copy all MRI slices for particular vowel into folder. Checked whether I had chosen vt04\_hadd1\_07.bmp or vt04\_hadd2\_07.bmp for 1create\_snake when I renamed it to middle\_slice.bmp (since each vowel was done twice). Turns out it was the first one (vt04\_hadd1\_07.bmp), so copied vt04\_hadd1\_01.png to vt04\_hadd1\_13.png over to the folder (using .png since that's what Helen seemed to have also used).
+            \item The instructions.txt says to modify the texture\_block.exelem and texture\_block.exnode files. It looks like they only describe 8 and 12 nodes respectively, neither have 13. Checked the tex\_block.exelem and tex\_block.exnode files from 3check\_planes. They're of a slightly different format, with a few different numbers for the nodes. Just going to try run it with the texture\_block files that were there first.
+            \item Closed CMGUI, re-opened, run view.com
+            \item Totally didn't work, white planes with no image.
+            \item Having a look at view.com, have to change the first line where it grabs the image to vt04 and png.
+            \item Yay it worked! 
+        \end{itemize}
+        
+        \item 5imprint image on slices
+        \begin{itemize}
+            \item Copy across slices/ folder and curve.exnode.
+            \item Make sure output/ folder is empty.
+            \item Copy MRI images (png) to main folder (NOT images/ folder).
+            \item Again, need to change image name in com file to vt04.
+            \item run \verb|create_slices.com|
+            \item Then type in the command \verb|run| to the CMGUI command line.
+            \item Cross-sectional images along vocal tract at the 15 equispaced node points are exported as bmp's to the output/ folder.
+            \item The images look off-centre :/ But this seems to match up with the images in Kalyan's report. All good, as long as the vocal tract can be seen.
+            \item You don't actually do anything with these images, it's just a checking step. You don't copy them into the next folder, the \verb|data_point_placement.com| in 6vocaltractnodeplacement will do it all for you.
+        \end{itemize}
+        
+        \item 6vocaltractnodeplacement
+        \begin{itemize}
+            \item Copy slices/ folder and curve.exnode.
+            \item Change image name in com file to vt04
+            \item Run \verb|data_point_placement.com|
+            \item Put the scene editor on one side, graphics window on the other.
+            \item In scene editor, deselect all layers except one plane.
+            \item In graphical window, choose Data, Put in region (same plane as the one showing) and place data points sequentially around.
+            \item \textbf{This is the part that threw up bugs last time!} To get around the bug where it doesn't let you place data points on the right half of the image, make sure that "Motion update during edit" is switched on, click down on the left side where it does allow you to add points, then drag the newly created point across to the right side, to where you want it.
+            \item Helen seemed to place her points so that the outer edge of the node hits the inner edge of the vocal tract. I.e. instead of the middle of the node being placed on the boundary, the outer edge is. This wouldn't matter too much in any case because the analysis de-emphasises inter-speaker variation, as long as it's done consistently.
+            \item Repeat for all planes, turning planes on one at a time.
+            \item There are a lot of ambiguous shapes in the blurry cross-sections. Helen's report has quite a bit on troubleshooting these, and it's also helpful to sometimes turn all the planes on, including the mid-saggital texture block, so you can see whether your outline of the vocal tract makes sense with where the tongue is in the midsaggital plane.
+            \item Make sure you transform the slices so they're exactly face-on as you go, so you don't get parallax error when placing the points.
+            \item \textbf{Another bug: sometimes a strange situation arises where as you're dragging points, it disappears behind the slice, as if there's an extra layer there. However, when the plane is rotated slightly to a different angle, this stops happening. Because of the parallax error, might need to rotate back and fix up the positions after placing them.}
+            \item For a final check, uncheck 1. lines select\_on and 2. surfaces select\_on for each plane so just the data points are seen, and check that it makes sense with the mid-saggital slice.
+            \item run \verb|write_to_file| which outputs data points to .exnode files in exnodefordisplay/ folder, and .exdata in exdataforareacalculation/
+        \end{itemize}
+        
+        \item 7areacalculation
+        \begin{itemize}
+            \item Copy in exdataforareacalculation/ files and curve.exnode
+            \item In cmd, run \verb|perl calculate_area.pl|
+            \item Areas calculated and output to area.txt in sequential order (plane 1, 2 etc.)
+        \end{itemize}
+        
+        \item 8editingcurrentplacednodes
+        \begin{itemize}
+            \item Looks like you only use it if you want to edit some points.
+        \end{itemize}
+        
+        \item 9viewcompleteimagewithselecteddatapoints
+        \begin{itemize}
+            \item Copy exnodefordisplay/ from 6vocaltractnodeplacement 
+            \item Copy in images
+            \item Modify com file again to fit image names
+            \item Tried running com file but only the midsaggital section could be seen.
+            \item Also copied in slices and added in the code for viewing planes.
+            \item Just shows the plane surfaces and the midsaggital. Looks like that's all it does - not the volume texture.
+        \end{itemize}
+        
+    \end{itemize}
+
+    \item Next steps: Matlab
+    \begin{itemize}
+        \item A set of m files are available to take the area.txt and curve.exnode and give distance vs. area plots.
+        \item 2 vocal tracts x 11 vowels x 2 reps x 15 planes x 2 sections (oral/pharyngeal) = 1320 data point placements to be done.
+    \end{itemize}
+    
+\end{itemize}
+    
+\section*{03/06/2016 Friday Week 13: Meeting with Richard}
+\begin{itemize}
+    \item Analysis of area functions
+    \item PCA see how higher order terms change between demographics
+    \begin{itemize}
+        \item E.g. if PC3 is 20\% higher in NZE than AME, try manipulating AME PC3 to be 20\% higher
+        \item Lossy-ness is inevitable 
+    \end{itemize}
+    \item Research question: are there significant differences/distinct characteristics in processed speech data (MRI/audio)
+    \item Application: Can we manipulate one of the representations (e.g. PCA) to get it from that of one demographic. Applied is impt for markers \& engsci.
+    \item Get speech audio data from Catherine
+    \item Linear Predictive Model area function to resonance converter from Catherine
+    \item Get started on report!
+\end{itemize}
+
+\section*{07/06/2016 Tuesday Study Break: Meeting with Catherine}
+\begin{itemize}
+    \item Can just do the three most vowels to start with, rather than doing absolutely everything and that should be fine! heed, hoard, hard for both VT04 and VT07, just one each rather than the two repetitions.
+    \item Resonances + lip rounding etc. other factors = formants.
+    \item Accents are determined by continuous speech rather than isolated words - context is important.
+    \begin{itemize}
+        \item Therefore kind of difficult to tell whether a transformed speech sound is of a particular accent - it would just map to the nearest vowel in the perceiver's native mapping.
+        \item Could just ask people what vowel they think they hear. Results would be biased to NZE depending on participants.
+    \end{itemize}
+\end{itemize}
+
+\section*{15/06/2016 Wednesday Exams: Heed, hoard, hard for VT04 and VT07}
+\begin{itemize}
+    \item Created a file called \verb|area-function.bat| which has a bunch of cmd commands stepping through the entire process. Definitely cut out a lot of the copying and pasting.
+
+    \item VT04
+    \begin{itemize}
+    
+        \item heed
+        \begin{itemize}
+            \item When placing data points around vocal tract, some of the spaces in the planes were so small (tongue was so close to roof of mouth that I could barely put the data points further apart. In these cases, the area may be overestimated. Instead of aligning the outer edge of the data point spheres with the inner edge of the vocal tract as we've done for the other ones, the spheres cross the border of the vocal tract.
+            \item In the pharyngeal cavity, the epiglottis
+        \end{itemize}
+        
+    \end{itemize}
+\end{itemize}
+
+\section*{16/06/2016 Thursday Exams: Meeting with Richard and Catherine}
+\begin{itemize}
+    \item Just going over the idea that we had for analysis together, looks like a good way forward but really need to finish off that processing that data.    
+\end{itemize}
+
+\section*{20/06/2016 Monday Exams: Finishing off the cardinal vowels}
+\begin{itemize}
+    
+    \item Cleaned up the template files - you don't need to repeat all the files in each of the vowel folders, you can just have the Oral/ and Pharyngeal/ and repeat it for the vowels. Also, the cmgui.exe is the biggest file by far (22MB), surely we don't need copies of it in every folder. Got rid of all of them.
+    
+    \item VT04
+    \begin{itemize}
+        \item hard
+        \begin{itemize}
+            \item Oral: Plane 5 had an oral cavity that was quite a bit wider than the other ones. The tongue seemed to be fatter/taller in this region, so it draw back from the sides a bit, creating a thin but horizontally wide shape. This should contribute to the acoustic properties of the chamber, so I included these "side cavities". They were not teeth.
+            \item Pharyngeal
+        \end{itemize}
+        \item hoard
+        \begin{itemize}
+            \item Oral: The 7th slice is not entirely centre, so this has to be taken into account when outlining the oral cavity.
+            \item Pharyngeal: went very smoothly, predictable volume shape.
+        \end{itemize}
+    \end{itemize}
+    
+    \item VT07
+    \begin{itemize}
+        \item hard - done
+    \end{itemize}
+    
+\end{itemize}
+
+\section*{23/06/2016 Thursday Exams: Finishing off the cardinal vowels}
+\begin{itemize}
+    
+    \item VT07
+    \begin{itemize}
+        \item heed - done
+        \item hoard - done
+        \begin{itemize}
+            \item Oral: Plane 9 reduced in area function quite dramatically. This is because before, we were taking into account the cavities around the sides of the bottom teeth which were not blocked off by the sides of the tongue. After reading through Helen's report, I realised that we're not supposed to count these areas.
+            \item Used data\_point\_editor, deleted irrelevant nodes and moved existing ones into place (still in order), tried writing to file but didn't work.
+            \item just had to do everything again.
+        \end{itemize}
+    \end{itemize}
+        
+\end{itemize}
+
+\section*{24/06/2016 Friday Exams: Looking at Matlab files and meeting with Catherine}
+\begin{itemize}
+    
+    \item Downloaded MATLAB trial version on laptop.
+    \item Look through Helen's report and folders, lay out folders exactly as she as with matlab scripts, vowel folders (Hard/, Heed/, Hoard/), and MRI images in Data/ folder.
+    \item Page 57 of Helen's report, she hasn't written the names of the functions, only numbers, which are in alphabetical order except we seem to be missing the files described in 1, 2 and 4.
+    \begin{enumerate}
+        \item Stores text files with distance vs. area data note: open in Notepad ++ for full formatting
+        \item Stores text files with length data
+        \item \textbf{areacalc.m}*: Takes CMGui data from the area.txt file (step 7-vocal tract measurement). Checks for discrepancies, averages the final node of the oral file and the first node of the pharyngeal file and makes the final node zero (closed tube approximation).
+        \item Collates all length and area data and produces a plot of distance vs. area for each vowel in the vowel space. If mid-sagittal images also required, first run imageimport.m.
+        \item \textbf{figures.m}: Produces a plot with all the figures. Must be run once imageimport.m has been run
+        \item \textbf{imageimport.m}: Imports images from “Data” folder and creates a plot of the vowel space.
+        \item \textbf{mtit.m}*: Creates an overall plot title (imported function)
+        \item \textbf{orallengthcalc.m}*: Inputs data from curve.exnode file (step one-vocal tract measurement), uses Pythagoras to calculate the oral length and outputs it to a text file \verb|lengths1.txt|
+        \item \textbf{percentplot.m}: Creates a plot of the vowel space with oral and pharyngeal percentage volume ratios.
+        \item \textbf{pharyngeallengthcalc.m}*: Inputs data from curve.exnode file (step one-vocal tract measurement), uses Pythagoras to calculate the pharyngeal length and outputs it to \verb|lengths1.txt|
+        \item \textbf{smoothline.m}*: Existing function, smooths area vs. distance line and creates a matrix of data which is plotted.
+        \item \textbf{suplabel.m}*: Creates axis titles for overall plot (imported function).
+        \item \textbf{totallengthcalc.m}*: Combines the oral length and pharyngeal length files and outputs the total length to \verb|lengths1.txt|
+    \end{enumerate}
+    \item \verb|imageimport.m| change imread functions so that it refers to the correct VT. Comment out the vowels that we didn't do. Run - it worked! Heed, Hoard and Hard images plotted in vowel space.
+    \item *There's a big file called \verb|areaplot.m| which is parent to the functions with asterisks above, but looks like the other files have to first be run to generate lengths etc.
+    \item Change argument to mtit at the bottom of areaplot.m to the VT you are analysing so the title at the top of the plot is accurate.
+    \item You need to calculate the oral, pharyngeal and total lengths and place them in a directory names lengths1/. Looks like orallengthcalc.m and pharyngeallengthcalc.m does the calculating (as opposed to doing it manually on a spreadsheet. Created a lengths1/ directory and tried running areaplot.m after running imageimport.m
+    \item Just added the lengths1/ directory and everything worked! Got plots of the area functions.
+    
+    \item Meeting
+    \begin{itemize}
+        \item Do continue with the rest of the vowels in VT04 and VT07. Catherine will send the rest of the R code next week (remind if not bundled and sent by Tuesday-ish).
+        \item Expand to include the rest of the data (not just 5, all 12 vocal tracts), do PC analysis.
+        \item And \textit{then} do the function/modelling stuff.
+    \end{itemize}
+        
+\end{itemize}
+
+\section*{04/07/2016 Monday Week 2 of Intersemester: Start on report}
+\begin{itemize}
+    \item Setting up the document
+    \begin{itemize}
+        \item XeLaTeX compiler to allow Times New Roman font, size 12
+        \item Contents according to project instructions doc from Canvas.
+        \item That was literally it, I'm a poop.
+    \end{itemize}
+    \item What the flying feijoa did you do all of the first week?? Let me list them here so I feel better about myself.
+    \begin{itemize}
+        \item TLC marketing for July IC with Campuslink
+        \begin{itemize}
+            \item Google Form questionnaires for all NCEA subjects
+            \item New applicants
+            \item Email out to public mailing list
+            \item Set up Canva for branding NFP
+            \item Facebook ads design and implement
+            \item Neighbourly posts
+            \item Facebook posts for IC
+            \item Blueprint ad
+        \end{itemize}
+        \item Planning and going on hens' weekend
+        \item But mostly Campuslink
+        \item Hanging out with family?!
+    \end{itemize}
+\end{itemize}
+
+\section*{05/07/2016 Tuesday Week 2 of Intersemester: Report setup}
+\begin{itemize}
+    \item Setting up the document again, mirrored margins for binding, title page, front matter etc.
+    \item Imported all the information from 780 presentation slides to doc.
+    \item Got the R scripts from Catherine, installed R and EmuR.
+\end{itemize}
+
+\section*{07/07/2016 Thursday Week 2 of Intersemester: Introduction}
+\begin{itemize}
+    \item Section 1.1 on speech technology completed, section 1.2 on vowels and phonetics half completed
+\end{itemize}
+
+\section*{08/07/2016 Friday Week 2 of Intersemester: Report, vocal tracts and meeting with Catherine}
+\begin{itemize}
+
+    \item Report
+    \begin{itemize}
+        \item A bit more of the introduction. 
+        \item I think I'll need to put a lot more thought into structuring this, I don't think I'll be able to write the whole thing before moving onto other sections.
+        \item Get as much as this done as possible and move onto Methods, detail exactly how to this first bit on vocal tracts happened.
+    \end{itemize}
+    
+    \item Vocal tracts
+    \begin{itemize}
+        \item VT04 Had (Pharyngeal)
+        \item VT04 Head 
+        \item VT04 Herd
+        \item Wow, check out these vocal tract models: http://artisynth.magic.ubc.ca/artisynth/pmwiki.php?n=Demo.VocalTractModel
+        \item Plotted area functions on matlab again (imageimport, then areaplot after uncommenting relevant sections), looks like  VT04 isn't showing much data in these middling vowels...
+    \end{itemize}
+    
+    \item Files
+    \begin{itemize}
+        \item Accidentally deleted MRI data for VT07! And then I went to the recycling bin, intended to clicked Restore and instead clicked "Empty" -.-  turns out not once did I back it up in Richard's hard drive either. Ugh.
+        \item On that note, went to copy across the project onto the hard drive and found that it's like 70 GB. Realised this is because both Daniel and Helen had multiple instances of cmgui-wx.exe which is 22MB each in every subfolder in every vowel. Deleted all instances of it since you only really need one, and just create a shortcut for it on your taskbar or something.
+        \item \verb|Get-ChildItem -Include cmgui-wx* -Recurse | Remove-Item -Force -Verbose|
+        \item It seems that the second bottleneck in size is the repetitions of the image files required for creating slices and views. Can't be helped.
+        \item Project folder down from 70 GB to 20 GB
+    \end{itemize}
+    
+    \item Glottis location
+    \begin{itemize}
+        \item I'm having doubts about the location of the glottis. I've been taking the pharyngeal curve to the very bottom end of the glottis as described in Helen's report (page 49-50), but looking at some other diagrams of the glottis (including the one in the report on page 50), it looks like the vocal folds are actually located higher up, closer to the epiglottis. 
+        \item Can't really do much about it now, will continue to treat the end of the pharyngeal cavity as the very bottom of that cartilegeous ledge. 
+    \end{itemize}
+    
+    \item Meeting
+    \begin{itemize}
+        \item Grabbed VT07 MRI data from Catherine (accidentally deleted permanently)
+        \item Really quick 5 minute catchup. Worth doing the rest of VT04 even if it looks flat. Just do all of them.
+    \end{itemize}
+    
+    \item Chat with Josh on Level 4 at 70
+    \begin{itemize}
+        \item Had a chat to Josh about my p4p to get a perspective from a technical non-expert in the field, and it was very helpful in organising my thoughts!
+        \item The main thing I took away is that I need to be clearer with what the actual point of all this is. Moving an NZE /i/ from here to there (its position in AmE) is pretty darn simple. I could do that with speech formant data which is already readily available. Why all this MRI stuff?
+        \item Basically, this project is about (further) validating the use of MRI images in analysing vowels. This is done by deriving height/backness information from them (since that's what defines a vowel) and comparing it with the vowel space created by formants from the speech signals (this is the standard that we should compare against, since the sound waves is what matters in the end - it doesn't matter what your tongue/mouth is doing, if what comes out has the acoustic properties of an /i/, then it'll be heard as an /i/ by the listener, and its purpose has been served).
+        \item The transformations between NZE and AmE is really a totally separate thing, or perhaps an extra validation step to prove that such transformations (which I'm sure must have been done previously in the formant space) still hold/are possible using this MRI-derived vowel quadrilateral.
+        \item Our analysis from MRI to phonetic height/backness creates a strong link between vocal tract shape and vowel distinction, and may be a stepping stone for acquiring further data that links physiology to acoustics given the rise of articulatory synthesis
+    \end{itemize}
+        
+\end{itemize}
+
+\section*{09/07/2016 Saturday Week 2 of Intersemester: Vocal tracts}
+\begin{itemize}
+    \item Just try to do at least 3 vowels per day
+    \item VT04 Hid
+    \item VT04 Hod
+    \item VT04 Hood - had to do this one again because I missed the cavity just behind the teeth, thinking it was the teeth themselves.
+    \item VT04 Hud
+    \item VT04 Who'd
+    \item Hand almost died just doing these five.
+\end{itemize}
+
+\section*{10/07/2016 Sunday Week 3 of Intersemester: Vocal tracts}
+\begin{itemize}
+    \item Processing area functions for VT04 on MATLAB (uncommenting, imageimport, areaplot).
+    \item Running areaplot after imageimport meant that the images that were initially imported get squashed because of the subplot functions if they are run sepearately. Copied and pasted imageimport into areaplot under an if statement so it can be switched on and off, and the images stayed as they should be.
+    \item VT04 shows pretty little significant variation in cross-sectional area. But fortunately, the little bit of variation there is generally aligns with the expected ups and downs as seen in the other VT's from Helen's report.
+    \item VT07 Hod
+    \item VT07 Hood - Just realised that I shouldn't really draw around the uvula, because it's not really the vocal tract shape. Because it's thin, the slices just before and after it wouldn't have that obstruction. Will draw through uvula from now (ignore it essentially).
+\end{itemize}
+
+\section*{11/07/2016 Monday Week 3 of Intersemester: Vocal tracts}
+\begin{itemize}
+    \item On-site admin for Edgewater all of this week.
+    \item VT07 Hud
+    \item VT07 Who'd
+\end{itemize}
+
+\section*{12/07/2016 Tuesday Week 3 of Intersemester: Vocal tracts}
+\begin{itemize}
+    \item VT07 Had
+    \item Man I really suck at this staying on track thing... (to be fair I did admin for courses all day)
+\end{itemize}
+
+\section*{13/07/2016 Wednesday Week 3 of Intersemester: Vocal tracts}
+\begin{itemize}
+    \item VT07 Head
+    \item VT07 Herd
+    \item VT07 Hid - Some of the pharyngeal cavities when it gets down to the glottis with the vibrating vocal folds, the cross-sectional image is so blurred and indistinct that you can only guess where the boundary is by checking with the midsaggital section. As for the medial-lateral direction and how "wide" the cavity extends can only be estimated as a circle given the cylindrical anatomy of the start of the larynx. 
+    \item 12pm: Wow, finally finished what I should have finished on Monday.
+    \item Matlab analysis for VT04 and VT07.
+    \begin{itemize}
+        \item Weirdly, the images of the MRIs were getting squashed again once the plots were added, even though I copied and pasted the imageimport code in, and that worked fine for VT04. Added \verb|figure| and \verb|hold on| at the start and that fixed it.
+    \end{itemize}
+    \item Looks similar to VT04, slightly better amplitudes, slightly shorter vocal tract length. Need to do PCA with all twelve vocal tracts.
+    \item Made a start on Methods
+    \item Really need to get onto writing/FINISHING introduction and methods, and the prelim speech by Friday meeting with Richard Clarke.
+\end{itemize}
+
+\section*{14/07/2016 Thursday Week 3 of Intersemester: Report \& Prelim speech}
+\begin{itemize}
+    \item Did some more methods and results.
+\end{itemize}
+
+\section*{17/07/2016 Sunday Week 3 of Intersemester: Prelim speech}
+\begin{itemize}
+    \item I just lot the last three days of notes on this log, and the report! Which wasn't much admittedly, but most importantly, it had the feedback on my prelim speech from my meeting with Richard on Friday!
+    \item Main idea was since it's so short, really needs to be focussed on main message.
+    \item Okay done, down to 5 minutes.
+\end{itemize}
+
+\section*{18/07/2016 Monday Week 1 Semester 1: Prelim speech}
+\begin{itemize}
+    \item Just getting it memorised.
+    \item Reading up a bit in prep for questions.
+    \begin{itemize}
+        \item Why MRI imaging? What's the benefit of doing it this way, especially when the vowel quadrilaterals created by principal components and resonances don't look as precise in separating out vowels by height and backness as the formants?
+        \item Story, 1996
+        \begin{itemize}
+            \item The same set of formants can be produced by a multitude of VT shapes.
+        \end{itemize}
+        \item Story, 2005
+        \begin{itemize}
+            \item Imaging provides important articulatory/anatomical information for models that you can't get from speech signals.
+            \item Articulatory speech synthesis is limited by the lack of data out there on vocal tract shapes - you can only go so far in modelling with data from speech signals. You need an inventory of area functions for all vowels and consonants.
+            \item There's one set that was done in 1960 using saggital x-ray images and plaster casts of the oral cavity which has been invaluable for speech simulaton and synthesis research.
+            \item With more modern imaging techniques we've got now like MRI or electron beam computed tomography (EBCT), we can get 3D reconstructions of the airway.
+            \item Not quite at the point where we can get real-time volume image acquisition though. We can only study static vocal tract shapes... which kinda sucks because during speech production, a speaker goes through heaps of different VT shapes very quickly, even overlapping shapes (coarticulation).
+            \item MRI in particular has the advantage of being non-ionising (no radiation), requires no artificial contrast agents, and therefore low risk, especially given that the subject is usually in the machine for hours due to many repetitions required while holding a VT shape.
+            \item Disadvantage: imaging artifacts at air-water interfaces creating blurry outlines, and teeth/bone appearing in similar gray to air due to low water concentrations.
+            \item MRI used to directly measure VT shape since the 90s.
+        \end{itemize}
+        \item Mokhtari et. al. 2005
+        \begin{itemize}
+            \item Plenty of literature supporting validity of two orthogonal directions, height and backness, describing vowel quality.
+            \item Many examples of PCA on area functions from X-ray or MRI images where the first two prinipal components account for ~90\% of variance.
+            \item Cross-linguistic data also seen = any vowel can be described by two components, namely front-raising and back-raising. (height and backness are actually a bit simplistic).
+            \item Again, acoustic-to-articulatory mapping is overdetermined, many-to-one relationship. It is also nonlinear. 
+            \item However, nonlinearities and one-to-many ambiguities depend a lot on choice of articulatory and acoustic parameters, so with proper constraints, these issues can be simplified.
+        \end{itemize}
+        \item You could say that trying to model a vocal tract from a speech signal is rather like inverse dynamics - predicting the source from the output.
+        \item Therefore, it makes sense that we need more information about that source, which is a complicated source at that (it's not just the 3D volume of the airway and cavities, it's the material properties of the walls of your mouth, your trachea, the condition/elasticity of the vocal folds...), in order to simulate the speech that results.
+    \end{itemize}
+\end{itemize}
+
+\section*{19/07/2016 Tuesday Week 1: Prelim talk \& Meeting with Catherine}
+\begin{itemize}
+    \item Prelim Talk
+    \begin{itemize}
+        \item Nailed it!
+        \item Question from Martyn: we're breaking down the 3D data (of the shape) into 2D area functions. Why not use that shape data?
+        \begin{itemize}
+            \item What would be the benefit? Would this allow for more accurate transformations?
+            \item From the shape of the vocal tract that we outline on CMGUI, we can already get a volume shape which is a handy visualisation of the vocal tract shape.
+            \item Does the shape of the cross-sectional area affect sound a whole lot? Maybe... perhaps not so much the vowel height and backness (seeing as just taking the 2D area data encoded height and backness, as seen when compared with the formant-based quadrilateral). But perhaps it encodes the higher order factors which contribute to timbre, tone etc.
+        \end{itemize}
+        \item Meeting with Catherine
+        \begin{itemize}
+            \item She really liked the talk :) 
+            \item In response to Martyn's question on 3D data:          \item Increasing dimensionality might not necessarily be better.
+            \item We know that there is a many-to-one mapping between articulation and acoustics. Different VT shapes can create the same formants.
+            \item Therefore 3D modelling might not help much with improving speech synthesis.
+            \item But on the other hand, a 3D model may reduce the many-to-one mapping.
+            \item Indeed shape might be related to the higher order factors.
+            \item Might be interesting to explore how much of an influence F3/F4 correlates to P3/P4?
+            \item Look at higher order formants and see if they correlate with higher order PC's and estimated resonances.
+            \item Recommend that I read Handbook of phonetic sciences 1997 edited by Hardcastle \& Labour - article on Articulatory-acoustic-auditory relationships by Ken Stevens. eeThere is also a second edition (2010) which has a revised article by Ken called Articulatory-Acoustic Relations as the Basis of Distinctive Contrasts.
+            \item In response to potential question about how the MRI-derived vowel spaces seem to be less precise (vowels aren't as nicely clustered as formants), this is because of the many-to-one mapping between articulation and acoustics. Each participant created a slightly different VT shape in order to create what they \textit{perceived} as the vowel /i/.
+            \item This relates to the idea of our hearing being the feedback loop for production. We adjust our production until the sound \textit{we} as \textit{speakers} perceive to be accurate is produced. For example, the tongue could be in the same height/backness position, but it might be concaved to increase the cross-sectional area to compensate for an obstruction, e.g. holding a pencil between the teeth.
+        \end{itemize} 
+    \end{itemize}
+\end{itemize}
+
+\section*{20/07/2016 Wednesday Week 1: Report}
+\begin{itemize}
+    \item A smidgeon more on Methods. My goodness I am slow at writing these.
+\end{itemize}
+
+\section*{26/07/2016 Tuesday Week 2: Revised Project Timeline, report \& meeting}
+\begin{itemize}
+    \item Redid the project timeline since I'm basically behind by two months.
+    \item It still all fits, thankfully, but really means I need to be hitting goals each week.
+    \item Finishing off methods
+    \item Meeting with Richard and Catherine:
+    \begin{itemize}
+        \item It looks like Helen missed out VT04, VT05, VT07, and VT10. Why did she miss out VT05 (Mathew Macculum) and VT10 (Stephen Bier)? - Daniel did them.
+        \item FYI VT02 is Australian.
+        \item PC Plot from Interspeech paper doesn't actually look like vowels are separated out by height and backness. - both PC axes need to be flipped (put a negative sign out the front), and then it will look right.
+        \item Speech recording data needed for VT04 and VT07 (and the rest of them as well, tbh) to carry out formant analysis on combined dataset. - Speech recording data is only available for the five speakers that Daniel used, + access to two more (VT01 and VT04). Using tool called MAUS BAS, can use EMU.
+        \item Figure captions should be more descriptive.
+        \item Final talk - mostly high B/low A, the ones in the A+ range have something extra like a video, live demo etc. Try get a speech recording or something like that to capture interest?
+        \item Final report - make research question super clear. 30\% of the 60\% comes from an external who doesn't necessarily have expert background, so the report and problem needs to get the reader interested.
+        \item Make it clear what you were given/started with, critique of the data/templates/framework you were given.
+        \item Style isn't strict to a paper, can be more of a story.
+        \item Talk - make your contribution clear, don't fluff it all up with fancy intro and background. It's not a marketing pitch. They'll be tough on style over substance. Conservatism and formalism is good, don't be too relaxed with language. Questions will show if it's just a polished speech, or there's substance and real research underneath. Something that's \textit{too} polished makes engineers suspicious.
+    \end{itemize}
+\end{itemize}
+
+\section*{30/07/2016 Saturday Week 2: Combined dataset PCA \& resonance analysis}
+\begin{itemize}
+    \item Reading through Catherine's .docx "Principle components analysis of areas"
+    \begin{itemize}
+        \item Notes from before, during and after Interspeech paper
+    \end{itemize}
+    \item Reading through R files. Commented out some sections (\#) so that it would work straight in R.
+    \item \verb|readingin the MRIdata.txt|
+    \begin{itemize}
+        \item Reads in from Daniel2012/Data run and Helen's data
+        \item Various function definitions on how to read and compile area data from MRI.
+        \item Interpolates between the area function data points.
+    \end{itemize}
+    \item \verb|story2005.rotatedData.forR.txt|
+    \begin{itemize}
+        \item List of tab-separated values, speaker number, vowel, then q1, q2, q3. Not sure what these q values are.
+    \end{itemize}
+    \item \verb|plottingDanielsMRIdata.txt|
+    \begin{itemize}
+        \item Plots vocal tract shape areas derived from MRI function.
+        \item Written for Daniel's data (specific to the file structure) which has both sets for each vowel each speaker (processed both repetitions)
+    \end{itemize}
+    \item Basically, I can't make sense of it, but it looks like the only really important information is in the distance\_area folder of Daniel and Helen's data, which are just the area functions for each of the vocal tract sets analysed. There are two space-separated columns - the first is the length (distance from lips) and the second is the cross-sectional area (in mm2).
+    \item There are 29 slices, since each of the cavities have 15 slices each. An average is taken of the intersecting middle slice (the 15th slice in the oral and 1st slice in the pharyngeal).
+    \begin{itemize}
+        \item On that note, what was the point in Helen doing that, dividing into two anatomical regions? Was it purely to be explicit about the anatomy?
+    \end{itemize}
+    \item The data now stands as follows:
+    \begin{itemize}
+        \item Helen's data: Helen's work came first - she worked on this project from Nov 2011 - Feb 2012, while Daniel worked on it from mid-2012 to early 2013. She only did one set per vocal tract.
+        \begin{itemize}
+            \item VT01
+            \item VT02
+            \item VT03
+            \item VT06
+            \item VT08
+            \item VT09
+            \item VT11
+            \item VT12
+        \end{itemize}
+        \item Daniel's data: two sets of area functions for each vowel. 5 speakers * 11 vowels each * 2 repetitions
+        \begin{itemize}
+            \item VT03
+            \item VT05 - new
+            \item VT08
+            \item VT09
+            \item VT10 - new
+        \end{itemize}
+        \item My data: just did one set like Helen.
+        \begin{itemize}
+            \item VT04 - new
+            \item VT07 - new
+        \end{itemize}
+        \item All together, we have 12 speakers who each have at least 1 set of each vowel analysed.
+    \end{itemize}
+    \item I briefly considered processing all the data myself in MATLAB rather than make sense of this R code, but thought I should porbably at least try it first.
+    \item I also lost my laptop's travel adaptor... shit.
+    \item To do from here with this data:
+    \begin{itemize}
+        \item Combine all 12 vocal tract data into one folder so they're all in one place, consistently labelled.
+        \item Generate the distance\_area folder for my two vocal tracts. There must be a script somewhere to do this for me - joining the oral and pharyngeal area functions and placing the lengths alongside. I think it's the \verb|compileMRIAreas| function in \verb|readingin the MRIdata.txt|.
+        \item See if the R scripts will work on my newly combined dataset.
+    \end{itemize}
+    \item Generating distance\_area folders
+    \begin{itemize}
+        \item Nope, it's not \verb|compileMRIAreas|, that assumes you already have these folders with all the area functions in them. Looks I have to compile them manually. Whatever at least I only have two VTs to analyse.
+        \item No no imma do this on matlab otherwise I can't bear it.
+        \item Damn it my matlab trial has expired.
+    \end{itemize}
+    \item MOVING ALL DATA OVER TO UNI COMPUTERS. Bring Richard Clarke's hard drive and keep it in your locker. Also bring a lock, for that locker. All Part IV Project work to be done at uni.
+    \item My goodness this transfer is taking ages. 
+    \item How are the files in \verb|distance_area| created?
+    \begin{itemize}
+        \item Lengths column (col 1) is just the lengths from \verb|hadorallength.txt| and \verb|hadpharyngeallength.txt| (which are in exponential form) concatenated together in float form. The values in \verb|hadpharyngeallength.txt| are added to the final length value in \verb|hadorallength.txt|.
+        \item N.B. the change in format from exponential to float.
+        \item The areas however, look like they've been interpolated. The first value in area.txt from \verb|Had\\Oral\\7areacalculation\\area.txt| matches, but the rest are different.
+        \item There must already be a script around that does this.
+        \item There is! It's \verb|areaplot.m|. This is called by \verb|areacalc.m| which is used to make the plots of the area functions, so I'm not sure why the files were created. It looks like maybe the files have to exist first (but then why didn't I get an 'Error opening the output file' error?).
+        \item Just copy and paste the had.txt, heed.txt, hid.txt etc. files into a distance\_area folder from one of the other VT's. Since the MATLAB file opens it with 'w' write permissions only, I'm guessing it'll overwrite the contents cleanly. 
+    \end{itemize}
+\end{itemize}
+
+\section*{01/08/2016 Monday Week 3: Combined dataset PCA \& resonance analysis}
+\begin{itemize}
+    \item Finishing off copying files over to uni computers/engineering H: drive so I can use Matlab fml.
+    \begin{itemize}
+        \item Okay it says it's going to take `1 day'.
+        \item In the meantime I shall read articles.
+        \item Oh wow, it was actually all done (explicitly right-click `Properties' checked the sizes and they were all the same).
+        \item Need a more efficient way of backing up -.- If only there was a git diff thing which only updated the differences, like Dropbox but for hard drives. I'm sure there is I just don't know about it. Whatever. Just copy across files that you know you've changed.
+    \end{itemize}
+    \item Ken Stevens, `Articulatory-acoustic-auditory relationships' in the Handbook of phonetic sciences 1997 edited by Hardcastle \& Labour.
+    \begin{itemize}
+        \item 
+    \end{itemize}
+    \item Use \verb|areaplot.m| to populate the \verb|distance_area| folder with the area functions (29 rows of length/area), for all 12 vocal tracts.
+    \begin{itemize}
+        \item Yesssss it worked! Just needed the .txt files all there, and \verb|areacalc.m| is called from \verb|areaplot.m| to write over all of them.
+        \item Validated that this is indeed how it works by replacing the distance\_area files from VT02 in Helen's data (after backing up the original .txt files) and running areaplot.m on that dataset, and comparing with the original. - worked as intended :D
+    \end{itemize}
+    \item Putting all these distance\_area folders in the same place. Only Set1 from Daniel's data is used for simplicity of code (otherwise the path addresses and things would have to be different for the vowels that Daniel's one does).
+    \item For VT03, VT08 and VT09 which Daniel repeated (Helen had already done), comparing the area functions they actually look pretty different. Will opt for Helen's data since I did the data analysis as described in her report. 
+    \begin{itemize}
+        \item This might mean, though, that the two vocal tracts that we only have Daniel's distance\_area data of is unreliable or not comparable to the rest of the data.
+        \item Out of Set1 and Set2, Set2 (e.g. \verb|vt05-hadd2-01.png|) seemed to have closer values to Helen's area functions. But this must just be a coincidence, because Helen used the first set of MRI images (e.g. \verb|vt05-hadd1-01.png|).
+        \item I guess we could just argue that Daniel would have followed Helen's report instructions as carefully as I did, so using my data carries the same risk as using Daniel's data. There's no way I'm going all 12 VTs again myself for consistency, so using VT05 and VT10 Set1 from Daniel is fine.
+        \item Area function data and their sources:
+        \begin{itemize}
+            \item VT01 - Helen
+            \item VT02 - Helen
+            \item VT03 - Helen
+            \item VT04 - Jenny
+            \item VT05 - Daniel (Set1)
+            \item VT06 - Helen
+            \item VT07 - Jenny
+            \item VT08 - Helen
+            \item VT09 - Helen
+            \item VT10 - Daniel (Set1)
+            \item VT11 - Helen
+            \item VT12 - Helen
+        \end{itemize}
+        \item Copied VT05/Set1 and VT10/Set1 from \verb|Daniel2012\Data run|, and moved all the folders from \verb|Helen Summer Work2012\Vocal Tracts from Varadha| (to avoid duplicating data unnecessarily) into new folder \verb|All VT data|.
+    \end{itemize}
+    \item Install Emu R
+    \begin{itemize}
+        \item Had to change the R library path from C: drive (no write permissions) to H: drive
+        \item \verb|.libPaths('H:/Documents/Rlibraries')|
+        \item Notice forward slashes (R is unix-based)
+        \item Ah, looks like I have to install emu R each time :/
+        \item \verb|install.packages('emuR')|
+    \end{itemize}
+    \item Use R to perform PCA on distance\_area folder.
+    \begin{itemize}
+        \item Change all the path definitions in \verb|readinMRIdata_oneSet.R| to \verb|H:\\Documents\\Part IV Project\\All VT data| (need double slashes as an escape)
+        \item 'Run all'
+        \item 11 warnings per call of function \verb|compileMRIAreas.n|
+        \item All the warnings say:
+        \begin{verbatim}
+            In vowname[i] = unlist(strsplit(filesInDir[i], "\\.")) :
+            number of items to replace is not a multiple of replacement length
+        \end{verbatim}
+        \item Dirpath creates a string with the path name to the distance\_area folder for the specified VT (`spk').
+        \item vowname is a 1 x 11 vector (length of number of files in distance\_ area directory), mode = `character'.
+        \item In for loop, for each of the files in the directory (the txt files with the area functions), we read each file as a table and save that table to the variable \verb|datfile|.
+        \item \verb|LinDatfil| The data is then linearly interpolated to n points, and n is set to a default 16. Why 16?
+        \item The linear interpolation data is justified in a comment by the difference in distance steps between the oral and pharyngeal regions. This makes sense - the distance points are equispaced from lips to uvula, then uvula to glottis. Those two lengths aren't the same.
+        \item Is there value in interpolating with smaller step size? Probably. I would have expected 29 steps, since there are currently 29 rows. 
+        \item Error occurs in Line 84, when we try to assign elements to vownames vector. 
+        \begin{itemize}
+            \item This is weird, because it tries to assign a row of strings, split by `\\'? 
+            \item filesInDir is a list of all the files in the \verb|Dirpath|
+            \item I'm guessing it's trying to get "hadd" into the R table as headers or something.
+        \end{itemize}
+    \end{itemize}
+    \item What kinds of analysis did Daniel do? What's all this stuff in the Analysis folder? There is no R code there, did he translate things to MATLAB or was it a totally different analysis?
+    \begin{itemize}
+        \item He did MRI as well as Acoustic Reflectometry (AR) data.
+    \end{itemize}
+    \item Looking back at Catherine's email when she sent all the files, it looks like the earliest files to have been written were \verb|plottingDanielsMRIdata.txt| and \verb|acquiring spectrum from areas.txt|
+    \item \verb|plottingDanielsMRIdata.txt|
+    \begin{itemize}
+        \item Wait I already looked at this. Looks like it just plots the vowel tract shapes, like the ones in Helen's report and Catherine's notes ``Comparison of Vocal tract areas.docx".
+        \item I should probably try it out anyway.
+        \item Oh man there are so many hard-coded paths here, it kills me. Thank goodness for find\&replace.
+        \item Fixed all the paths to ones in my folder.
+        \item It also has all the outputs copied in. Ahhhh. Deleting those bits and saving the file as \verb|plotAreaFunctions.R|.
+        \item It also assumed that Daniel's data has two sets, while I've only picked out Set1 of each of Daniel's VTs. Got rid of the extra inputs (boolean with default value \verb|Helen=FALSE|, char \verb|set="set1"|). So essentially, it's always the \verb|Helen=TRUE| case where there is only one set, there's not an extra layer of directories with Set1 and Set2.
+        \item Also deleted all function calls of plotMRI that plot the second set. Each plot of the second set seemed to be accompanied by \verb|par(new=T)|. The \verb|par| function sets the parameters of plotting. The argument \verb|new=T| is shorthand for \verb|new=TRUE| which adds to an existing plot. So these lines can be deleted too.
+        \item Running in R...
+        \item OH WOW IT WORKED IT WORKED
+        \item Wait no lots of errors.
+        \begin{itemize}
+            \item \verb|spk="vt01"| should be capitalised \verb|spk="VT01"|
+            \item Nrrghh one of my VT folders from Daniel (VT10) was still split into Set1 and Set2, had that extra directory layer.
+            \item Ah, also, VT01 distance\_area is midding hood.txt. Ran areaplot.m again on MATLAB.
+            \item The `hood' section of the code was commented out. 
+            \item Oh, looks like we don't have any MRI images of hood (VT01/Data).
+            \item There's no hood.txt in the distance\_area folder anyway/
+            \item Implemented an if statement so that if spk!=VT01, we don't do hood.
+            \item Some of the comments in \verb|plotAreaFunctions.R| also seemed to be wrong - the bit where it would call maxVTvals, it said it was the front vowels etc.
+        \end{itemize}
+    \end{itemize}
+    \item Need to figure out how to debug in R so I can step into functions and stuff to check values.
+\end{itemize}
+
+\section*{02/08/2016 Tuesday Week 3: Meeting}
+\begin{itemize}
+    \item Added VT04 and VT07 to the list of plots, also reordered so it's in numerical order.
+    \item Declared \verb|path| a global variable (using notation \verb|<<-|)- no need to pass into functions or have as default values for functions, when all the VT files are now in one place.
+    \item \verb|path<<-"H:\\Documents\\Part IV Project\\All VT data"|
+    \item Ran with no errors! But display issues:
+    \begin{itemize}
+        \item The R Graphics window only shows the most recent set of plots. The \verb|par| function marks the start of a new window, and the old windows aren't accessible.
+        \item \verb|par(mfrow=c(2,3),lwd=2)|
+        \item \verb|mfrow=c(2,3)| draws plots in order along rows (mfcol if you want them to plot down columns) in an array of size (2,3).
+        \item \verb|lwd=2| is defining the linewidth of the plots. I think lwd = 1 actually looks nicer.
+        \item Should be able to fit 12 VTs, in that case, in a (3,4)?
+        \item Not sure what the point was in splitting each of the plots (e.g. back vowels, mid vowels etc.) into two different frames of (2,3).
+        \item Yay it worked! Also had to change ylim for VT09 to a max of 1000, huge areas especially at the front (trained singer?)
+        \item How to make each of the plots on different graphics windows? \verb|dev.new()|
+    \end{itemize}
+    \item Saved images of all the vowel area function plots.
+    \item Meeting Agenda
+    \begin{itemize}
+        \item Spent most of the week reading through Catherine's docs, working out what each R file does, tidying up the code, figuring out how to generate the area functions in the distance\_area folders, and debugging \verb|readinMRIdata_oneSet.R| which is probably the first step to PCA.
+        \item Questions
+        \begin{itemize}
+            \item Plots for front, central, back, high, mid, and all vowels, but none for low vowels. Could easily be added.
+            \item Interpolation of area function currently only does 16 data points. The original data has 29 points. I doubt increasing n from 16 to 30 would make much of a difference, and perhaps it might give better area functions with more nuances made out in higher order PCs later. \begin{itemize}
+                \item If the data points get too fine, we can get artefacts in the higher orders.
+            \end{itemize}
+            \item Did Daniel also write a report of his work? Would be interested to read.
+            \item Looks like VT01 missed out the vowel `hood' - why?
+            \begin{itemize}
+                \item Dunno. But we don't have the data so can't do much about it.
+            \end{itemize}
+            \item I'm only using one of the two sets of repetitions of MRI data. Obviously it'd be great if I did both, bigger dataset, could average the two, but this would take too much time - only Daniel did both sets (5 VTs), Helen only did the first sets.
+            \begin{itemize}
+                \item VT12 and VT11 could be ones to do the extra set on - good data.
+                \item Way of validating intraspeaker vs. interspeaker variation encoded in higher order PCs and formants.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Next week
+    \begin{itemize}
+        \item Get 
+        \item Start looking at American data, run through PCA. Read Story (2005) and check the data
+        \item Keep writing all the time
+    \end{itemize}
+\end{itemize}
+
+\section*{05/08/2016 Friday Week 3: Acknowledgements, R}
+\begin{itemize}
+    \item Wrote the Acknowledgements of my report :P
+    \item Code School - Try R course
+    \item R code given by Catherine. Mostly dumps from R console including function calls and outputs, with some comments in between. Tidied up the code which included commenting things that should have been commented out, assigning readable variable names (instead of `foo'), adding more comments, getting rid of inefficient/inapplicable code, changing = to <- for top level assignments in accordance with R syntax conventions.
+    \begin{enumerate}
+        \item \verb|plottingDanielsMRIdata.txt| -> Plots area functions for all vowels and all vocal tracts. Rewritten as \verb|plotAreaFunctions.R| with tidied up code, for `All VT Data' folder which has only one set for all 12 vocal tracts.
+        \item \verb|readingin the MRIdata.txt| -> Reads in area functions as tables, linearly interpolates, performs PCA. Rewritten to \verb|readinMRIdata_oneSet.txt|, again modified for `All VT data' folder. Got rid of if statements for whether it's Helen's data or Daniel's data (which had another layer of directories for Set 1 and Set 2). Moved the PCA line to the next script (pcaAreaFunctions.R) so that this file is just reading in the MRI data.
+        \item \verb|Cross-sectional Area analysis.txt| -> Normalisation and PCA of area functions
+        \item \verb|acquiring spectrum from areas.txt| -> Finding resonances from area functions
+        \item \verb|Correlation Analysis of resonances.txt| -> Pearson's product-moment correlations between bark scaled PC's and resonances.
+    \end{enumerate}
+\end{itemize}
+
+\section*{06/08/2016 Saturday Week 3: R}
+\begin{itemize}
+    \item Debugging R code \verb|readinMRIdata_oneSet.R|
+    \begin{itemize}
+        \item The warning about \verb|number of items to replace is not a multiple of replacement length| is because the unlist function outputs a list of two items - the file name string split at the full stop, e.g. 'heed.txt' -> 'heed', 'txt'. It's trying to fit it into one.
+        \item R just puts the first output into vowname[i] but returns that warning saying that the second item in that list is being discarded. We can get rid of the warnings by explicitly grabbing just the first item with a [1] at the end.
+        \item \begin{verbatim}
+            Error in prcomp.default(allMRI.df[, 4:31]/maxArea, scale = T) : 
+            cannot rescale a constant/zero column to unit variance
+        \end{verbatim}
+        \item Looks like \verb|allMRI.df| has a column X29 which is all zeros (because the cross-sectional area at the glottis is by default zero) and so when we try to divide by maxArea, we are trying to rescale the zero column to unit variance, it gives an error because the variance of that column is zero.
+        \item Try just excluding the last column completely: \verb|allMRI.df[1:ncol(allMRI.df)-1]|
+        \item Actually it already selects columns [,4:31] which starts at X2 and ends at X29. So I'll just exclude X29, but why doesn't it include X1? Maybe because the lips were too poorly defined in the MRI data extraction stage? That would be a fair point - most of the first slices you could barely see anything on them. So I'll use \verb|[,4:30]|.
+        \item Well, that certainly got rid of the errors! And columns of 27 PCs for each of the data points compared across the combined data from all the vowels and all the speakers.
+        \item Changed name of all vowel data frames from variations of \verb|foo| to \verb|pca|.
+        \item Got rid of the repetition of function \verb|compileMRIAreas| since all it really needs is an optional interpN argument with a non-default switch.
+        \item No idea what the \verb|makeMRIDataframe| function does, and it never seems to be used even in the other R files, so deleted it.
+        \item Expanded PCA to include all VTs, using a for loop. Now gives 132 vowels (12 speakers, 11 vowels each.
+        \item N.B. VT01 is missing data for hood. A dummy txt file named hood.txt has been created, with 29 x 2 table of N/As. This is screwing everything up. Could just turn off interpolation, but what's it going to do once it gets to PCA? Need to expand the vector to the number of interpolation points so it fits in the combined data frame, then get PCA to just ignore it or na.omit.
+        \item Done that! Now summary(pca) shows an even higher proportion of variance is accounted for by the first two PC values (as output in `Cross-sectional Area analysis.txt' for summaries of foo3 and foo5). 66.42\% in fact. I expect this to improve to around the value that Catherine got (78\%) once the PCs are Bark scaled?
+    \end{itemize}
+    \item \verb|Cross-sectional Area analysis.txt| -> \verb|pcaAreaFunctions.R|
+    \begin{itemize}
+        \item \verb|prcomp| applied to allMRI.df like the last line of \verb|readinMRIdata_oneSet.R|, and a few \verb|summary| outputs.
+        \item Pull out just the first two columns \verb|foo4\$x[,1:2]|
+        \item x is one of the names in the foo4 object. (\verb|names(foo4)|, \verb|\$x| is the rotated data)
+        \item Comment: Apparently when the data wasn't linearly interpolared, the results weren't as significant - PCA only accounted for 45\% of the data rather than 60\%.
+    \end{itemize}
+    \item Tried to get Git working. Got a .gitignore going in the Project folder but struggled to push to Github. Stupidest problem ever to spend an hour on, an I even a programmer?
+\end{itemize}
+
+\section*{07/08/2016 Sunday Week 4: R}
+\begin{itemize}
+    \item \verb|Cross-sectional Area analysis.txt| -> \verb|pcaAreaFunctions.R|
+    \begin{itemize}
+        \item Started pasting the outputs and values of the data frames that get created into \verb|results.txt| so that I can check later that the results are repeatable.
+        \item Migrated to RStudio, man it's nice. Barely using Sublime Text anymore.
+        \item Hallelujah got Git working.
+        \item Error in the first \verb|eplot| - plotting the first two principal components.
+        \begin{itemize}
+            \item Requires emuR for eplot. Remember to change library path and do \verb|library("emuR")| (don't need to install again).
+            \item \begin{verbatim}Error in pca[, 3] : incorrect number of dimensions\end{verbatim}
+            \item Is it supposed to be \verb|pca\$x[, 3]| like the other ones? Tried that, plotted a bunch of crazy colourful lines with value everywhere and repeated this error a bunch of times: \begin{verbatim}
+                Too few x points for label  1.459484  will plot a point or a line
+            \end{verbatim}
+            \item Ohhh the labels are supposed to come from the third column of \verb|allSpeakers.df|, which is not the list of vowels, but I think that's what was intended [,2].
+            \item \begin{verbatim}
+                x and labels don't match
+            \end{verbatim}
+            \item \verb|nrow(pca\$x[,1:2])| = 131, while \verb|length(allSpeakers.df[,2])| = 132. Need to remove the first occurrence of \verb|hood| in the labels, as this is the hood from VT01 that is missing. 
+            \item Wow, it's so easy to excluse an element in R! Just use a negative index, allSpeakers.df[-9,2].
+            \item eplot plots the centroids of each vowel across all speakers.
+        \end{itemize}
+        \item \verb|plot| is just the generic plotting function. Can't label each data point, more for viewing trends and such. Redundant.
+        \item \verb|text| adds text to a plot. Draws strings in vector \verb|labels| on coordinates given by x and y arguments. Plots all of the data points together for all speakers.
+        \item Standard deviation decrease \verb|plot(1:length(pca$sdev),pca$sdev,type="p")|
+        \begin{itemize}
+            \item This plot shows how the standard deviations accounted for by each of the principal components decreases as the order of principal components increase.
+        \end{itemize}
+        \item Added another plot of variances, to compare with the plot that Catherine had in her slides for the 5 speakers
+        \begin{itemize}
+            \item Looks like with 12 speakers, the first PC accounts for approx 5\% more variance, but the second PC has little difference.
+            \item Validate this properly by performing PCA on the 5 speakers that she chose.
+        \end{itemize}
+        \item \verb|fdat| comes out of nowhere, was never assigned or created. Assuming it's supposed to be foo5 which is the PCA output when the index of the maximum value for each area is added to the analysis. Renamed as \verb|pca.max|
+        \begin{itemize}
+            \item Why is the maximum value of the index added? I don't get why this is done.
+            \item This bit of code creates a vector of the indexes of the second largest area value for each vowel for each speaker.
+            \item This maxAreaIndex value is then added as an extra column at the end of allSpeakers.df to perform PCA on. Need to get rid of [-9] from maxAreaIndex again since that's VT01 hood and when that row is "ordered", it just gives the indexes 1:27 since they're all NAs.
+            \item Error when attempting to pca: \verb|Error in `[.data.frame`(mf, , x) : undefined columns selected|
+            \item Not sure what's going wrong here. The cbind is working fine, must be to do with prcomp.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{08/08/2016 Monday Week 4: PCA}
+\begin{itemize}
+    \item Wow wow, the first \verb|prcomp| in \verb|pcaAreaFunctions.R| is throwing an error.
+    \begin{itemize}
+        \item \verb|PCA applies only to numerical variables|
+        \item This is weird because allSpeakers.df looks fine.
+        \item Argh it's VT01 hood.txt again! All those NAs! Just get rid of them from the start grrr
+        \item \verb|maxArea = maxArea[-9]|
+        \item \verb|allSpeakers.df[-9,]|
+        \item Now get rid of all the [-9] in other places
+        \item \verb|1: In Ops.factor(left, right) : ‘/’ not meaningful for factors|
+        \item Ah it's because we're including the first two columns of vowel and speaker names. need \verb|[,4:30]|
+    \end{itemize}
+    \item Now for some weird reason, text() plot only works when it's done over top of an eplot(). When you put it on a new plot (\verb|plot.new()|) it doesn't work.
+    \begin{itemize}
+        \item Also, the some of the vowels are all huddled in one corner weirdly -.- Don't know why.
+    \end{itemize}
+    \item Plots of pca.max (the one with the maxAreaIndex values added to the last column)
+    \begin{itemize}
+        \item No idea what daniel.seg is for the labels, we should just be able to use the same vowel labels as before (\verb|allSpeakers.df[,2]|)
+        \item Result is basically exactly the same. I don't think there's any point to this step.
+    \end{itemize}
+\end{itemize}
+
+\section*{09/08/2016 Tuesday Week 4: PCA \& Meeting}
+\begin{itemize}
+    \item Ran through \verb|readinMRIdata_oneSet.R| and \verb|pcaAreaFunctions.R|, ran with no errors but got 22 warnings.
+    \item \begin{verbatim}
+        1: In `[<-.factor`(`*tmp*`, temp, value = 1L) :
+        invalid factor level, NA generated|    
+    \end{verbatim}
+    \item All the `hood' values huddled in the negative corner
+    \begin{itemize}
+        \item For all the hood's for each of the VTs, it looks like the X1 slices are all 0 area.
+        \item Also, VT01 has 0 area for all its vowels' initial X1 slices.
+        \item Might have to redo these areas?
+    \end{itemize}
+    \item Meeting with Catherine and Richard
+    \begin{itemize}
+        \item Goals from last week's meeting
+        \begin{itemize}
+            \item Combined dataset PCA done
+            \item Resonance analysis (Started on R code)
+            \item Formant analysis
+            \item If time allows:
+            \begin{itemize}
+                \item Trends across age identified for NZE vowel space
+                \item Start looking at American data, run through PCA.
+                \item Check Story data with article.
+                \item Keep writing
+            \end{itemize}
+        \end{itemize}
+        \item PCA on 12 VTs
+        \begin{itemize}
+            \item Centroid plot doesn't match up with that of Catherine's due to some issues with axes, but it looks sensible and vowel-quadrilateral-like.
+            \item \textbf{Need to run the same analysis but for just the 5 speakers that Catherine used, to see if I can reproduce the plots that she got.}
+            \item All vowels plotted - strange bug with hood all huddled in one corner. When looking at data, looks like all the first frames for hood.txt are zero. I'm sure it's something to do with trying to exclude VT01's hood.
+            \item The other vowels are huddled in sensible positions around their centroids.
+        \end{itemize}
+        \item Variance
+        \begin{itemize}
+            \item Comparing with Catherine's plot from her slides for 5 speakers.
+            \item Proportional of variance explained by first three principal components
+            \item 5 speakers (Catherine's slides from talk): 39.6\%, 20.8\% and 10.9\% respectively. 60.4\% by first two.
+            \item 12 speakers: 46.1\%, 21.2\% and 13.8\% respectively. 67.3\% by first two.
+            \item Supports hypothesis that first two principal components encode vowel properties, is quite a good indicator of height and backness.
+        \end{itemize}
+        \item PCA with max value indexes
+        \begin{itemize}
+            \item Virtually no difference to plots. Really not sure why these are included in the PCA.
+        \end{itemize}
+        \item \textbf{Goals for next week}
+        \begin{itemize}
+            \item As last week but include:
+            \item \textbf{Figure out issues with hoods huddling in one corner}
+            \item \textbf{Reproduce Catherine's plots with 5 speakers}
+            \item \textbf{AmE vowel space generated with Story data}
+        \end{itemize}
+        \item Data
+        \begin{itemize}
+            \item .wav data received from Catherine.
+            \begin{itemize}
+                \item Given VT04 (y02) and VT01 (o05) which are the two others that we have access to, on top of the five speakers Daniel used.
+                \item Don’t have the 5 that Daniel used (VT03, VT05, VT08, VT09, VT10).
+                \item Formant analysis step is basically for validation of MRI-derived (PCA and resonance) plots.
+                \item Would it be reliable with just 7 speakers rather than the full set of 12?
+                \item Daniel’s Masters thesis
+            \end{itemize}
+            \item Daniel's Masters thesis still needed
+        \end{itemize}
+        \item Meeting outcomes
+        \begin{itemize}
+            \item In eplot, try verb|colour=T| instead of verb|col=T| to plot all the vowels in different colours. Also, turn on \verb|ellipse|.
+            \item If you want to plot different colours for each speaker, will have to plot them individually on top of each other in different colours and and loop through while `holding on' to the same plot. When you do this, you need to set the xlim and ylim though otherwise the axes will rescale every time you plot.
+            \item N.B. Some things can be plotted in white, which makes it look like things have disappeared/not been plotted. Parse a vector of colours in to be explicit about the colour choices.
+            \item To include the IPA symbols on the plots, you'll have to replace the levels vector with copied and pasted symbols e.g. \begin{verbatim}
+                levels(danielformant.df\$vow) = c("æ","a","i","ø")
+            \end{verbatim}
+            \item You can always look up the arguments of a function by going \verb|args(eplot)|.
+            \item There is a bigger drop in variance after the third PC for the 12 speakers dataset than just the 5.
+            \item We need to validate these results, checking that each speaker's data is consistent.
+            \begin{itemize}
+                \item Do PCA of individual speakers to see if variances are still largely accounted for by PC1 and PC2 alone.
+                \item Do correlations between PC1s of speakers. How much individual speaker difference is being accounted for in PC1? Correlation of above 70\% is generally good (p < 0.01 very strong evidence) 
+                \item Get area functions for Set2 of some of the other VTs in addition to the 5 that Daniel has analysed, especially VT10, VT11 and VT12 which were quite good participants.
+                \item Will be interesting to see how VT04 and VT07 data turn out when compared individually to the other speakers, since Catherine is skeptical of how clearly they spoke during the MRI.
+                \item Do the same for the AmE data from Story.
+            \end{itemize}
+            \item This validation is crucial to the project and this form of research as a whole.
+            \begin{itemize}
+                \item Put things in the context of the wider literature.
+                \item These studies (MRI studies? Vowel studies? Phonetics studie?) have never treated participant datasets as a set, always opting to treat each participant's results individually almost like a case study, never putting all the data together.
+                \item Catherine's Interspeech study was the first time this was done.
+                \item Further validating this with a 12 speaker dataset, which is a pretty big deal in this field where you rarely get such datasets that `big', is key to any further research.
+                \item It is validating whether it is valid to analyse such data combined together. If so, this allows us to ignore individual speaker differences and analyse trends across whole demographics like gender, age, accent.
+                \item It allows us a method of extracting information about that underlying physioacoustic system that is common to everyone and variable across demographics, which we know is there, but haven't yet been able to analyse via MRI images.
+                \item Only once this have been fully validated can we analyse any trends and transformations and hold these in any significance.
+            \end{itemize}
+            \item Catherine sent me Daniel's thesis and the remaining formant data for Daniel's 5 VTs, so I've got all the data I need for now :)
+            \item \textbf{Probably a good idea to put all of the above into the report while it's fresh and relevant, backed with references.}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{12/08/2016 Friday Week 4: Report}
+\begin{itemize}
+    \item Wrote in a bit of methods for PCA, and Appendix B on vowels in hVd frames.
+\end{itemize}
+
+\section*{15/08/2016 Monday Week 5: R}
+
+\begin{itemize}
+    \item Reproduce Catherine's plots with 5 speakers (VT03, VT05, VT08, VT09, VT10)
+    \begin{itemize}
+        \item eplot fixed - warnings about labels was blocking the later arguments. Needed to convert the labels from the data frame integers into strings with \verb|as.character()|
+        \item Passed colors through as a vector
+        \item Also fixed issue with second eplot not plotting names of vowels. (needed to specify \verb|dopoints=T|.
+        \item Centroid plot looks not identical but very similar to Catherine's plot.
+        \item Just added those 5 VTs and got different results (still accounted for much more of the variance than the values given in Catherine's talk, but less than the full combined one set dataset). Catherine's plots were created with both sets from the data, so the second set need to be read in.
+        \item Spent ages trying to get labels/levels to work properly for data frame. There'll be an extra column called "Set" specifying whether it's from Set1 or Set2.
+        \item Combining both sets for the 5 VTs still gives different variances to the ones found by Catherine, but it's pretty close.
+        \item Also possible that it's slightly different because I exclude the first and last data points in the interpolated area function (the mouth and the glottis, because they're unreliable), while Catherine included the last one. Tried including the last data points (\verb|[5:31]| instead of \verb|[5:30]|), got slightly closer to Catherine's variances but not quite. (41.7\%, 20.43\% and 10.44\% respectively )
+        \item Safe to say that both centroid and variance plots are close enough to move along, and say that my code is working fine.
+    \end{itemize}
+\end{itemize}
+
+\begin{table}[]
+\centering
+\caption{Proportions of variance (\%) accounted for by first three principal components of various datasets}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Variance} & \textbf{PC1}   & \textbf{PC2}   & \textbf{PC3}   & \textbf{PC1+PC2}  \\ \hline
+Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4              \\ \hline
+12VT 1Set         & 46.1           & 21.2           & 13.8           & 67.3              \\ \hline
+5VT 1Set          & \multicolumn{4}{l|}{Catherine's 5VT \textless x \textless 12VT 1Set} \\ \hline
+5VT 2Set          & 42.7           & 21.2           & 10.4           & 63.8              \\ \hline
+5VT 2Set including glottis      & 41.7           & 20.43           & 10.44           & 61.5              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item Added IPA symbols onto R plots. Need to save with the UTF-8 encoding, but looks like even that doesn't work. Have to just copy and paste in every time. 
+    \item Get area functions for Set2 of VT10, VT11, VT12.
+    \begin{itemize}
+        \item VT11 Hoard Set 2 (vt11-hoar2-01.png) only has 7 slices, skips every second one (only has 1, 3, 5, 7, 9, 11, 13)
+        \item VT11 also has a bunch of other MRI images named things like vt11-sgaa1, vt11-sgii1, vt11-sguu1 etc. Only one set of each except 2 sets for sgii, 13 slices per vowel. From looking at the mid cross sections (slice 7's), looks like they're cardinal vowels.
+        \item vt11-hadd2-07.png slice 5, some pretty random assymetries, having to guess a whole lot... Look like the tongue was slightly sideways.
+        \item VT11 Had done
+        \item VT11 Hard done (damn those two vowels literally took two hours. Why. How.)
+    \end{itemize}
+    \item Bugs in VT01
+    \begin{itemize}
+        \item I've just noticed that VT01's values are very similar across all its vowels.
+        \item That, and the fact that all its first frames are zeros.
+        \item Check correlations within speakers, see if VT01 is an outlier.
+        \item See if VT01 is worth dropping for all the hassle it's causing.
+    \end{itemize}
+\end{itemize}
+
+\section*{16/08/2016 Tuesday Week 5: R and Meeting}
+\begin{itemize}
+    \item Pearson's product-moment correlation between first and second PCs of different speakers \begin{verbatim}
+            cor.test(pc.VTareas$x[,1],pc.resfreqIV$x[,1])
+        \end{verbatim}
+    \item Wow, R is so powerful, almost like SQL! \verb|grep("VT03", allSpeakers.df$spk)| returns a vector list of indexes where the level `spk' is equal to `VT01'. You can specify case sensitivity.
+    \item Then you can pass that through to select all the rows (or specific number of rows, e.g. 5:10) where that match occurs! \verb|allSpeakers.df[grep("VT03", allSpeakers.df$spk),5:10]|
+    \item Meeting with Catherine (Richard ill)
+    \begin{itemize}
+        \item Found VT01 hood data.
+        \item Strange how the 5VT 2Set data isn't reproducing exactly the same, but yeah, close enough.
+    \end{itemize}
+\end{itemize}
+
+\section*{17/08/2016 Wednesday Week 5: Report}
+\begin{itemize}
+    \item Appendix numbering
+    \begin{itemize}
+        \item Fixed issue with appendix numbering not happening - \verb|\backmatter| was too early, it suppresses all numbering. Should go after Appendix, before References.
+        \item FYI the optional arguments to the verb|\usepackage| can change whether we display `Appendix A Name goes here' (\verb|[titletoc]|) or `A Name goes here' (\verb|[toc]|) in the TOC. 
+    \end{itemize}
+    \item Methods
+    \begin{itemize}
+        \item Wrote part about automation and added a bit on the PCA performed so far.
+    \end{itemize}
+    \item Discussion
+    \begin{itemize}
+        \item Talked about limitations of the dataset and resources given.
+    \end{itemize}
+\end{itemize}
+
+\section*{18/08/2016 Thursday Week 5: 772 Lecture MSeg}
+\begin{itemize}
+    \item Musculoskeletal lecture, MSeg muscle segmentation software which takes MRI slices and reconstructs 3D volumes sounds like it might be a good alternative software to CMGUI.
+    \item Lecturer Dr Geoffrey Handsfield said to email him if I want to look into it further. \verb|g.handsfield@auckland.ac.nz|
+\end{itemize}
+
+\section*{19/08/2016 Friday Week 5: VT01's `hood' and VT11 Set2}
+\begin{itemize}
+    \item Adding VT01 `hood' back into analysis.
+    \begin{itemize}
+        \item The raw image files are not square like the other MRI images I've processed (1088 x 1088) but 1412 x 936. When the snake.com file tried to force it into a width and height of 240 x 240 this results in a squashed image. This is an aspect ratio of approximately 3:2 (1.5085).
+        \item Could either crop to a 1:1 aspect ratio, or change the width defined in the com file to be 1.5 times the height (360 x 240). Going with the latter option, seems less destructive.
+        \item Changing the width specified in snake.com prevents the squashing, but cuts off the right edge of the image. Trying 400 x 240. Nothing changed. Changing back to 360.
+        \item Poos, the uni computers don't have Perl installed. goin home :(
+    \end{itemize}
+    \item VT11 Set 2
+    \begin{itemize}
+        \item Head
+        \item Heed
+        \item Wow, actually takes like an hour per vowel. Getting through those How'd It Go podcasts though.
+        \item Herd
+    \end{itemize}
+\end{itemize}
+
+\section*{22/08/2016 Monday Week 6, D-31: Adding hood back into analysis, VT11 Set 2}
+\begin{itemize}
+    \item I've started counting down the days until final report is due, and there are 31 days currently and that is the scariest thing ever.
+    \item And yet apparently not scary enough to push me to spend every waking minute on this, which I should really be doing and it still wouldn't be enough time.
+    \item Also I've realised that I need to do all my project work in one place, but I haven't figured out where is the best place yet. See Table \ref{complabs}. Also why am I spending time on things like this.
+\end{itemize}
+
+\begin{table}[]
+\centering
+\caption{Project woes}
+\label{complabs}
+\begin{tabular}{|c|c|c|c|c|c|c|l|}
+\hline
+\textbf{Computer lab} & \textbf{RStudio} & \textbf{Perl} & \textbf{CMGUI} & \textbf{Git Bash} & \textbf{Matlab} & \textbf{Up to date data} & \textbf{Comments}                                                                                                                                                                                                                   \\ \hline
+70 Level 4            & Y                & Online         & Y              & Y                 & Y               & Y                        & Noisy and we get kicked out a lot                                                                                                                                                                                                   \\ \hline
+70 Project Room       & N                & Online             & local              & Y                 & Y               & Y                        & Often too full, no computers free                                                                                                                                                                                                   \\ \hline
+Chemmat project room  & N                & Online             & local          & N                 & Y               & Y                        & Nice, but no RStudio                                                                                                                                                                                                                \\ \hline
+Leech labs            & Y                & Online             & local          & Y                 & Y               & Y                        & Often full \& noisy                                                                                                                                                                                                                 \\ \hline
+My laptop             & Y                & Y             & local          & Y                 & N               & N (but can move)         & \begin{tabular}[c]{@{}l@{}}But small screen and terrible setup\\ bad desk \& chair\\ too poor to buy nice ergonomic setup,\\ will probably turn me into a hunchback\\ Also really unproductive at home.\end{tabular}                \\ \hline
+Bring laptop into uni & Y                & Y             & local          & Y                 & N               & N (but can move)         & \begin{tabular}[c]{@{}l@{}}Small screen \& means I have to bike with laptop\\ Laptop is heavy and gets damaged in my bag,\\ but doesn't fit in backpack if I put it in a protective case\\ Can't bus because buses are expensive \& biking\\ to uni is my only form of exercise\\ If I don't exercise I will die.\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item It looks like the best option is 70 Level 4, or the Leech labs. not too bad I guess. Better than lugging my laptop around. Turns out the IPA symbols don't work on plain R, and the project room doesn't have R Studio.
+    \item Could just do the Perl bit an online Perl compiler like \href{http://www.tutorialspoint.com/execute_perl_online.php}{here}. 
+    \begin{itemize}
+        \item Totally works on Perl Online! Upload CreateSlices.pl, curve.exnode, and create an empty new directory called \verb|slices|. In the terminal, type \verb|perl CreateSlices.pl curve.exnode| and when you cd into slices/, the exnode and exelem files are all there.
+        \item Project > Download Project, and unzip the slices back into your local 2create_slices folder. (ugh, the pain).
+    \end{itemize}
+    \item Now can continue adding `hood' back into the analysis.
+    \begin{itemize}
+        \item Looks like the image gets squashed again unless you change the width and height aspect ratio on \verb|data_point_placement.com| as well (like we did with \verb|snake.com|).
+        \item Changing the width to 360 like we did in step 1. \verb|specify_width 360 specify_height 240|
+        \item Okay so that didn't do anything.
+        \item Change width from 1 to 1.5 here: \verb|gfx create texture tract image bmp:vt01_hood1_00.bmp number_pattern 00 number_series 1 13 1 width 1.5 height 1 depth 1 distortion 0 0 0 colour 0 0 0 alpha 0 decal linear_filter resize_nearest_filter clamp_wrap;|
+        \item That did it! Will have to do the same in \verb|data_point_viewer.com| (step 9). Now moving onto adding the data points.
+        \item Wow! The glitch where the data points can't be placed on the right half of the slices isn't there! I am currently working on the project room computers.
+        \item Uploading exdataforareacalcuation one by one to Perl Online sucks.
+        \item It worked! Followed all the way through. Repeat the above for Pharyngeal.
+        \item Finally, area calculations done for hood.
+        \item MATLAB: run areaplot.m to get the distance_area for hood. It would be simple to do this without MATLAB for just the areas, because it's just the area.txt from Oral and Pharyngeal joined together into one column with the last value set to zero (for the glottis) and the 15th slice being an average between the two middle values (the last slice of Oral and first slice of Pharyngeal). But the MATLAB code also calculates the distance from the lips.
+        \item R: fixed up two of the R files, but when it came to the PCA, was getting some really weird plots. Wasn't using RStudio which might affect it. Try again on RStudio tomorrow.
+    \end{itemize}
+    \item VT11 Set 2
+    \begin{itemize}
+        \item Hid
+        \item Hoard - Only 1, 3, 5, 7, 9, 11, 13 slices available which means... debugging.
+        \begin{itemize}
+            \item Incremented plane\_number by 2 instead of 1. That didn't work. How far up does this go?
+            \item snake.com makes 15 equispaced points and puts them into curve.exnode?
+            \item There's nothing about 15 hardcoded into CreateSlices.pl
+            \item Must be the 15 equispaced points in curve.exnode...which is very unfortunate because it definitely doesn't have to be that way! The number of lateral slices has nothing to do with the number of cross-sectional slices we make...
+            \item Maybe instead of dilly-dallying on this, I just move on and go back to it later, or ask Catherine for the missing slices.
+        \end{itemize}
+        \item Hod
+        \item Hood
+        \item Maybe I should be comparing the areas found here with cross-sectional areas/diameters of the pharyngeal cavity/upper larynx/top of the trachea seen in literature.
+        \item Just Hud and Whod to go in VT11! I think I'm averaging around 40 minutes per vowel. 40 mins x 11 vowels - 7 hours 20 minutes per speaker.
+    \end{itemize}
+\end{itemize}
+
+\section*{23/08/2016 Tuesday Week 6, D-30: Adding hood back into analysis, VT11 Set 2, Meeting}
+\begin{itemize}
+    \item RStudio \verb|pca_12VT1Set_combined.R| with VT01 hood added back
+    \begin{itemize}
+        \item Looks like it might have been screwing up on RStudio because I hadn't updated the plots in \verb|pca_12VT1Set_combined.R| with the correct eplot arguments like I had for the eplots in \verb|pca_5VT2Set_combined.R|.
+        \item You also don't need the \verb|plot.new()| commands.
+        \item `hood' huddling in one corner disappeared.
+        \item Proportion of variance decreased! Table \ref{variance}. But compared to Catherine's 5VTs, it hasn't dropped despite adding more speakers, treating it all together. 
+        \item \textbf{The first time that different ages and genders have been thrown together into a combined dataset, and the main differences are still being captured when analysed together.}
+        \item Checked the area functions in the data frame with the raw area.txt's, and they all seem to match up. How did including this one thing change so much? 
+        \begin{itemize}
+            \item On a side note though, the linear interpolation does seem to smooth out the the area function a lot. A lot of the extreme peaks and troughs are diminished, and in some cases, kind of changed quite a bit. Check out VT02 \textipa{e}.
+            \item The linear interpolation that happens in R when reading in the MRI data happens because there are different step sizes between the Oral and Pharyngeal regions, since they were equispaced with 15 points in different stages.
+            \item Compared the two area functions (interpolated, and non-interpolated straight from MATLAB) and they were actually fine. Small ups and downs that look significant as absolute values, but relative to the overall shape, they're insignificant.
+            \item The interpolated area function seems to lag behind a bit, but again, insignificant?
+        \end{itemize}
+    \end{itemize}
+    \item Correlations between speakers
+    \begin{itemize}
+        \item VT01 and VT02 PC1 has 98\% correlation with virtually zero p-value!
+    \end{itemize}
+    \item Correlations within speakers for the ones we have two sets for (Daniel's 5 VTs) 
+    \item Meeting
+    \begin{itemize}
+        \item Scope and direction of project
+        \begin{itemize}
+            \item I'm getting a good sense of what it means to be `exploratory' in my research, and I'm enjoying playing around with the data.
+            \item When I get results with quirks and interesting bits in it, I must follow it up and try to explain and to justify those quirks.
+            \item But given that there are now four weeks left of the project, how much am I able to cover? What would be sufficient?
+            \item Also, is that scope Engsci enough? I have done a bit of data manipulation but not much modelling at all. Is the fact that I use a linear predictive model of speech sufficient, even if it's just an in-built function on R?
+            \item Do PCA and correlations on Story data.
+            \item Look at trends in age and accent before doing Resonance and Formants. Focus on resonance before formants (because we don't have access to all the formants and that's tricky to explain). 
+            \item Start age/accent analysis now.
+            \item Check PCAs etc. proportions of variance when grouped into age, gender, accent groups.
+            \item Improvements to image processing procedures.
+            \item Using the right tools, linear predictive model, assess advantages/disadvantages.
+            \item Emphasis the impact of a larger dataset analysed together.
+            \item Think back to original project abstract and try to tie together.
+            \item Resonances and formants, again, validate MRI accuracy. 
+        \end{itemize}
+        \item Report
+        \begin{itemize}
+            \item End with strong positive conclusion
+            \item Future work goes somewhere else, maybe threaded into the discussion or even conclusion rather than having a dedicated section. Always end strong & positive.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{26/08/2016 Friday Week 6, D-27: Correlation}
+\begin{itemize}
+    \item Crazy week 1 of midsem break coming up with project deadlines looming as well as Thor's 772 labs
+    \item Inter-speaker correlations
+    \begin{itemize}
+        \item PC1: See big table. All extremely strong correlations, virtually zero p-values, the lowest correlation was 78.1\% between VT05 and VT11.
+        \item Looks like we really are capturing something across age and gender!
+        \item PC2: Hmm correlations go as low as 59\%. Does this mean that PC2 might be encoding something that is not necessarily phonetic height?
+    \end{itemize}
+\end{itemize}
+
+\begin{table}[]
+\centering
+\caption{Correlation results between first principal components of different vocal tracts show high levels of correlation. VT05 and VT10 have negative correlations with the rest of the data due to [SOMETHING]. All correlations had p-values significantly lower than 0.001, between the order of 10$^{-12}$ to 10$^{-15}$.}
+\label{my-label}
+\begin{tabular}{|c|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+\textbf{PC1 Correlations} & \multicolumn{1}{c|}{\textbf{VT02}} & \multicolumn{1}{c|}{\textbf{VT03}} & \multicolumn{1}{c|}{\textbf{VT04}}              & \multicolumn{1}{c|}{\textbf{VT05}}              & \multicolumn{1}{c|}{\textbf{VT06}}              & \multicolumn{1}{c|}{\textbf{VT07}}              & \multicolumn{1}{c|}{\textbf{VT08}} & \multicolumn{1}{c|}{\textbf{VT09}} & \multicolumn{1}{c|}{\textbf{VT10}} & \multicolumn{1}{c|}{\textbf{VT11}} & \multicolumn{1}{c|}{\textbf{VT12}} \\ \hline
+\textbf{VT01}         & 0.984                              & 0.931                              & 0.904                                           & -0.830                                          & 0.949                                           & 0.935                                           & 0.952                              & 0.979                              & -0.980                             & 0.985                              & 0.975                              \\ \hline
+\textbf{VT02}         & \cellcolor[HTML]{C0C0C0}           & 0.912                              & 0.897                                           & -0.813                                          & 0.931                                           & 0.912                                           & 0.939                              & 0.966                              & -0.967                             & 0.910                              & 0.959                              \\ \hline
+\textbf{VT03}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & 0.932                                           & -0.855                                          & 0.926                                           & 0.899                                           & 0.936                              & 0.945                              & -0.914                             & 0.923                              & 0.960                              \\ \hline
+\textbf{VT04}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & -0.888                                          & 0.938                                           & 0.914                                           & 0.919                              & 0.947                              & -0.917                             & 0.868                              & 0.932                              \\ \hline
+\textbf{VT05}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}                        & -0.899                                          & -0.857                                          & -0.826                             & -0.869                             & 0.845                              & -0.781                             & -0.856                             \\ \hline
+\textbf{VT06}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}                        & \cellcolor[HTML]{C0C0C0}                        & 0.970                                           & 0.943                              & 0.964                              & -0.949                             & 0.935                              & 0.941                              \\ \hline
+\textbf{VT07}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & 0.926                              & 0.944                              & -0.925                             & 0.933                              & 0.903                              \\ \hline
+\textbf{VT08}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}           & -0.963                             & -0.931                             & 0.954                              & 0.947                              \\ \hline
+\textbf{VT09}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & -0.982                             & 0.961                              & 0.976                              \\ \hline
+\textbf{VT10}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & -0.950                             & -0.967                             \\ \hline
+\textbf{VT11}         & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}{\color[HTML]{C0C0C0} } & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & \cellcolor[HTML]{C0C0C0}           & 0.954                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Proportions of variance (\%) accounted for by first three principal components of various datasets}
+\label{variance}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Variance} & \textbf{PC1}   & \textbf{PC2}   & \textbf{PC3}   & \textbf{PC1+PC2}  \\ \hline
+Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4              \\ \hline
+12VT 1Set         & 46.1           & 21.2           & 13.8           & 67.3              \\ \hline
+5VT 1Set          & \multicolumn{4}{l|}{Catherine's 5VT \textless x \textless 12VT 1Set} \\ \hline
+5VT 2Set          & 42.7           & 21.2           & 10.4           & 63.8              \\ \hline
+5VT 2Set including glottis      & 41.7           & 20.43           & 10.44           & 61.5              \\ \hline
+12VT 1Set normalised         & 40.3           & 20.0           & 10.2           & 60.3              \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{PC2 Correlations. P-values all under 0.01, most under 0.001}
+\label{cor_inter_pc2}
+\begin{tabular}{llllllllllll}
+              & \textbf{VT02}     & \textbf{VT03}     & \textbf{VT04}      & \textbf{VT05}      & \textbf{VT06}      & \textbf{VT07}      & \textbf{VT08}      & \textbf{VT09}      & \textbf{VT10}      & \textbf{VT11}      & \textbf{VT12}      \\
+\textbf{VT01} & 0.847128444300516 & 0.820909686461725 & -0.838688210673325 & -0.653020052280255 & 0.591539386945907  & 0.544016514853189  & 0.740116022855861  & 0.911648449881365  & -0.704174487337231 & 0.865082436487221  & 0.868939257025278  \\
+\textbf{VT02} & NA                & 0.682948080766539 & -0.713496587747514 & -0.580589034155188 & 0.616438555189655  & 0.527878205531325  & 0.69760040678296   & 0.872144907811348  & -0.857277366604372 & 0.829538769728653  & 0.776314661197648  \\
+\textbf{VT03} & NA                & NA                & -0.904871873437688 & -0.740880602234528 & 0.34442827371002   & 0.774047263370153  & 0.636855222296455  & 0.720656084284595  & -0.666451818823628 & 0.779097185611458  & 0.959616400381673  \\
+\textbf{VT04} & NA                & NA                & NA                 & 0.792616388372209  & -0.498172242458105 & -0.731905716797492 & -0.629117925837558 & -0.781907382631546 & 0.662648453220389  & -0.833774208517604 & -0.904028372175641 \\
+\textbf{VT05} & NA                & NA                & NA                 & NA                 & -0.511966054689547 & -0.612606055222388 & -0.381967642522164 & -0.664385867375645 & 0.443532752075164  & -0.640898135513767 & -0.737000307767778 \\
+\textbf{VT06} & NA                & NA                & NA                 & NA                 & NA                 & 0.305674590799484  & 0.575496761322713  & 0.766725033965882  & -0.292359020899053 & 0.715753098815601  & 0.485263351027267  \\
+\textbf{VT07} & NA                & NA                & NA                 & NA                 & NA                 & NA                 & 0.542699050191885  & 0.551501921614801  & -0.556445443357395 & 0.62140012476536   & 0.743156380689334  \\
+\textbf{VT08} & NA                & NA                & NA                 & NA                 & NA                 & NA                 & NA                 & 0.795090052982803  & -0.625331704006395 & 0.895798531576123  & 0.732227807844181  \\
+\textbf{VT09} & NA                & NA                & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & -0.674056660219262 & 0.889993089918183  & 0.813181138696995  \\
+\textbf{VT10} & NA                & NA                & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & -0.707165996218928 & -0.744623726988416 \\
+\textbf{VT11} & NA                & NA                & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & NA                 & 0.861574371473871 
+\end{tabular}
+\end{table}
+
+\section*{28/08/16 Sunday Midsem Break Wk 1, D-25: VT11 Set 2}
+\begin{itemize}
+    \item VT11 Set 2
+    \begin{itemize}
+        \item Hud
+        \item Who'd
+    \end{itemize}
+    \item VT12 Set 2 - There is no raw data for Set 2 of VT12 at all!
+    \item VT01 - Doubles for a few vowels only, not the cardinal ones - missing Had, instead has a full second set for Herd. Hard only has every second slice.
+    \begin{itemize}
+        \item Had - Set 1 only
+        \item \textit{Hard} - Set 2, every second slice (1, 3, 5, 7, 9, 11, 13)
+        \item Head - Set 1 only
+        \item \textbf{Heed} - Set 2 full set
+        \item \textbf{Herd} - Set 2 full set
+        \item Hid - Set 1 only
+        \item \textbf{Hoard} - Set 2 full set
+        \item Hod - Set 1 only
+        \item Hud - Set 1 only
+        \item \textbf{Who'd} - Set 2 full set
+    \end{itemize}
+    \item VT02 - Set 1 only except the following
+    \begin{itemize}
+        \item Hard every second slice (1, 3, 5, 6, 8, 10, 12)
+        \item Heed - Set 2 full set
+        \item Herd - Set 2 full set
+        \item Hoard - Set 2 full set
+        \item Who'd - Set 2 full set
+    \end{itemize}
+    \item VT03 - Daniel's done both sets
+    \item \textbf{VT04} - All of Set 2 is available, but given the Set 1 analysis, it doesn't look like VT04 has great variation (although it does follow the general trends). Might not be worth it under tight deadlines.
+    \item VT05 - Daniel's done both sets
+    \item \textbf{VT06} - Helen only did Set 1, but all of Set 2 is available. Again, pretty small variation in area functions, not sure if it's worth it (see VT04).
+    \item \textbf{VT07} - All of Set 2 available (see VT04)
+    \item VT08 - Daniel's done both sets
+    \item VT09 - Daniel's done both sets
+    \item VT10 - Daniel's done both sets
+    \item VT11 - Done by me
+    \item VT12 - None of Set 2 available.
+\end{itemize}
+
+\section*{29/08/16 Monday Midsem Break Wk 1, D-24: Correlations \& Meeting}
+\begin{itemize}
+    \item Inter-speaker correlations continued
+    \begin{itemize}
+        \item Wrote R code to automatically output correlation estimates and p-values to tables which are written to a csv. Much more accurate than hand copying over to Excel. Now it's super easy to import into Latex Table Generator as well :D
+        \item Some p-value csv's saved as .xlsx to allow conditional formatting, to pick out key or outlying values (high p-values, low correlations). Conditonal Foramtting > New Rule > gradient from lowest value being good, to highest value being bad (for p-value)
+        \item Before conditional formatting the correlation estimates, convert them all to absolute values so that the negative correlations don't affect it. 
+        \verb|=IF(ISNUMBER(B2),ABS(B2),B2)|
+        \item So that the correlation color coding is comparable, set lowest value to 0.7 and highest to 1.0. For p-values, under 0.005 is strongly significant (green), 0.005 to 0.05 is a gradation of statistical significance, above 0.05 is not statistically significant.
+        \item PC2 (Table \ref{cor_inter_pc2}): Hmm correlations go as low as 29\%, with a handful of p-values which are above 0.01, some even above 0.01 (the highest p-value is 0.14). Does this mean that PC2 might be encoding something that is not necessarily phonetic height?
+        \item PC3 (Table \ref{cor_inter_pc3}: Mostly insignicant p-values (above 0.05), with a huge range of correlations from 0\% to 70\%. Looks like this does indeed encode inter-speaker differences!
+    \end{itemize}
+    \item Intra-speaker correlations
+    \begin{itemize}
+        \item Incorporate VT11 in to the VT03, VT05, VT08, VT09, VT10 set that's already been done in Interspeech.
+        \end{itemize}
+        \item File structure rearranged so there's just one folder with all the data available, in Set1/ and Set2/ folders.
+        \item Weird, a lot of the area functions output in distance_area/ for the VTs analysed by Daniel don't match the ones I have in my All VT data folder. Looks like they were created at a different time, but still in 2012. No idea where I would have got these from.
+        \item A right, look in the log for 01/08/2016, it was from Helen Summer Work. I think I chose to include Helen's sets where possible because I thought her markup would have been more accurate since she had come up with splitting the vocal tract into oral and pharyngeal, and I had followed her instructions in her report. But this isn't a great reason, since Daniel's work came after Helen's, so he would have also had her report to go off. 
+        \item Furthermmore, Helen only did Set 1. If I'm doing interspeaker correlations, I don't think it's a good idea to mix Helen and Daniel's area functions since the subtle differences of how they marked them up might show up in high orders.
+        \item Therefore in the folder All VT data/, both the sets of VT03, VT05, VT08, VT09, VT10 come from Daniel. The rest are single sets from Helen or me.
+        \item Looks like Helen had done VT06/Set2/Hard, but none others for VT06/Set2.
+        \item R script paths also adjusted to reflect the extra layer of directories. 
+        \item Damn it now that I've replaced some of the Set1's with Daniel's data, correlations have changed slightly (most of them have gone down which kind of makes sense, because you'd expect the way that one person marks up different sets is more similar to themself rather than someone else). No significant changes. Rewrite all .csv tables etc.
+        \item Woops I haven't calculated the area functions for VT11 Set 2. Run distance_area calculations on matlab.
+        \begin{itemize}
+            \item Turns out I had missed calculating the area for Hid Oral. Did it on perl online.
+            \item Also I just completely missed Hoard Pharyngeal. Ahh this is the one which only had every second slice. I have to tinker with the perl code probably...
+            \item Everything works as it should until 6vocaltractnodeplacement. Editing \verb|data_point_placement.com|
+            \item Change the create texture command to go through the number series in twos. \verb|number_series 1 13 2|. That did it! Obviously way more blurry images which are barely recognisable, but ah well. Change the same line in \verb|data_point_viewer.com| as well.
+            \item Finally, distance_area found. yay.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section*{30/08/16 Tuesday Midsem Break Wk 1, D-23: Correlations \& Trends}
+\begin{itemize}
+    \item Think carefully about how maxArea gets applied here - pretty sure it's not legit at the moment, need to splice it carefully to reflect the selection in each set dataset.
+    \begin{itemize}
+        \item So maxArea is a vector of the maximum area per vowel. Each vowel is divided by its highest area.
+        \item AGGHHHH I'VE BEEN DOING MAXAREA WRONG THE WHOLE TIME. In \verb|correlations_inter.R| I divide each segment of the allSpeakers.df by maxArea, instead of one of maxArea's elements, the one that corresponds to the speaker and vowel that we are on! Instead of just dividing by maxArea, it needs to be divided by \verb|maxArea[((i-1)*10 + i):(i*10 + i)]|.
+        \item This means that all the correlation spreadsheets I'd done are wrong too. Doing them all again.
+        \item PC1: Good correlations around 90\% mark after normalisation, with p-values all well under 0.005. 
+        \item PC2: Mostly very borderline 65\% - 75\% with a few totally uncorrelated (VT2). Does it really encode backness? Just noisy?
+        \item PC3: All over the place. Individual speaker differences?
+        \item Overall, normalised correlation estimates and p-values were worse than non-normalised (or badly normalised, whatever that code was doing).
+        \item What WAS that original code doing? The maxArea vector was dividing the values in the splice of the allSpeakers.df column-wise. allSpeakers.df[1:11,4:30] first element is divided by maxArea[1], second element column-wise ([2,1], second row, first column) is divided by maxArea[2], and so on until the end of the column, then [1,2] is divided by maxArea[12], [2,2] by [13] etc.
+        \item So it was totally screwed up and not even comparable.
+        \item If you're going to compare, compare against totally un-normalised.
+        \item Re-did the un-normalised data, same trends, barely any difference.
+        \item Thank goodness I automated the output to csv early on. Always automate. 
+    \end{itemize}
+    \item Weird quirk in the data: all the datasets done by Daniel (3, 5, 8, 9, 10 and Set1 of VT11) have the same area value for X1 and X2. This was probably done to discount the ambiguity of X1 (lips, where you can barely see anything on the MRI). But where was this applied? It must have been in the matlab or R steps (not on CMGUI) because I used the exact same process, but the ones that I marked up (VT04, VT07, VT11 Set 1) don't have this. It doesn't matter anyway because I only analyse the data from X2 to X(second to last from glottis.
+    \item Now for the actual intra-speaker correlations.
+    \begin{itemize}
+        \item Checked through the normalisation and it's working as it should.
+        \item Results: All very high correlations for PC1, 2, even 3 (60\% to above 90\%) EXCEPT VT11 which has a high correlation for PC1, but very low correlation in PC2 and PC3.
+        \item Compared with the intraspeaker correlations in Interspeech paper. PC1 correlation estimates are a bit different, maybe because the normalisation was done differently (or, erroneously?). Follows the general trends though - VT03 (SP01) and VT09 (SP04) have the highest correlations. VT10 is strangely quite a bit lower than expected by SP05.
+        \item Tried it up to PC5 and correlations just get lower. No correlations between higher order PCs. Does this suggest that individual speaker differences aren't captured by higher order PCs, therefore isn't captured by MRI-derived area functions? Will have to wait and see for Age and Gender analyses.
+        \item What's wrong with VT11? Is it because Helen did Set1 and I did Set2, while all the other Set1 and Set2s, Daniel did both of?
+    \end{itemize}
+    \item Wow, Daniel's masters thesis is legit! The intro is basically all I need!
+    \item Made a nice Excel version of the Participant list word doc with gender, age groups etc.
+    \item Age
+    \begin{itemize}
+        \item PC1: Correlations don't seem any higher within same age groups
+        \item PC3: Same here
+    \end{itemize}
+    \item Gender
+    \begin{itemize}
+        \item PC1 and PC3 both don't show any standout differences within or outside of genders.
+    \end{itemize}
+    \item Meeting with Catherine and Richard
+    \begin{itemize}
+        \item Formant analysis - don't have to do this, just say that it's future work, that it'd be great to have the data from Catherine (because we don't have all the data and it'll be tricky to explain why we only have partial data).
+        \item The Resonances shouldn't take long apparently.
+        \item The bit about finding a function that changes age and accent, could be the LPC coefficients.
+        \item Possible very-much-in-the-future work: Instead of verifying by applying rotation vector/function to LPC coefficients and re-synthesising, could get Dhanya's recordings of different ages (all male, fair test), and train a system (using deep learning??) to categorise a person's age group by analysing its PCs or LPC coefficients.
+        \item VT02's low PC1 correlation with other VTs: She's Australian! That probably has something to do with it! Check by seeing where her vowels are in vowel space (PC1/PC2 plots) and if there's a significant shift from other vowels plotted, check that it correlates to what you'd expect for AusE vs. NZE.
+        \item VT10 slightly low correlations in PC2: Catherine wasn't there to quality control.
+        \item The way I've done my normalisation is vowel and speaker specific.
+        \item PC3+ higher orders are noisy.
+        \begin{itemize}
+            \item The method of deriving this data itself is very noisy! The manual, approximate way that the cross-sectional areas have to be outlined, differences between people doing the analysis, different strategies for getting around imaging artifacts.
+            \item Quantify this noise/variability by repeating the markup for a few of the vowels that I've done myself, to check what sort of variation or correlation occurs between the same speaker, same vowel, same person doing the markup.
+            \item If the correlations in the higher order PCs are similar to the ones found between speakers, then PC1 and PC2 is the extent of the data able to be derived from MRI images (by PCA. If there's another analysis possible, would love to see it).
+        \end{itemize}
+        \item VT11 low correlation may be due to Helen using a different strategy to handle the tongue artifact (VT11 had a metal plate). Could perhaps just isolate the pharyngeal region and do the analysis on that. Would require adding an extra layer of code, switching between reading just oral (first 14 slices), just pharyngeal (last 14), and both (as I've got it now).
+        \item If you want to add more data to the intraspeaker correlations, could do Set 2s of VT04, VT06 and VT07 since despite their small area functions, their PC1s and PC2s did correlate just fine with the others (or no worse than the other VTs).
+        \item Is there some way to combine the information seen in PC2 and PC3? It \textit{feels} like PC2 has like, 60\% data in it, and PC3 has the other 40\%. I know it doesn't really work like that, but if there was a way to collect up all the data lingering in those PCs to have a stronger representation of phonetic height, since PC2 alone doesn't separate out the variables by height very well (check if this is actually the case, with plots)
+        \item Age: No result. Think about what you'd expect from older age. Lack of tone (check literature for evidence), tongue hands back more, pharyngeal region should decrease. Only look at pharyngeal.
+        \item Gender: Makes sense that you wouldn't be able to see the differences here. Is in line with literature which says that there aren't any differences physiologically between male and female VT shapes except VT size which is eliminated by normalisation. Scaling only. (check literature on this).
+        \item The non-results within the age and gender groups are actually expected - you shouldn't really be able to see age and gender differences from the MRI scans, especially if the derived data is normalised.
+        \begin{itemize}
+            \item A correlation that takes into account 2 variables, PC2 AND PC3? 
+            \item ``3D plot on MATLAB"
+        \end{itemize}
+        \item Report - get writing! Can summarise Daniel's masters thesis intro/background in own words and understanding. All good that all the results aren't yet written, just leave placeholders etc. will be judged accordingly. Showing the path & what you learnt from experiences is important, not just like a paper where you're just showing results. Demonstrate how much you did.
+    \end{itemize}
+\end{itemize}
+
+\section*{31/08/16 Wednesday Midsem Break Wk 1, D-22: VT02 comparison, variability in deriving area functions}
+\begin{itemize}
+    \item Current To-Do list
+    \begin{itemize}
+        \item Low interspeaker correlation for VT02
+        \begin{itemize}
+            \item Australian: validate with vowel plot
+        \end{itemize}
+        \item Quantify variability in deriving area functions
+        \item Low intraspeaker correlation for VT11
+        \begin{itemize}
+            \item Artifacts due to metal plate. Isolate pharyngeal region
+        \end{itemize}
+        \item Multivariate correlation with PC2 and PC3?
+        \item Age: isolate pharyngeal region
+        \item Analyse Story AmE dataset
+        \begin{itemize}
+            \item Check Story data with article.
+            \item Run through PCA and correlation analysis
+        \end{itemize}
+        \item Trends across accent
+        \item Resonance analysis
+        \item Rotation vectors
+        \begin{itemize}
+            \item Age
+            \item Accent
+            \item LPC coefficients
+        \end{itemize}
+        \item DRAFT REPORT FRIDAY
+    \end{itemize}
+    \item VT02 Australian validation
+    \begin{itemize}
+        \item Plot centroids of all PCs from all speakers except VT02, then plot VT02 overtop.
+        \item Hypothesis: The interspeaker correlation between VT02 and the other VTs was strangely low. Given that the participant was Australian within an NZE dataset, this script
+plots VT02's vowel in the PC space on top of the centroids of the combined
+dataset excluding VT02. Given that NZE hid and hood vowels are more
+centralizing and lower than AE, while front high vowels are higher (Watson, Harrington & Evans, 1998), we should
+expect a similar result here with VT02, although only having a sample size of
+1 for Australian English, this is hard to determine. A more robust analysis
+would be including VT02 in an interspeaker correlation analysis with other
+Australian English speakers with the hypothesis that there would be no
+significant differences in its correlation values than with all the other AE
+speakers. This would require MRI data of Australian speakers captured with the
+same methods.
+        \item Nearly there, but emu always plots on a new graph. Even with \verb|par(new=T)|, it superimposes the entire plot including the axes onto the first centroid plot. 
+        \item This would be fine it if did it exactly, but it doesn't.
+        \item I can't use \verb|points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")| because it doesn't plot the vowels in the slightly skewed weird way that eplot does, when formants = T. Even when formants = F, eplot does some magic stuff with the data to make it look more vowel quadrilateral shaped. I need to use eplot, or hack eplot's backend (not worth the time)
+        \item I guess a hacky way of doing it is to define the xlim and ylim so that it's exactly the same. Okay that's what I'll do even if it's lame.
+        \item So it superimposed, but tbh the centroid plot is so warped that I can't tell which way is up anyway to determine whether NZE is higher or whatever.
+        \item To be honest, this was an issue from a while back that I sort of ignored - eplot isn't really plotting the data the way it should. I'm pretty convinced that this is eplot's fault, and not the data's, because for example in the centroid plot for 12VT1Set, the order in which the vowels are plotted when you go around anticlockwise from i around to u:, it's basically bang on.
+        \item Gah whatever
+    \end{itemize}
+    \item Variability in deriving area functions from MRI
+    \begin{itemize}
+        \item VT04 Set1 Cardinal vowels (Had, Heed, Hod, Who'd)
+    \end{itemize}
+\end{itemize}
+
+\section*{06/09/16 Tuesday Midsem Break Wk 2, D-16: VT02 comparison, variability in deriving area functions}
+\begin{itemize}
+    \item Revised timeline of project, and storyboard of draft report.
+    \item VT02 Australian
+    \begin{itemize}
+        \item Going back to this for a bit, it wasn't really conclusive because the eplots were all rotated so it was hard to tell which way is high and which is low, hard to say if VT02's vowels are more/less central/high whatever.
+        \item You can tell that they're quite different from the centroids though, so maybe doing a variance analysis might be a better way to tell if they're outliers.
+        \item \verb|pca_1Set_exclude.R| showed no conclusive results. The variances accounted for by PC1, PC2 or PC3 in the VT02-excluded dataset weren't higher or lower than in datasets where other VTs were excluded. Also, the variance of PC1 of the VT02-excluded dataset wasn't significantly different to the others either.
+        \item Basically, this is just kinda inconclusive why VT02 had such low inter-speaker correlations, other than the fact that they were australian.
+    \end{itemize}
+    \item Pearson's product-moment correlations
+    \begin{itemize}
+        \item When justifying why this particular correlation analysis was the one that was used, I came across several \href{https://statistics.laerd.com/statistical-guides/pearson-correlation-coefficient-statistical-guide.php}{assumptions it makes}.
+        \item Normality: did Shapiro-Wilks and QQ-Plot tests on the \verb|pca1$rotation[,p]| and \verb|pca2$rotation[,p]|, and quite a few of those datasets are not normal (p-values of 0.5 or above), which means this correlation can't be used on it?
+        \item Homoscedasticity: can use \verb|lmtest::bptest| and \verb|car::ncvTest|, but need a model.
+        \item Actually, should I be doing the correlations on \verb|pca1$rotation[,p]| or \verb|pca1$x[,p]|? Rotation is the matrix of eigenvectors, which is what we're using at the moment, and x is the value of the rotated data which is centred and scaled data multiplied by the rotation matrix. Maybe it doesn't make a difference.
+        \item Tried swapping out rotation for x in \verb|correlations_inter.R|. Results in \verb|correlationResults_inter_PC1_norm.csv| show generally similar correlation values, but lower for VT02. Also overall higher p-values by a few orders, most of them still in order of 10$^{-5}$ but p-values for VT02 have been pushed up to 0.05 sort of zone. So it does quite make a difference...
+        \item Pretty sure it's x that I should be plotting - why would I be comparing the rotation vectors? Even if x is dependent on rotation, since it's the data multiplied by the rotation... rotation is not a surrogate measure of the data.
+        \item Rotations (tests done on VT04 and VT08)
+        \begin{itemize}
+            \item PC1
+            \begin{itemize}
+                \item Light-tailed
+                \item P-value ~0.001, not normal
+            \end{itemize} 
+            \item PC2
+            \begin{itemize}
+                \item Normal Q-Q plot looks pretty normal
+                \item P-value 0.2 and 0.7 pretty high, normal
+            \end{itemize}
+            \item PC3
+            \begin{itemize}
+                \item Left skew, and fairly normal
+                \item P-value 0.005 and 0.1
+            \end{itemize}
+        \end{itemize}
+        \item X
+        \begin{itemize}
+            \item PC1: Pretty normal, maybe slightly light-tailed, p-values 0.5 and 0.8
+            \item PC2: Fairly normal plots, 0.5 and 0.9
+            \item PC3: Heavy left skew, 0.002 and 0.3, not normal.
+        \end{itemize}
+        \item Swapped out x for rotations in intra-speaker correlations as well, same again, gave slightly worse correlations but similar.
+    \end{itemize}
+    \item Multi-variate correlation with PC2 and PC3
+    \begin{itemize}
+        \item This isn't really a thing. You can just select pca1\$x[,2:3] and pca2\$x[,2:3] in the correlation but it makes for unreasonable results.
+    \end{itemize}
+    \item Meeting with Catherine and Richard
+    \begin{itemize}
+        \item Quantifying correlation
+        \begin{itemize}
+            \item Is there a statistical analysis for seeing if a particular value in a dataset is prominently different to the rest?
+            \item Correlations aren't really quantifiable like that (can't say 0.94 is more correlated than 0.91 for example), they sort of divide into discrete chunks (e.g. 70\%+ is correlated, 55\% to 70\% is mildly correlated, below that is not correlated).
+            \item Also, p-values need to be considered - even if it has a high correlation value, maybe the p-value isn't as good.
+            \item When the AmE data is done, hopefully the correlation differences are clear, with the NZE and AmE data only being correlated within their accent groups, and VT02 being more correlated with NZE than with AmE.
+        \end{itemize}
+        \item VT02 Australian 
+        \begin{itemize}
+            \item Catherine actually found the vowel plot really interesting.
+            \item The vowels of interest are hid, had and hood.
+            \item VT02 eplot - it looks like things are all over the place, but really it's just because PC1 seems to encode a mix of height and backness. i.e. the direction of largest variation was backness for some vowels, but height for others. My analysis shows that the division between PC1:backness and PC2:height is not as clear cut as literature suggests.
+            \item Hid vowel is still separated out strongly by PC1, while hood vowel is very much the same. This may be because VT02 has lived in NZ for about 30 years now, so a lot of her vowels may have normalised to NZ ones and she is highly tuned to NZE, with the exception of a few target vowels that she has held onto. This tends to happen with people who move to a different country, and it's the most prominent vowels that are the most persistent, in this case the Australian `hid'.
+            \item Because of her assimilation, maybe that's why her `hood' is so similar to the NZ dataset.
+            \item Could have a look at just the hid and had vowel's PCs, compare them with other speakers, see if correlations are low there, compared with other vowels like hard, hod, who'd which shouldn't have changed very much.
+            \item Ellipse plots tend to be rather inelegant in these cases, because they get affected by outliers. Just \verb|dopoints| to show the clusters, that's a bit better generally.
+            \item With the variance not decreasing when VT02 was excluded, it's only one speaker so even if there actually was a big effect, because of its relative insignificance on its own, it's not likely to have made much of a difference.
+        \end{itemize}
+        \item Note: Sociolinguistic effect of NZE vowel space change over the 1900s and age of speakers
+        \item Multivariate PC2 + PC3
+        \begin{itemize}
+            \item Ladefoged F1 vs. (F3 - F2)
+        \end{itemize}
+        \item Correlation analysis & normal data
+        \begin{itemize}
+            \item Correlation is pretty vague, wouldn't matter much especially with this small data set. Especially when correlations are all the way up at 90\%.
+            \item The data is solid, so don't need to worry about the statistical methods that come after - those can easily be changed. If I want to find an alternative correlation method that works with small sample sizes like this, research/look around and ask Cam Walker for help maybe.
+            \item 3 different people have been marking these up and we're still seeing correlations.
+            \item On the issue of whether to be doing correlations between the eigenvectors (rotation vectors) or the rotated datasets, intuitively I'd say dataset because that's the actual representation of the data. Last meeting, I had the issue that normalising the data actually reduced the correlations, when we would have expected the opposite. Maybe that's because we were doing it on the rotation vectors rather than the rotated data itself. Compare normalised vs. unnormalised on pca\$x and see if correlations increase when normalised. If they do, then that would be a nod towards using pca\$x rather than pca\$rotation.
+        \end{itemize}
+        \item Report structure \& contents
+        \begin{itemize}
+            \item Conventional structure probably best - make the reader do as little work as possible.
+            \item Mention that all data was collected between [DATES] under ethics approval number [X].
+        \end{itemize}
+    \end{itemize}
+    \item Checking whether to use eigenvectors or rotated data in correlations
+    \begin{itemize}
+        \item By comparing normalised vs. unnormalised correlation results.
+    \end{itemize}
+\end{itemize}
+
+\section*{To do list}
+\begin{itemize}
+    \item Check whether transforms between English accents in vowel space has been done before, both based on formants (probably has been done) and with MRI-derived vowel quadrilaterals with PC and resonance axes (unlikely to have been done, but if it has, that would suck... but ours would still be novel because it's NZE and surely no one has done that??)
+    \item Explore how much F3/F4 correlates to P3/P4? Look at higher order formants and see if they correlate with higher order PC's and estimated resonances.
+    \item Justify use of Bark scale, which shows much better separation in PCs.
+    \item Is there an objective way of quantifying if the vowel spaces are accurate enough/close enough to formant derived space? Just a simple residual sum of squares? Or is this beside the point, because the variation seen within each vowel for the MRI-derived quadrilaterals are due to that many-to-one mapping?
+\end{itemize}
+
+\section*{Handy R functions}
+\begin{itemize}
+    \item \verb|rm(list = ls())| clears workspace
+    \item \verb|graphics.off()| closes all graphics windows by calling \verb|dev.off()| as many times as necessarily
+    \item \verb|dev.new()| opens new graphics window
+    \item \verb|.libPaths('H:/Documents/Rlibraries')|
+    \item \verb|install.packages('emuR')|
+    \item \verb|library('emuR')|
+\end{itemize}
+
+\end{document}
