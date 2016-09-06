@@ -1796,6 +1796,58 @@ same methods.
     \item Checking whether to use eigenvectors or rotated data in correlations
     \begin{itemize}
         \item By comparing normalised vs. unnormalised correlation results.
+        \item PC1
+        \begin{itemize}
+            \item Normalisation had the same effect on both correlations between eigenvectors (rotation) and correlations between rotated data. Normalisation resulted in correlations generally staying the same or increasing (with a few instances of small drops), except in the case of VT02 where correlations decreased quite dramatically.
+            \item Within unnormalised, there is virtually no difference between the two unnormalised sets. Correlations between unnormalised eigenvectors seems to show VT02's difference a bit more (VT02's correlation values are lower (around 75\% to 80\%), while unnormalised rotated data shows lower correlations in VT04 x VT09, and slightly low along VT10, but higher in other places.
+            \item Comparing the normalised correlations, using the rotated dataset shows more prominent drops to VT02's correlation than in the eigenvector one. Other than that, values are pretty similar, higher for some, lower for others but none significant.
+            \item With the p-values, normalisation gave worse p-values for both rotation and x. The only place where it got better (lower p-values) was if we compared medians. Both rotations and rotated data p-value medians dropped by half then normalised.
+            \item Comparing the p-values between the normalised p-values for rotation and x, x had higher p-values (sum, average and median).
+            \item I would say either is valid for this one. All the p-values are > 0.05, vast majority < 0.01.
+        \end{itemize}
+        \item PC2
+        \begin{itemize}
+            \item Normalised x got slightly better than unnormalised in both p-values (lower) and correlations (higher). 
+            \item Normalised rot got slightly \textbf{worse}!
+            \item Also, normalised x actually has slightly higher correlation values than normalised rotation, but its p-values are a bit worse across the board (whereas normalised rot has high p-values for VT02 but low for the rest of them).
+        \end{itemize}
+        \item Try with intra-speaker correlations.
+        \begin{itemize}
+            \item PC1 all highly correlated so that's all good. Little difference between all four combinations (x/rot un/normalised).
+            \item PC2, some VTs which were correlated become totally uncorrelated (down to 20 - 30\%) and vice versa. It's all messy anyway, don't think I can look too much into that. 
+        \end{itemize}
+        \item So looks like that's pretty inconclusive. I guess I'll just go with the rotated data (x) since that is what actually should be being compared.
+    \end{itemize}
+    \item Ladefoged combining F2 and F3 when plotting vowel quadrilateral
+    \begin{itemize}
+        \item According to wikipedia, it was just the fact that he used the Mel scale which is kind of like the Bark scale?
+        \item Eplot has a built in Mel or Bark scale setting! Can now see if we can justify the use of the Bark scale to see if we get better separation.
+        \item Eplot's bark and mel scaling give exactly the same results. Mel scaling has nicer numbers (-10 to 10 rather than -0.65 to 0.45). When scaling is turned on and formants is set to F though, we see a recognisable vowel quadrilateral! (turning formants on makes the vowels go the wrong way around.
+        \item Apparently another method is |F2-F1| on the horizontal scale, but this has not been cited.
+        \item Tried F2-F1 (not absolute) and got a fairly nice vowel quadrilateral out of it! A bit squashed though, just eplot with scaling definitely looks best!
+        \item When I plot the VT02 AE vowels, it all in the right "order" but it is as if it's rotated 90 degrees CW. It would match up really nicely is it was rotated back 90 degrees... :P
+        \item Turns out it's 50 degrees that I wanted, and it looks so good! But how can this be legit...
+        \item To be honest, if we're talking absolute distance, all of the VT02 vowels are pretty much the same distance away from the NZE centroids. It doesn't look like the hid vowel is any more of an outlier than the other ones. The had vowel, on the other hand, definitely is...
+        \item What's the conclusion on using possibly P3 in these vowel plots?
+        \begin{itemize}
+            \item Looks like F1-F3 plots are sometimes made, but our PC3 values are totally uncorrelated. "The F1-F3 data generally take the form of a quadrilateral, but there are some exceptions to this geometry such as a reversal of the configuration for the back vowels" 
+            \item "F1-F3 analyses may be more sensitive to changes due to age and possibly gender" (Vowel Acoustic Space Development in Children: A Synthesis of Acoustic and Anatomic Data, Vorperian & Kent 2007)
+            \item PCA on vowel spectra, PC1-PC2 plane (but this one had PC2 as backness and PC1 as height!) (Factor Analysis of Vowel Pronunciation in Swedish Dialects, Leinonen 2009)
+            \item "to what extent can the knowledge of the phonetics of dialects provide an alternative to crude acoustic modelling", for forensic speech science, automatic speech recognition systems performing better to different accents etc. Here, PC1 is backness and PC2 is height. Looks pretty amorphous and clustery twisted-y like mine. The first two PCs only accounted for 35\% of the variance for them! (Automatic Dialect Identification: A Study of British English, Ferragne & Pellegrino) "we must bear in mind that the stimuli (/hVd/ words and read
+passages) were precisely designed to elicit dialect variation, and therefore facilitate discrimination" It would be less clear in conversational speech.
+        \end{itemize}
+        \item Sounds like nah, just don't use it. Stick to PC1-PC2 plane, with PC1 as backness.
+    \end{itemize}
+\end{itemize}
+
+\section*{07/09/16 Wednesday Midsem Break Wk 2, D-15: Finish off VT02 and quantifying MRI variability}
+\begin{itemize}
+    \item VT02 Australian hid analysis
+    \begin{itemize}
+        \item Correlation between just the `hid' vowels of the VTs
+        \item Correlation between just the `had' vowels
+        \item Correlation `hood'
+        \item Correlation `who'd'
     \end{itemize}
 \end{itemize}
 
@@ -1803,7 +1855,6 @@ same methods.
 \begin{itemize}
     \item Check whether transforms between English accents in vowel space has been done before, both based on formants (probably has been done) and with MRI-derived vowel quadrilaterals with PC and resonance axes (unlikely to have been done, but if it has, that would suck... but ours would still be novel because it's NZE and surely no one has done that??)
     \item Explore how much F3/F4 correlates to P3/P4? Look at higher order formants and see if they correlate with higher order PC's and estimated resonances.
-    \item Justify use of Bark scale, which shows much better separation in PCs.
     \item Is there an objective way of quantifying if the vowel spaces are accurate enough/close enough to formant derived space? Just a simple residual sum of squares? Or is this beside the point, because the variation seen within each vowel for the MRI-derived quadrilaterals are due to that many-to-one mapping?
 \end{itemize}
 
