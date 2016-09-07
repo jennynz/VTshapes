@@ -39,11 +39,11 @@ for (p in 1:np) {
     
     set1index <- grep("Set1", allSpeakers.df$set)
     index1 <- intersect(vtindex, set1index)
-    set1 <- allSpeakers.df[index1,4:30]
+    set1 <- allSpeakers.df[index1,-c(1:16,31)]
     
     set2index <- grep("Set2", allSpeakers.df$set)
     index2 <- intersect(vtindex, set2index)
-    set2 <- allSpeakers.df[index2,4:30]
+    set2 <- allSpeakers.df[index2,-c(1:16,31)]
     
     # Normalise
     if (isNorm == T) {
