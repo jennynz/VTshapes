@@ -41,17 +41,17 @@ for(i in 1:numVTs) {
     }
     
     # Normality tests
-    # shapiro.test(pca1$rotation[,p])
-    # shapiro.test(pca2$rotation[,p])
-    # qqnorm(pca1$rotation[,p])
-    # qqnorm(pca2$rotation[,p])
+    # shapiro.test(pca1$x[,p])
+    # shapiro.test(pca2$x[,p])
+    # qqnorm(pca1$x[,p])
+    # qqnorm(pca2$x[,p])
     
     # Heteroscedasticity tests
-    #lmtest::bptest(pca1$rotation[,p])
-    #car::ncvTest(pca1$rotation[,p])
+    #lmtest::bptest(pca1$x[,p])
+    #car::ncvTest(pca1$x[,p])
     
     # Interspeaker correlations
-    cor <- cor.test(pca1$rotation[,p], pca2$rotation[,p])
+    cor <- cor.test(pca1$x[,p], pca2$x[,p])
     
     # Write to tables
     corr[i,j-1] <- unname(cor$estimate)
