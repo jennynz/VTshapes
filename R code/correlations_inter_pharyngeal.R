@@ -1,4 +1,4 @@
-# Perform interspeaker correlations on only the pharyngeal region.
+# Perform interspeaker correlations in only one region
 
 # Written by Jenny Sahng
 # 7/09/2016
@@ -11,12 +11,24 @@ p.max <- 3
 # Normalise?
 isNorm <- T
 
+# Oral (o) or pharyngeal (p)?
+cavity <- "o"
+switch(cavity,
+       "o" = {
+         cavity.index <- c(4:17)
+         cavity <- "oral"
+       }, "p" = {
+         cavity.index <- -c(1:16,31)
+         cavity <- "pharyngeal"
+       }
+)
+
 # Maximum areas for normalising. X1 is omitted since it is unreliable (MRI
 # showed little of mouth opening at front of lips) and X29 omitted since it is
 # the glottis which is always zero.
 if (isNorm == T) { maxArea <- apply(allSpeakers.df[,4:30],1,max) }
-# Normalise by largest pharyngeal area
-#if (isNorm == T) { maxArea <- apply(allSpeakers.df[,-c(1:16,31)],1,max) }
+# Normalise by largest oral/pharyngeal area
+#if (isNorm == T) { maxArea <- apply(allSpeakers.df[,cavity.index],1,max) }
 
 table <- NA
 
@@ -49,11 +61,11 @@ for (p in 1:p.max) {
       
       # Individual speaker PCAs with normalised area functions
       if (isNorm == T) {
-        pca1 <- prcomp(~., data = allSpeakers.df[m, -c(1:16,31)]/maxArea[m], scale=T)
-        pca2 <- prcomp(~., data = allSpeakers.df[n, -c(1:16,31)]/maxArea[n], scale=T) 
+        pca1 <- prcomp(~., data = allSpeakers.df[m, cavity.index]/maxArea[m], scale=T)
+        pca2 <- prcomp(~., data = allSpeakers.df[n, cavity.index]/maxArea[n], scale=T) 
       } else {
-        pca1 <- prcomp(~., data = allSpeakers.df[m, -c(1:16,31)], scale=T)
-        pca2 <- prcomp(~., data = allSpeakers.df[n, -c(1:16,31)], scale=T) 
+        pca1 <- prcomp(~., data = allSpeakers.df[m, cavity.index], scale=T)
+        pca2 <- prcomp(~., data = allSpeakers.df[n, cavity.index], scale=T) 
       }
       
       # Interspeaker correlations
@@ -72,7 +84,7 @@ for (p in 1:p.max) {
 }
 
 if (isNorm == T) {
-  write.csv(table, file = "corr_inter_pharyngeal_normalised.csv")
+  write.csv(table, file = paste("corr_inter_", cavity, "_norm.csv", sep=""))
 } else {
-  write.csv(table, file = "corr_inter_pharyngeal_unnormalised.csv")
+  write.csv(table, file = paste("corr_inter_", cavity, "_unnorm.csv", sep=""))
 }

@@ -1,4 +1,4 @@
-# Intra-speaker correlations, Pharyngeal only -----------------------------------------
+# Intra-speaker correlations, one cavity only -----------------------------------------
 
 # Performs Pearson's product-moment correlations between principal component #p 
 # of each set within each speakers (the ones which have two datasets available
@@ -11,6 +11,18 @@ source('~/Part IV Project/R code/readAreaFunctions_2Set.R', echo=TRUE)
 
 # Number of principal components to test
 np <- 5
+
+# Oral (o) or pharyngeal (p)?
+cavity <- "o"
+switch(cavity,
+  "o" = {
+    cavity.index <- c(5:18)
+    cavity <- "oral"
+  }, "p" = {
+    cavity.index <- -c(1:17,32)
+    cavity <- "pharyngeal"
+  }
+)
 
 # Table with VTs along columns, and two rows showing correlation estimate
 # between two sets and p-value respectively, for each principal component.
@@ -39,11 +51,11 @@ for (p in 1:np) {
     
     set1index <- grep("Set1", allSpeakers.df$set)
     index1 <- intersect(vtindex, set1index)
-    set1 <- allSpeakers.df[index1,-c(1:16,31)]
+    set1 <- allSpeakers.df[index1, cavity.index]
     
     set2index <- grep("Set2", allSpeakers.df$set)
     index2 <- intersect(vtindex, set2index)
-    set2 <- allSpeakers.df[index2,-c(1:16,31)]
+    set2 <- allSpeakers.df[index2, cavity.index]
     
     # Normalise
     if (isNorm == T) {
@@ -62,26 +74,13 @@ for (p in 1:np) {
     corr[p*2-1,i] <- unname(cor$estimate)
     corr[p*2,i] <- unname(cor$p.value)
     
-    # Plots of two area functions
-    # plot(c(0,28),c(-0.4,0.4),type="n", xlab="Data point", ylab="Cross-sectional area (mm^2)")
-    # lines(pca1$rotation[,1], col="red")
-    # lines(pca2$rotation[,1], col="blue")
-    # title(main = "PC1 for VT01 and VT02 area function data points")
-    # legend(0, -0.3, c("VT01","VT02"), lty=c(1,1), col=c("red","blue"))
-    
-    # Print to console
-    # cat("\n\t ", VTlist[i],
-    #     "\n\t Correlation: ", cor$estimate,
-    #     "\n\t P-value: ", cor$p.value,
-    #     "\n", sep="")
-    
   }
   
 }
 
 # Write table to file
 if (isNorm == T) {
-  write.csv(rbind(corr, abs(corr)), file = "correlations_intra_norm.csv")
+  write.csv(rbind(corr, abs(corr)), file = paste("corr_intra_", cavity, "_norm.csv", sep=""))
 } else {
-  write.csv(rbind(corr, abs(corr)), file = "correlations_intra.csv")
+  write.csv(rbind(corr, abs(corr)), file = paste("corr_intra_", cavity, "_unnorm.csv", sep=""))
 }
