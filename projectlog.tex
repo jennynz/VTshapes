@@ -1292,7 +1292,7 @@ Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4     
     \item Appendix numbering
     \begin{itemize}
         \item Fixed issue with appendix numbering not happening - \verb|\backmatter| was too early, it suppresses all numbering. Should go after Appendix, before References.
-        \item FYI the optional arguments to the verb|\usepackage| can change whether we display `Appendix A Name goes here' (\verb|[titletoc]|) or `A Name goes here' (\verb|[toc]|) in the TOC. 
+        \item FYI the optional arguments to the verb|\\usepackage| can change whether we display `Appendix A Name goes here' (\verb|[titletoc]|) or `A Name goes here' (\verb|[toc]|) in the TOC. 
     \end{itemize}
     \item Methods
     \begin{itemize}
@@ -1356,7 +1356,7 @@ Bring laptop into uni & Y                & Y             & local          & Y   
     \item Could just do the Perl bit an online Perl compiler like \href{http://www.tutorialspoint.com/execute_perl_online.php}{here}. 
     \begin{itemize}
         \item Totally works on Perl Online! Upload CreateSlices.pl, curve.exnode, and create an empty new directory called \verb|slices|. In the terminal, type \verb|perl CreateSlices.pl curve.exnode| and when you cd into slices/, the exnode and exelem files are all there.
-        \item Project > Download Project, and unzip the slices back into your local 2create_slices folder. (ugh, the pain).
+        \item Project > Download Project, and unzip the slices back into your local 2create\_slices folder. (ugh, the pain).
     \end{itemize}
     \item Now can continue adding `hood' back into the analysis.
     \begin{itemize}
@@ -1433,7 +1433,7 @@ Bring laptop into uni & Y                & Y             & local          & Y   
         \item Report
         \begin{itemize}
             \item End with strong positive conclusion
-            \item Future work goes somewhere else, maybe threaded into the discussion or even conclusion rather than having a dedicated section. Always end strong & positive.
+            \item Future work goes somewhere else, maybe threaded into the discussion or even conclusion rather than having a dedicated section. Always end strong and positive.
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -1558,27 +1558,26 @@ Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4     
         \verb|=IF(ISNUMBER(B2),ABS(B2),B2)|
         \item So that the correlation color coding is comparable, set lowest value to 0.7 and highest to 1.0. For p-values, under 0.005 is strongly significant (green), 0.005 to 0.05 is a gradation of statistical significance, above 0.05 is not statistically significant.
         \item PC2 (Table \ref{cor_inter_pc2}): Hmm correlations go as low as 29\%, with a handful of p-values which are above 0.01, some even above 0.01 (the highest p-value is 0.14). Does this mean that PC2 might be encoding something that is not necessarily phonetic height?
-        \item PC3 (Table \ref{cor_inter_pc3}: Mostly insignicant p-values (above 0.05), with a huge range of correlations from 0\% to 70\%. Looks like this does indeed encode inter-speaker differences!
+        \item PC3: Mostly insignicant p-values (above 0.05), with a huge range of correlations from 0\% to 70\%. Looks like this does indeed encode inter-speaker differences!
     \end{itemize}
     \item Intra-speaker correlations
     \begin{itemize}
         \item Incorporate VT11 in to the VT03, VT05, VT08, VT09, VT10 set that's already been done in Interspeech.
-        \end{itemize}
         \item File structure rearranged so there's just one folder with all the data available, in Set1/ and Set2/ folders.
-        \item Weird, a lot of the area functions output in distance_area/ for the VTs analysed by Daniel don't match the ones I have in my All VT data folder. Looks like they were created at a different time, but still in 2012. No idea where I would have got these from.
+        \item Weird, a lot of the area functions output in distance\_area/ for the VTs analysed by Daniel don't match the ones I have in my All VT data folder. Looks like they were created at a different time, but still in 2012. No idea where I would have got these from.
         \item A right, look in the log for 01/08/2016, it was from Helen Summer Work. I think I chose to include Helen's sets where possible because I thought her markup would have been more accurate since she had come up with splitting the vocal tract into oral and pharyngeal, and I had followed her instructions in her report. But this isn't a great reason, since Daniel's work came after Helen's, so he would have also had her report to go off. 
         \item Furthermmore, Helen only did Set 1. If I'm doing interspeaker correlations, I don't think it's a good idea to mix Helen and Daniel's area functions since the subtle differences of how they marked them up might show up in high orders.
         \item Therefore in the folder All VT data/, both the sets of VT03, VT05, VT08, VT09, VT10 come from Daniel. The rest are single sets from Helen or me.
         \item Looks like Helen had done VT06/Set2/Hard, but none others for VT06/Set2.
         \item R script paths also adjusted to reflect the extra layer of directories. 
         \item Damn it now that I've replaced some of the Set1's with Daniel's data, correlations have changed slightly (most of them have gone down which kind of makes sense, because you'd expect the way that one person marks up different sets is more similar to themself rather than someone else). No significant changes. Rewrite all .csv tables etc.
-        \item Woops I haven't calculated the area functions for VT11 Set 2. Run distance_area calculations on matlab.
+        \item Woops I haven't calculated the area functions for VT11 Set 2. Run distance\_area calculations on matlab.
         \begin{itemize}
             \item Turns out I had missed calculating the area for Hid Oral. Did it on perl online.
             \item Also I just completely missed Hoard Pharyngeal. Ahh this is the one which only had every second slice. I have to tinker with the perl code probably...
             \item Everything works as it should until 6vocaltractnodeplacement. Editing \verb|data_point_placement.com|
             \item Change the create texture command to go through the number series in twos. \verb|number_series 1 13 2|. That did it! Obviously way more blurry images which are barely recognisable, but ah well. Change the same line in \verb|data_point_viewer.com| as well.
-            \item Finally, distance_area found. yay.
+            \item Finally, distance\_area found. yay.
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -1645,7 +1644,7 @@ Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4     
             \item A correlation that takes into account 2 variables, PC2 AND PC3? 
             \item ``3D plot on MATLAB"
         \end{itemize}
-        \item Report - get writing! Can summarise Daniel's masters thesis intro/background in own words and understanding. All good that all the results aren't yet written, just leave placeholders etc. will be judged accordingly. Showing the path & what you learnt from experiences is important, not just like a paper where you're just showing results. Demonstrate how much you did.
+        \item Report - get writing! Can summarise Daniel's masters thesis intro/background in own words and understanding. All good that all the results aren't yet written, just leave placeholders etc. will be judged accordingly. Showing the path \& what you learnt from experiences is important, not just like a paper where you're just showing results. Demonstrate how much you did.
     \end{itemize}
 \end{itemize}
 
@@ -1682,17 +1681,7 @@ Catherine's 5VT   & 39.6           & 20.8           & 10.9           & 60.4     
     \item VT02 Australian validation
     \begin{itemize}
         \item Plot centroids of all PCs from all speakers except VT02, then plot VT02 overtop.
-        \item Hypothesis: The interspeaker correlation between VT02 and the other VTs was strangely low. Given that the participant was Australian within an NZE dataset, this script
-plots VT02's vowel in the PC space on top of the centroids of the combined
-dataset excluding VT02. Given that NZE hid and hood vowels are more
-centralizing and lower than AE, while front high vowels are higher (Watson, Harrington & Evans, 1998), we should
-expect a similar result here with VT02, although only having a sample size of
-1 for Australian English, this is hard to determine. A more robust analysis
-would be including VT02 in an interspeaker correlation analysis with other
-Australian English speakers with the hypothesis that there would be no
-significant differences in its correlation values than with all the other AE
-speakers. This would require MRI data of Australian speakers captured with the
-same methods.
+        \item Hypothesis: The interspeaker correlation between VT02 and the other VTs was strangely low. Given that the participant was Australian within an NZE dataset, this script plots VT02's vowel in the PC space on top of the centroids of the combined dataset excluding VT02. Given that NZE hid and hood vowels are more centralizing and lower than AE, while front high vowels are higher (Watson, Harrington \& Evans, 1998), we should expect a similar result here with VT02, although only having a sample size of 1 for Australian English, this is hard to determine. A more robust analysis would be including VT02 in an interspeaker correlation analysis with other Australian English speakers with the hypothesis that there would be no significant differences in its correlation values than with all the other AE speakers. This would require MRI data of Australian speakers captured with the same methods.
         \item Nearly there, but emu always plots on a new graph. Even with \verb|par(new=T)|, it superimposes the entire plot including the axes onto the first centroid plot. 
         \item This would be fine it if did it exactly, but it doesn't.
         \item I can't use \verb|points(vt02.pca$x[,1], vt02.pca$x[,2], pch=as.character(allSpeakers.df[12:22,2]), col="red")| because it doesn't plot the vowels in the slightly skewed weird way that eplot does, when formants = T. Even when formants = F, eplot does some magic stuff with the data to make it look more vowel quadrilateral shaped. I need to use eplot, or hack eplot's backend (not worth the time)
@@ -1700,10 +1689,6 @@ same methods.
         \item So it superimposed, but tbh the centroid plot is so warped that I can't tell which way is up anyway to determine whether NZE is higher or whatever.
         \item To be honest, this was an issue from a while back that I sort of ignored - eplot isn't really plotting the data the way it should. I'm pretty convinced that this is eplot's fault, and not the data's, because for example in the centroid plot for 12VT1Set, the order in which the vowels are plotted when you go around anticlockwise from i around to u:, it's basically bang on.
         \item Gah whatever
-    \end{itemize}
-    \item Variability in deriving area functions from MRI
-    \begin{itemize}
-        \item VT04 Set1 Cardinal vowels (Had, Heed, Hod, Who'd)
     \end{itemize}
 \end{itemize}
 
@@ -1749,7 +1734,7 @@ same methods.
             \item PC2: Fairly normal plots, 0.5 and 0.9
             \item PC3: Heavy left skew, 0.002 and 0.3, not normal.
         \end{itemize}
-        \item Swapped out x for rotations in intra-speaker correlations as well, same again, gave slightly worse correlations but similar.
+        \item Swapped out x for rotations in intra-speaker correlations as well, same again, gave slightly worse correlations but similar. Interesting thing is that VT11's low correlations for PC2 and PC3 are now gone. VT08 is now rather low, but no lower than VT10 was when using rotations. I think it's all good.
     \end{itemize}
     \item Multi-variate correlation with PC2 and PC3
     \begin{itemize}
@@ -1780,7 +1765,7 @@ same methods.
         \begin{itemize}
             \item Ladefoged F1 vs. (F3 - F2)
         \end{itemize}
-        \item Correlation analysis & normal data
+        \item Correlation analysis and normal data
         \begin{itemize}
             \item Correlation is pretty vague, wouldn't matter much especially with this small data set. Especially when correlations are all the way up at 90\%.
             \item The data is solid, so don't need to worry about the statistical methods that come after - those can easily be changed. If I want to find an alternative correlation method that works with small sample sizes like this, research/look around and ask Cam Walker for help maybe.
@@ -1831,23 +1816,67 @@ same methods.
         \item What's the conclusion on using possibly P3 in these vowel plots?
         \begin{itemize}
             \item Looks like F1-F3 plots are sometimes made, but our PC3 values are totally uncorrelated. "The F1-F3 data generally take the form of a quadrilateral, but there are some exceptions to this geometry such as a reversal of the configuration for the back vowels" 
-            \item "F1-F3 analyses may be more sensitive to changes due to age and possibly gender" (Vowel Acoustic Space Development in Children: A Synthesis of Acoustic and Anatomic Data, Vorperian & Kent 2007)
+            \item "F1-F3 analyses may be more sensitive to changes due to age and possibly gender" (Vowel Acoustic Space Development in Children: A Synthesis of Acoustic and Anatomic Data, Vorperian \& Kent 2007)
             \item PCA on vowel spectra, PC1-PC2 plane (but this one had PC2 as backness and PC1 as height!) (Factor Analysis of Vowel Pronunciation in Swedish Dialects, Leinonen 2009)
-            \item "to what extent can the knowledge of the phonetics of dialects provide an alternative to crude acoustic modelling", for forensic speech science, automatic speech recognition systems performing better to different accents etc. Here, PC1 is backness and PC2 is height. Looks pretty amorphous and clustery twisted-y like mine. The first two PCs only accounted for 35\% of the variance for them! (Automatic Dialect Identification: A Study of British English, Ferragne & Pellegrino) "we must bear in mind that the stimuli (/hVd/ words and read
+            \item "to what extent can the knowledge of the phonetics of dialects provide an alternative to crude acoustic modelling", for forensic speech science, automatic speech recognition systems performing better to different accents etc. Here, PC1 is backness and PC2 is height. Looks pretty amorphous and clustery twisted-y like mine. The first two PCs only accounted for 35\% of the variance for them! (Automatic Dialect Identification: A Study of British English, Ferragne \& Pellegrino) "we must bear in mind that the stimuli (/hVd/ words and read
 passages) were precisely designed to elicit dialect variation, and therefore facilitate discrimination" It would be less clear in conversational speech.
         \end{itemize}
         \item Sounds like nah, just don't use it. Stick to PC1-PC2 plane, with PC1 as backness.
     \end{itemize}
 \end{itemize}
 
-\section*{07/09/16 Wednesday Midsem Break Wk 2, D-15: Finish off VT02 and quantifying MRI variability}
+\section*{07/09/16 Wednesday Midsem Break Wk 2, D-15: Finish off VT02, isolating oral and pharyngeal regions for correlations}
 \begin{itemize}
     \item VT02 Australian hid analysis
     \begin{itemize}
-        \item Correlation between just the `hid' vowels of the VTs
-        \item Correlation between just the `had' vowels
-        \item Correlation `hood'
-        \item Correlation `who'd'
+        \item Correlation between hid + cardinal 4 vowels
+        \item You can't do PCA on one vector! Could include set 2s and do it that way, but still very sparse data.
+        \item Maybe mention that if/when we have all the set 2s, this might be possible further analysis.
+        \item Keep an eye out during AmE data processing for how VT02 behaves.
+    \end{itemize}
+    \item Age trends - isolate pharyngeal region
+    \begin{itemize}
+        \item X15 to X28 \verb|-c(1:16,31)|
+        \item PC1: The three intersections between the three old speakers (VT1, VT2, VT11) do seem to have higher correlations than with the other speakers, but this may be chance. Hard to actually say if there is an effect here. Definitely nothing between younger and middle aged speakers.
+        \item PC2: Very low correlations anyway, no patterns seen within age groups.
+        \item PC3: "
+        \item Comparing PC1 correlations with full vocal tract PC1 correlations, correlations generally decreased quite dramatically in places (average correlation in pharyngeal is 73.34\%, while for both oral and pharyngeal, the average is 88.39\%). Correlation between VT01 and VT02 increased from 65 to 80, VT01-VT11 very slight drop from 93.83 to 91.69, VT02-VT11 increase from 74.09 to 82.00.
+        \item Correlations dropped in most other pairings with only a few exceptions.
+        \item Tricky in general since we would hypothesise that any affects in the pharyngeal region would only really be seen in the old age group, and we only have three speakers in that category.
+        \item Correlations with VT02 did not drop very much/increased in some cases - in the pharyngeal correlation table, it's not so much of an outlier. This supports the hypothesis that PCA is capturing the vowel position difference in the Australian accent, which would mostly be seen in the oral cavity. By excluding the oral cavity, we are left comparing the rather similar pharyngeal cavities of AE and NZE, therefore showing higher correlations.
+    \end{itemize}
+    \item VT11 artifacts - isolate pharyngeal region for intraspeaker correlations
+    \begin{itemize}
+        \item Even though the low PC2 and PC3 intraspeaker correlations disappeared when we started using x rather than rot, thought I'd try just the pharyngeal region anyway.
+        \item X15 to X28 \verb|-c(1:17,32)| due to extra column because of set.
+        \item Intraspeaker correlations for just the pharyngeal region all decreased compared to full area functions. PC1 are still strongly correlated except VT08 which dropped from 88.27 to 45.81. But PC2s which were also strongly correlated (except VT08 which was 36.23) have mostly dropped to below 50\%.
+        \item Conclusion: We were expecting intra-speaker correlation to increase when we only analyse the pharyngeal region, given that the oral cavity was affected by an imaging artifact which may have affected the consistently between the markups for VT11's Set 1 and Set 2. This was not the case.
+    \end{itemize}
+    \item Overall, analysing just the pharyngeal region always gave lower correlations.
+    \item Hmm, just realised that I've been normalising by dividing by the maximum area in the whole area function, rather than just the pharyngeal cavity. Trying things again with the largest pharyngeal cavity area as the divider. 
+    \begin{itemize}
+        \item Got worse correlations across the board, especially VT03, VT04, VT07. These were the ones with the smallest vocal tracts... maybe normalising with the largest pharyngeal cavity blows up the noisy ups and downs.
+    \end{itemize}
+    \item Try isolating oral region to determine whether the lower correlations were because of actual lower similarity between pharyngeal regions, or simply because of a smaller data set which means noise has a more significant effect?
+    \begin{itemize}
+        \item Oral cavity intra-speaker correlations: (X2 to X15) PC1 correlations are just as high, very slightly lower than the correlations for full area functions. PC2 correlations are highest, higher than full area functions and much higher than pharyngeal only. This means that the oral cavities are pretty similar across the speakers (for each vowel), but the pharyngeal cavities vary a lot.
+        \item Oral cavity inter-speaker correlations: PC1 all higher correlations than pharyngeal EXCEPT VT02 and VT10 which show lower weak correlations (around 50\% to 60\%). VT02 makes sense because again, accent is mostly to do with movements around oral cavity kinda, that's where most of the differences are happening (like fronting of hid vowel). VT10 had no supervision from Catherine. They're actually well correlated with VT10. Again like in intraspeaker, PC2 is well correlated in oral cavity in contrast to the low correlations in pharyngeal. 
+        \item Looks like the pharyngeal region holds one kind of data, presumably backness which is its PC1 (since the pharyngeal cavity can only really flatten as the tongue moves back), while oral cavity can have backness and height.
+    \end{itemize}
+    \item This was pointless but I rewrote \verb|plotAreaFunctions.R| into for loops. Way shorter code, waaayyy less repetition.
+\end{itemize}
+
+\section*{08/09/16 Thursday Midsem Break Wk 2, D-14: Report \& Quantifying MRI variability}
+\begin{itemize}
+    \item Variability in deriving area functions from MRI
+    \begin{itemize}
+        \item VT04 Set1 Cardinal vowels (Had, Heed, Hod, Who'd): Finished Who'd and Hod
+        \item Should really do VT11 Set2 as well, since that was the one with the artifacts.
+    \end{itemize}
+    \item Report writing
+    \begin{itemize}
+        \item Helen didn't mark up the first plane, which is why it's all zeros for her data, whereas Daniel did. 
+        \item Also for VT11 Set 1 looks like Helen also got around the artifact by guessing just as much as I did :P but rather more conservatively, mostly regular clean ellipses.
     \end{itemize}
 \end{itemize}
 
@@ -1856,16 +1885,6 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
     \item Check whether transforms between English accents in vowel space has been done before, both based on formants (probably has been done) and with MRI-derived vowel quadrilaterals with PC and resonance axes (unlikely to have been done, but if it has, that would suck... but ours would still be novel because it's NZE and surely no one has done that??)
     \item Explore how much F3/F4 correlates to P3/P4? Look at higher order formants and see if they correlate with higher order PC's and estimated resonances.
     \item Is there an objective way of quantifying if the vowel spaces are accurate enough/close enough to formant derived space? Just a simple residual sum of squares? Or is this beside the point, because the variation seen within each vowel for the MRI-derived quadrilaterals are due to that many-to-one mapping?
-\end{itemize}
-
-\section*{Handy R functions}
-\begin{itemize}
-    \item \verb|rm(list = ls())| clears workspace
-    \item \verb|graphics.off()| closes all graphics windows by calling \verb|dev.off()| as many times as necessarily
-    \item \verb|dev.new()| opens new graphics window
-    \item \verb|.libPaths('H:/Documents/Rlibraries')|
-    \item \verb|install.packages('emuR')|
-    \item \verb|library('emuR')|
 \end{itemize}
 
 \end{document}
