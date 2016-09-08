@@ -34,6 +34,14 @@ title(main = "Vowels on PC1-PC2 planes (12 VTs x 1 Sets)", xlab = "PC1", ylab = 
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T, col=colpalette, doellipse = F, xlim = c(-4,4))
 title(main = "Vowel centroids on PC1-PC2 planes (12 VTs x 1 Set)", xlab = "PC1", ylab = "PC2")
 
+# Compare with interspeech
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, font=2, doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
+title(main = "Vowel centroids on negative PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
+
+# Most vowel-quad-like
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
+title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
+
 # Plot of standard deviations 
 plot(pca$sdev, type="p", xlab="Principal component #", ylab="Standard deviation")
 title(main = "Standard deviations of principal components from combined dataset (12 VTs x 1 Set)")
@@ -41,7 +49,7 @@ title(main = "Standard deviations of principal components from combined dataset 
 # Plot of proportions of variance
 pca.var <- pca.summ$importance[2,]
 plot(pca.var, type="p", xlab="Principal component #", ylab="% Variance")
-title(main = "Proportion of variance explained by principal components (12 VTs x 1 Set)")
+title(main = "Proportion of variance explained by PCs")
 
 # Heed (VT04 vs VT09): Comparing linearly interpolated area function with raw distance_area txt from MATLAB
 plot (c(0,29),c(0,700),type="n", xlab="Data point", ylab=expression(Cross-sectional ~ area ~ (mm^{2})), xlim=c(1,29))
