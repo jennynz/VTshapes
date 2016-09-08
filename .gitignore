@@ -51,3 +51,6 @@ Template/
 All VT data/
 *.Rhistory
 *.xlsx
+*.svg
+*.jpg
+*.png
