@@ -46,7 +46,8 @@ if (isNorm == T) {
 
 # Plot as series bar graph
 barcols <- c("sienna1", "slategray1","slategray3","slategray4")
-barplot(t(vars), beside=T, type="n",col=barcols)
-grid(nx=1, ny=18, col="gray80",lty=1)
+barplot(t(vars), beside=T, col=barcols, ylim=c(0,1))
+grid(nx=1, ny=20, col="gray80",lty=1)
+abline(a=0.7, b=0, col="sienna1", lwd=2)
 par(new=T)
-barplot(t(vars), beside=T, legend.text=TRUE, ylab="% Variance", ylim=c(0,0.9), main="Variance accounted for by principal components", args.legend = list(x = "topleft", bty="n", ncol=np), col=barcols)
+barplot(t(vars), beside=T, legend.text=TRUE, ylab="% Variance", ylim=c(0,1), main="Variance accounted for by principal components", args.legend = list(x=50, y=1.03, bty="n", ncol=np+1), col=barcols)
