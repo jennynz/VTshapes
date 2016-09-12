@@ -1,7 +1,7 @@
 # Reading 2 repetitions of the same area functions for a speaker
 
 # Quantifying the variability between each markup of MRI images. One speaker and
-# one set (the same set) only.
+# one set (the same set) only. Change the path to change the speaker.
 
 # Adapted by Jenny Sahng
 # 12/09/2016
@@ -11,8 +11,6 @@ graphics.off() # close all graphics windows
 setwd("~/Part IV Project/R code")
 
 path<<-"H:\\Documents\\Part IV Project\\All VT data\\VT04\\Set1\\distance_area"
-
-VTname <- "VT04"
 
 # List of vowel names (hadd, heed...) including repetitions
 areaFiles <- dir(path)[c(1,2,5,6,10,11,14,15)]
@@ -48,4 +46,4 @@ compileMRIAreas<-function(interpN=FALSE)
   return(alldat.df)
 }
 
-allSpeakers.df <- compileMRIAreas
+allSpeakers.df <- compileMRIAreas()
