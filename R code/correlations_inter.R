@@ -17,7 +17,7 @@ colnames(pvalues) <- VTlist[-1]
 rownames(pvalues) <- VTlist[-numVTs]
 
 # Principal component number
-p <- 2
+p <- 1
 
 # Normalise?
 isNorm <- T
