@@ -8,8 +8,8 @@ source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
 # Number of principal components to test
 np <- 3
 
-vars <- matrix(data = NA, nrow = numVTs, ncol = np, byrow = TRUE)
-colnames(vars) <- 1:np
+vars <- matrix(data = NA, nrow = numVTs, ncol = np+1, byrow = TRUE)
+colnames(vars) <- c("PC1+PC2", paste("PC", 1:np, sep=""))
 rownames(vars) <- VTlist
 
 # Normalise?
@@ -31,7 +31,8 @@ for (p in 1:np) {
     }
 
     # Write to tables
-    vars[i,] <- unname(summary(pca)$importance[2,1:np])
+    vars[i,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
+    vars[i,-1] <- unname(summary(pca)$importance[2,1:np])
     
   }
 }
@@ -42,3 +43,10 @@ if (isNorm == T) {
 } else {
   write.csv(vars, file = paste("vars_unnormalised.csv",sep=""))
 }
+
+# Plot as series bar graph
+barcols <- c("sienna1", "slategray1","slategray3","slategray4")
+barplot(t(vars), beside=T, type="n",col=barcols)
+grid(nx=1, ny=18, col="gray80",lty=1)
+par(new=T)
+barplot(t(vars), beside=T, legend.text=TRUE, ylab="% Variance", ylim=c(0,0.9), main="Variance accounted for by principal components", args.legend = list(x = "topleft", bty="n", ncol=np), col=barcols)
