@@ -34,9 +34,8 @@ read.Story.data<-function(VTfile)
 	# No need to linearly interpolate, data already resampled with a cubic spline,
 	# 44 area sections have equal length increments.
 
-	# Reverse order so that X1 = lips and X44 = glottis
-	area.fn <- apply(area.fn, 2, rev)
-	
+	# Reverse order so that X1 = lips and X44 = glottis, then rotate.
+	area.fn <- t(apply(area.fn, 2, rev))
 	
 	# Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
 	VT <- unlist(strsplit(VTfile, "\\."))[1]
@@ -50,3 +49,6 @@ for (VT in areaFiles)
 	allVowels.df <- read.Story.data(VTfile=VT)
 	allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
 }
+
+row.names(allSpeakers.df) <- NULL
+
