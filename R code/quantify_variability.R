@@ -46,7 +46,8 @@ for (r in 1:nr) {
   # PCA on each repetition as a group  
   pca <- prcomp(~., data = allSpeakers.df[seq(r,numVowels,nr),3:29], scale=T)
   
-  # Variances
+  # Variances are only really just to confirm that these are marked up
+  # all right, that there isn't any anomaly in the markup
   vars[r,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
   vars[r,-1] <- unname(summary(pca)$importance[2,1:np])
   

@@ -1,0 +1,2 @@
+"i", "ɪ", "e", "ɜ", "æ", "ʌ", "ɑ", "ɔ", "o", "ʊ", "u"
+"heed","hid","head","herd","had","hud","hard","hod","hoard","hood","whod"
