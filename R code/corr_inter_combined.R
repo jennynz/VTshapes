@@ -1,17 +1,33 @@
-# Inter-speaker Correlations for American data
+# Inter-speaker Correlations for AmE and NZE datasets combined
 
 # Performs Pearson's product-moment correlations between principal component p 
 # of each speaker with all other speakers.
-# Also outputs variances accounted for by major PCs.
 
 # Written by Jenny Sahng
-# 14/09/2016
+# 15/09/2016
 
+rm(list=ls()) # clear workspace
+graphics.off() # close all graphics windows
 source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R', echo=TRUE)
 AmE <- read.Story.data()
-numVTs <- AmE$numVTs
-VTlist <- AmE$VTlist
-allAmE.df <- AmE$data
+source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
+NZE1 <- read.NZE.data()
+NZE <- read.NZE.data(interpN = 44)
+a<-unname(unlist(NZE$data[22,-(1:2)]))
+b <- smooth.spline(a, tol = 1)
+plot(a, type="l")
+par(new=T)
+plot(b$y, col="red", type="l")
+
+a<-unname(unlist(NZE$data[22,-(1:2)]))
+b<-unname(unlist(NZE1$data[22,-(1:2)]))
+plot(a, type="l")
+par(new=T)
+plot(b, col="red", type="l")
+
+# Normalise NZE data
+maxArea <- apply(NZE$data[,4:30],1,max)
+NZE$data <- NZE$data[,3:30]/maxArea
 
 # The VT and vowel number to skip in correlations if it's missing (SM2 herd)
 VT.skip <- "SM2"
@@ -50,7 +66,7 @@ for (p in 1:p.max) {
   for(i in 1:numVTs) {
     
     j <- i + 1
-
+    
     while(j <= numVTs) {
       
       m <- ((i-1)*10 + i):(i*10 + i)
@@ -63,8 +79,8 @@ for (p in 1:p.max) {
       }
       
       # PCA
-      pca1 <- prcomp(~., data = allAmE.df[m, -(1:2)], scale=T)
-      pca2 <- prcomp(~., data = allAmE.df[n, -(1:2)], scale=T) 
+      pca1 <- prcomp(~., data = allSpeakers.df[m, -(1:2)], scale=T)
+      pca2 <- prcomp(~., data = allSpeakers.df[n, -(1:2)], scale=T) 
       
       # Interspeaker correlations
       cor <- cor.test(unname(pca1$x[,p]), unname(pca2$x[,p]))
@@ -88,8 +104,8 @@ write.csv(table, file = "AmE_corr_inter.csv")
 # Variances
 
 for(i in 1:numVTs) {
-
-  pca <- prcomp(~., data = allAmE.df[((i-1)*10 + i):(i*10 + i), -(1:2)], scale=T)
+  
+  pca <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i), -(1:2)], scale=T)
   vars[i,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
   vars[i,-c(1,p.max+2)] <- unname(summary(pca)$importance[2,1:p.max])
   vars[i,p.max+2] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2] + summary(pca)$importance[2,3]
@@ -102,3 +118,4 @@ plot(100*vars[,p.max+2], col="red", ylim=c(85,100))
 par(new=T)
 points(c(92.8,90.5,94.7,93,92.6,97.3))
 
+# Plot PC1-PC2 vowel centroids

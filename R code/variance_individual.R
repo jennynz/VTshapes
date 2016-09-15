@@ -20,28 +20,26 @@ isNorm <- T
 # the glottis which is always zero.
 if (isNorm == T) { maxArea <- apply(allSpeakers.df[,4:30],1,max) }
 
-for (p in 1:np) {
-  for(i in 1:numVTs) {
+for(i in 1:numVTs) {
       
-    # Individual speaker PCAs with normalised area functions
-    if (isNorm == T) {
-      pca <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30]/maxArea[((i-1)*10 + i):(i*10 + i)], scale=T)
-    } else {
-      pca1 <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30], scale=T)
-    }
-
-    # Write to tables
-    vars[i,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
-    vars[i,-1] <- unname(summary(pca)$importance[2,1:np])
-    
+  # Individual speaker PCAs with normalised area functions
+  if (isNorm == T) {
+    pca <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30]/maxArea[((i-1)*10 + i):(i*10 + i)], scale=T)
+  } else {
+    pca1 <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30], scale=T)
   }
+
+  # Write to tables
+  vars[i,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
+  vars[i,-1] <- unname(summary(pca)$importance[2,1:np])
+  
 }
 
 # Write table to file
 if (isNorm == T) {
-  write.csv(vars, file = paste("vars_normalised.csv",sep=""))
+  write.csv(vars, file = "vars_normalised.csv")
 } else {
-  write.csv(vars, file = paste("vars_unnormalised.csv",sep=""))
+  write.csv(vars, file = "vars_unnormalised.csv")
 }
 
 # Plot as series bar graph

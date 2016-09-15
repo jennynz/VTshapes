@@ -35,16 +35,15 @@ compileMRIAreas<-function(spk,interpN=FALSE)
   # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
   
   # Make data matrix and vowel names vector
-  alldat <- matrix(nrow=numVowels*numSets,ncol=29,byrow=T)
+  if (interpN) { n <- interpN }
+  else { n <- nrow(datfile) }
+  alldat <- matrix(nrow=numVowels*numSets,ncol=n,byrow=T)
   
   # for each speaker, read area function data for each vowel in each set, interpolating the cross-sectional areas
   for (i in 1:numVowels) {
     for(j in 1:numSets) {
       filepath <- paste(path,spk,SetList[j],"distance_area",areaFiles[i],sep="\\")
       datfile <- read.table(filepath)
-      
-      if (interpN) { n <- interpN }
-      else { n <- nrow(datfile) }
       
       # Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
       LinDatfil <- approx(datfile[,1],datfile[,2],n=n)
