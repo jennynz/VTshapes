@@ -49,6 +49,7 @@ Helen Summer Work2012/
 Meetings/
 Template/
 All VT data/
+!All VT data/*/*/distance_area/*
 *.Rhistory
 *.xlsx
 *.svg
