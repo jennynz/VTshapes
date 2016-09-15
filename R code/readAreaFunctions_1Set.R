@@ -7,7 +7,7 @@
 # Adapted by Jenny Sahng
 # 05/08/2016
 
-"compileMRIAreas" <- function(spk, interpN = FALSE)
+"compileMRIAreas" <- function(spk, interpN = FALSE, vowelNames)
 {
   # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
   
@@ -26,7 +26,6 @@
     # Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
     LinDatfil <- approx(datfile[,1],datfile[,2],n=n)
     alldat[i,] <- LinDatfil$y
-    
   }
   
   # Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
@@ -45,8 +44,8 @@
   numVTs <- length(VTlist)
   
   # List of vowel names (hadd, heed...)
-  areaFiles <- dir(paste(path,VTlist[1],"Set1","distance_area",sep="\\"))
-  numVowels <- length(areaFiles)
+  areaFiles <<- dir(paste(path,VTlist[1],"Set1","distance_area",sep="\\"))
+  numVowels <<- length(areaFiles)
   vowelNames <- vector(length=numVowels)
   for(i in 1:numVowels) {
     vowelNames[i] <- unlist(strsplit(areaFiles[i],"\\."))[1] # Remove .txt
@@ -56,11 +55,11 @@
   
   for (i in 1:numVTs)
   {
-    allVowels.df <- compileMRIAreas(spk=VTlist[i], interpN = interpN)
+    allVowels.df <- compileMRIAreas(spk=VTlist[i], interpN = interpN, vowelNames = vowelNames)
     allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
   }
   
-  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist)
+  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames)
   return(output)
   
 }

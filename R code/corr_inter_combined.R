@@ -13,7 +13,9 @@ AmE <- read.Story.data()
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
 NZE1 <- read.NZE.data()
 NZE <- read.NZE.data(interpN = 44)
-a<-unname(unlist(NZE$data[22,-(1:2)]))
+
+# Test to see what sort of interpolation/smoothing is needed if any
+a<-unname(unlist(NZE$data[11,-(1:2)]))
 b <- smooth.spline(a, tol = 1)
 plot(a, type="l")
 par(new=T)
@@ -24,6 +26,14 @@ b<-unname(unlist(NZE1$data[22,-(1:2)]))
 plot(a, type="l")
 par(new=T)
 plot(b, col="red", type="l")
+
+a<-unname(unlist(NZE$data[22,-(1:2)]))
+b<-unname(unlist(AmE$data[22,-(1:2)]))
+plot(a, type="l")
+par(new=T)
+plot(b, col="red", type="l")
+
+# Let's go with no smoothing for the moment...
 
 # Normalise NZE data
 maxArea <- apply(NZE$data[,4:30],1,max)
