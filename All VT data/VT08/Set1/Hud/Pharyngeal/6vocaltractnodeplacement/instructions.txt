@@ -1,0 +1,6 @@
+Copy in the slices folder and curve.exnode
+run data_point_placement.com file
+place the data points around the vocal tract (do it sequencially i.e. only clock wise or anticlock wise)
+finally type in write_to_file in the cmgui command line to save the placed data points
+the data points will be saved as .exnode in the folder exnodefordisplay and .exdata in the folder 
+exdataforareacalculation

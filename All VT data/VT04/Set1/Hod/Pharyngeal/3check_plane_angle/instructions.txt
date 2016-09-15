@@ -1,0 +1,3 @@
+Required are the slices folder and curve.exnode
+Make sure that the .exnode file in the block folder matches the dimensions of the texture we are interested in
+run load_slices.com and check to see if the planes match where we would expect them to be in the volume block 

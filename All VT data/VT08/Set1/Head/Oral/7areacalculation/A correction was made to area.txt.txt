@@ -1,0 +1,1 @@
+See notes in 1create_snake. -The node order was out for the last four nodes - I've corrected  curve.exnode in that file - but since Helen actually did her area mapping with the old order I need to change the order of the last four elements in the area.txt file to reflect this. So note this will not match what is produced if area.txt is recalculated.

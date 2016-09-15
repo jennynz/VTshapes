@@ -1,0 +1,5 @@
+For some reason the node order had got confused for nodes 12,13,14, and 15
+
+So I swopped them to be 15,12,14,13. I did this after Helen had done all her calculation with old.curve.exnode - so will need to be mindful of that - if I re run through every thing again.
+
+I'm doing it here, as this is the file that gets used in the matlab code to calculate the length of the vocal tract.

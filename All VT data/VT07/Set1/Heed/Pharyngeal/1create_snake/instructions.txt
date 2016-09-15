@@ -1,0 +1,6 @@
+copy the mid sagital section and re lable as middle_slice
+run snake.com (all)
+place the data points in the middle of the vocal tract make sure you either start at the mouth and finish at the vocal folds or vice versa ie. go in order
+type in command like create_curve
+
+The out put should be curve.exnode

@@ -1,0 +1,11 @@
+open the cmd (command line)
+change directory to the one which contains the CreateSlices.pl
+install strawberry perl
+copy curve.exnode in to this folder
+
+enter the following the command line:
+
+perl CreateSlices.pl curve.exnode
+
+out put should be plane....exnode and plane....exelem (... = 001, 002,003 untill 20 etc) in the folder slices
+
