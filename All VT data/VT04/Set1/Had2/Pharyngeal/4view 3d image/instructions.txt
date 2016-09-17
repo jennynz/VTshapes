@@ -1,2 +1,0 @@
-change texture_block.exnode to match your field of view and also the number of images takes and the distance i.e. used to calculate the depth
-just run view.com and a 3d image should display

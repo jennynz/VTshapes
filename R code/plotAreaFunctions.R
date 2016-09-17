@@ -69,8 +69,7 @@ cols.all <- c(cols.warm, cols.cold, cols.dark)
   title(paste(vowels, " vowels for ", spk))
 }
 
-
-## Maximum vocal tract values
+## Maximum vocal tract values (not sure if this is needed)
 for (v in VTlist) {
   maxVTvals(spk=v)
 }

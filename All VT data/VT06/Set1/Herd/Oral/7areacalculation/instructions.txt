@@ -1,9 +1,0 @@
-copy in the folder exdataforareacalculation
-run cmd
-set current directory to the directory containing the .pl file
-type in 
-
-perl calculate_area.pl 
-
-in the command line. The areas will be placed in the area.txt in sequential order i.e. the first is for plane 1
-then plane 2 etc.

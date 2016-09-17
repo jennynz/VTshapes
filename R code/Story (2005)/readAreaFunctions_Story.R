@@ -52,7 +52,7 @@
   
   row.names(allAmE.df) <- NULL
   
-  output <- list("data" = allAmE.df, "numVTs" = numVTs, "VTlist" = VTlist)
+  output <- list("data" = allAmE.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames)
   return(output)
   
 }

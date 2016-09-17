@@ -1,5 +1,0 @@
-copy in the slices folder and curve.exnode
-delete the current contents of the output folder
-run create_slices.com
-type run in the command line of the cmgui to project the volume on to the planes
-The plane images containing the volume textures are placed in the output folder for viewing

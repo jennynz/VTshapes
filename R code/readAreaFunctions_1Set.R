@@ -7,7 +7,9 @@
 # Adapted by Jenny Sahng
 # 05/08/2016
 
-"compileMRIAreas" <- function(areaFiles = areaFiles, numVowels = numVowels, vowelNames = vowelNames, VTlist = VTlist, path, spk, interpN = FALSE)
+"compileMRIAreas" <- function(areaFiles = areaFiles, numVowels = numVowels,
+                              vowelNames = vowelNames, VTlist = VTlist, path,
+                              spk, interpN = FALSE, smooth = TRUE)
 {
 
     # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
@@ -26,7 +28,13 @@
     
     # Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
     LinDatfil <- approx(datfile[,1],datfile[,2],n=n)
-    alldat[i,] <- LinDatfil$y
+    x <- LinDatfil$x
+    y <- LinDatfil$y
+    
+    # Fit a smoothing spline to the area function
+    if (smooth) {y <- smooth.spline(y ~ x, nknots=15)$y }
+    
+    alldat[i,] <- y
     
   }
   
@@ -35,7 +43,7 @@
   return(alldat.df)
 }
 
-"read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE) {
+"read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE, smooth = TRUE) {
   
   setwd("~/Part IV Project/R code")
   
@@ -55,11 +63,13 @@
   
   for (i in 1:numVTs)
   {
-    allVowels.df <- compileMRIAreas(areaFiles = areaFiles, numVowels = numVowels, vowelNames = vowelNames, VTlist = VTlist, path = path, spk=VTlist[i], interpN = interpN)
+    allVowels.df <- compileMRIAreas(areaFiles = areaFiles, numVowels = numVowels,
+                                    vowelNames = vowelNames, VTlist = VTlist, path = path,
+                                    spk=VTlist[i], interpN = interpN, smooth = smooth)
     allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
   }
   
-  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist)
+  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames)
   return(output)
   
 }
