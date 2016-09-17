@@ -7,9 +7,10 @@
 # Adapted by Jenny Sahng
 # 05/08/2016
 
-"compileMRIAreas" <- function(spk, interpN = FALSE, vowelNames)
+"compileMRIAreas" <- function(areaFiles = areaFiles, numVowels = numVowels, vowelNames = vowelNames, VTlist = VTlist, path, spk, interpN = FALSE)
 {
-  # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
+
+    # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
   
   # Make data matrix and vowel names vector
   if (interpN) { n <- interpN }
@@ -26,6 +27,7 @@
     # Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
     LinDatfil <- approx(datfile[,1],datfile[,2],n=n)
     alldat[i,] <- LinDatfil$y
+    
   }
   
   # Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
@@ -33,19 +35,17 @@
   return(alldat.df)
 }
 
-"read.NZE.data" <- function(interpN = FALSE) {
+"read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE) {
   
   setwd("~/Part IV Project/R code")
-  
-  path <<- "H:\\Documents\\Part IV Project\\All VT data"
   
   # List of VT name strings (VT01, VT02...)
   VTlist <- list.dirs(path, recursive=FALSE, full.names=FALSE)
   numVTs <- length(VTlist)
   
   # List of vowel names (hadd, heed...)
-  areaFiles <<- dir(paste(path,VTlist[1],"Set1","distance_area",sep="\\"))
-  numVowels <<- length(areaFiles)
+  areaFiles <- dir(paste(path,VTlist[1],"Set1","distance_area",sep="\\"))
+  numVowels <- length(areaFiles)
   vowelNames <- vector(length=numVowels)
   for(i in 1:numVowels) {
     vowelNames[i] <- unlist(strsplit(areaFiles[i],"\\."))[1] # Remove .txt
@@ -55,11 +55,11 @@
   
   for (i in 1:numVTs)
   {
-    allVowels.df <- compileMRIAreas(spk=VTlist[i], interpN = interpN, vowelNames = vowelNames)
+    allVowels.df <- compileMRIAreas(areaFiles = areaFiles, numVowels = numVowels, vowelNames = vowelNames, VTlist = VTlist, path = path, spk=VTlist[i], interpN = interpN)
     allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
   }
   
-  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames)
+  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist)
   return(output)
   
 }

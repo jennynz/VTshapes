@@ -6,16 +6,18 @@
 # Written by Jenny Sahng
 # 15/09/2016
 
+# Pre-amble ====================================================
+
 rm(list=ls()) # clear workspace
 graphics.off() # close all graphics windows
 source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R', echo=TRUE)
 AmE <- read.Story.data()
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
-NZE1 <- read.NZE.data()
 NZE <- read.NZE.data(interpN = 44)
 
-# Test to see what sort of interpolation/smoothing is needed if any
-a<-unname(unlist(NZE$data[11,-(1:2)]))
+# Tests to see if interpolation or smoothing is needed.
+NZE1 <- read.NZE.data()
+a<-unname(unlist(NZE$data[22,-(1:2)]))
 b <- smooth.spline(a, tol = 1)
 plot(a, type="l")
 par(new=T)
@@ -27,17 +29,22 @@ plot(a, type="l")
 par(new=T)
 plot(b, col="red", type="l")
 
-a<-unname(unlist(NZE$data[22,-(1:2)]))
-b<-unname(unlist(AmE$data[22,-(1:2)]))
-plot(a, type="l")
-par(new=T)
-plot(b, col="red", type="l")
+# Normalise data
+maxArea.NZE <- apply(NZE$data[,4:45],1,max)
+NZE$data[,3:45] <- NZE$data[,4:45]/maxArea.NZE
 
-# Let's go with no smoothing for the moment...
+maxArea.AmE <- apply(AmE$data[,3:46],1,max)
+AmE$data[,3:46] <- AmE$data[,3:46]/maxArea.AmE
 
-# Normalise NZE data
-maxArea <- apply(NZE$data[,4:30],1,max)
-NZE$data <- NZE$data[,3:30]/maxArea
+# Combine datasets
+combined.df <- rbind(NZE$data, AmE$data)
+numVTs <- AmE$numVTs + NZE$numVTs
+VTlist <- c(NZE$VTlist, AmE$VTlist)
+
+# Parameters ====================================================
+
+# Final csv file with all information (correlation and variances)
+filename <- "NZE_AmE_combined.csv"
 
 # The VT and vowel number to skip in correlations if it's missing (SM2 herd)
 VT.skip <- "SM2"
@@ -46,16 +53,13 @@ Vowel.skip <- "herd"
 # Principal components to analyse
 p.max <- 3
 
-# Table of variances
-vars <- matrix(data = NA, nrow = numVTs, ncol = p.max+2, byrow = TRUE)
-colnames(vars) <- c("PC1+PC2", paste("PC", 1:p.max, sep=""), "Total")
-rownames(vars) <- VTlist
+# Inter-speaker Correlations ====================================================
 
-table <- NA
+corr.table <- NA
 
 for (p in 1:p.max) {
   
-  # Initialise tables
+  # Initialise corrs
   corr <- matrix(data = NA, nrow = numVTs-1, ncol = numVTs-1, byrow = TRUE)
   colnames(corr) <- VTlist[-1]
   rownames(corr) <- VTlist[-numVTs]
@@ -79,23 +83,23 @@ for (p in 1:p.max) {
     
     while(j <= numVTs) {
       
-      m <- ((i-1)*10 + i):(i*10 + i)
-      n <- ((j-1)*10 + j):(j*10 + j)
+      m <- grep(VTlist[i], combined.df$spk)
+      n <- grep(VTlist[j], combined.df$spk)
       
       # Skip herd if comparing with SM2 since it doesn't have it.
       if ( (VTlist[i] == VT.skip ) | (VTlist[j] == VT.skip) ) {
-        m <- m[-4]
-        n <- n[-4]
+        m <- m[m != intersect(m, grep(Vowel.skip, combined.df$vow))]
+        n <- n[n != intersect(n, grep(Vowel.skip, combined.df$vow))]
       }
       
       # PCA
-      pca1 <- prcomp(~., data = allSpeakers.df[m, -(1:2)], scale=T)
-      pca2 <- prcomp(~., data = allSpeakers.df[n, -(1:2)], scale=T) 
+      pca1 <- prcomp(~., data = combined.df[m, -c(1:2,46)], scale=T)
+      pca2 <- prcomp(~., data = combined.df[n, -c(1:2,46)], scale=T) 
       
       # Interspeaker correlations
       cor <- cor.test(unname(pca1$x[,p]), unname(pca2$x[,p]))
       
-      # Write to tables
+      # Write to corrs
       corr[i,j-1] <- unname(cor$estimate)
       pvalues[i,j-1] <- unname(cor$p.value)
       
@@ -104,27 +108,31 @@ for (p in 1:p.max) {
     
   }
   
-  # Append correlation tables to file
-  table <- rbind(table, rbind(namerow, corr, namerowabs, abs(corr), prow, pvalues))
+  # Append correlation tables
+  corr.table <- rbind(corr.table, rbind(namerow, VTlist[-1], corr, namerowabs, VTlist[-1], abs(corr), prow, VTlist[-1], pvalues))
 }
 
-# Write table to file
-write.csv(table, file = "AmE_corr_inter.csv")
+write.table(corr.table, file = filename, sep = ",", col.names = F)
 
-# Variances
+# Variances ====================================================
+
+vars.table <- matrix(data = NA, nrow = numVTs, ncol = p.max+2, byrow = TRUE)
+colnames(vars.table) <- c(paste("PC", 1:p.max, sep=""), "PC1+PC2", "Total")
+rownames(vars.table) <- VTlist
 
 for(i in 1:numVTs) {
-  
-  pca <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i), -(1:2)], scale=T)
-  vars[i,1] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2]
-  vars[i,-c(1,p.max+2)] <- unname(summary(pca)$importance[2,1:p.max])
-  vars[i,p.max+2] <- summary(pca)$importance[2,1] + summary(pca)$importance[2,2] + summary(pca)$importance[2,3]
-  write.csv(vars, file = "AmE_vars.csv")
-  
+  pca <- prcomp(~., data = combined.df[grep(VTlist[i], combined.df$spk), -c(1:2,46)], scale=T)
+  vars <- summary(pca)$importance[2,]
+  vars.table[i,1:p.max] <- unname(vars[1:p.max])
+  vars.table[i,p.max+1] <- vars[1] + vars[2]
+  vars.table[i,p.max+2] <- sum(vars[1:p.max])
 }
 
+# Write corr to file
+write.table(rbind(colnames(vars.table), vars.table), file = filename, append = TRUE, sep = ",", col.names = F)
+
 # Plot calculated variances and variances from Story
-plot(100*vars[,p.max+2], col="red", ylim=c(85,100))
+plot(100 * vars.table[,p.max+2], col="red", ylim=c(85,100))
 par(new=T)
 points(c(92.8,90.5,94.7,93,92.6,97.3))
 

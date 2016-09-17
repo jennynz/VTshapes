@@ -6,7 +6,12 @@
 # Written by Jenny Sahng
 # 16/08/2016
 
+rm(list=ls()) # clear workspace
+graphics.off() # close all graphics windows
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
+NZE <- read.NZE.data()
+numVTs <- NZE$numVTs
+VTlist <- NZE$VTlist
 
 corr <- matrix(data = NA, nrow = numVTs-1, ncol = numVTs-1, byrow = TRUE)
 colnames(corr) <- VTlist[-1]
@@ -25,7 +30,7 @@ isNorm <- T
 # Maximum areas for normalising. X1 is omitted since it is unreliable (MRI
 # showed little of mouth opening at front of lips) and X29 omitted since it is
 # the glottis which is always zero.
-if (isNorm == T) { maxArea <- apply(allSpeakers.df[,4:30],1,max) }
+if (isNorm == T) { maxArea <- apply(NZE$data[,4:30],1,max) }
 
 for(i in 1:numVTs) {
   j <- i + 1
@@ -33,11 +38,11 @@ for(i in 1:numVTs) {
     
     # Individual speaker PCAs with normalised area functions
     if (isNorm == T) {
-      pca1 <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30]/maxArea[((i-1)*10 + i):(i*10 + i)], scale=T)
-      pca2 <- prcomp(~., data = allSpeakers.df[((j-1)*10 + j):(j*10 + j),4:30]/maxArea[((j-1)*10 + j):(j*10 + j)], scale=T) 
+      pca1 <- prcomp(~., data = NZE$data[((i-1)*10 + i):(i*10 + i),4:30]/maxArea[((i-1)*10 + i):(i*10 + i)], scale=T)
+      pca2 <- prcomp(~., data = NZE$data[((j-1)*10 + j):(j*10 + j),4:30]/maxArea[((j-1)*10 + j):(j*10 + j)], scale=T) 
     } else {
-      pca1 <- prcomp(~., data = allSpeakers.df[((i-1)*10 + i):(i*10 + i),4:30], scale=T)
-      pca2 <- prcomp(~., data = allSpeakers.df[((j-1)*10 + j):(j*10 + j),4:30], scale=T) 
+      pca1 <- prcomp(~., data = NZE$data[((i-1)*10 + i):(i*10 + i),4:30], scale=T)
+      pca2 <- prcomp(~., data = NZE$data[((j-1)*10 + j):(j*10 + j),4:30], scale=T) 
     }
     
     # Normality tests
