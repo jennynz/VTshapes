@@ -16,11 +16,18 @@ path <<- "H:\\Documents\\Part IV Project\\All VT data"
 # Final csv file with all information (correlation and variances)
 filename <- "NZE_AmE_combined.csv"
 
-# Normalise area functions?
-do.norm <- F
+# Normalise area functions? (F, "spk" for speaker-specific or "vow" for vowel-specific)
+do.norm <- "vow"
 
 # Plot normalised area functions?
 do.plots <- F
+
+# Scale to unit variance before PCA?
+do.scale <- F
+
+# Divide NZE$data by 100 to convert to cm2? (consistent with Story, but does not affect correlations at all)
+# Would only do for plotting purposes (to get things fitting on the same y-axis) and if not normalising.
+do.cm2 <- F
 
 # Fit a smoothing spline when reading in area functions
 do.spline <- F
@@ -63,44 +70,38 @@ NZE <- read.NZE.data(path = path, interpN = 44, smooth = do.spline)
 numVTs <- AmE$numVTs + NZE$numVTs
 VTlist <- c(NZE$VTlist, AmE$VTlist)
 
-if (do.norm) {
-  if (do.norm == "vow") {
-    
-    # Normalise data specific to each individual vowel
-    maxArea.NZE <- apply(NZE$data[,4:45],1,max)
-    NZE$data[,3:45] <- NZE$data[,4:45]/maxArea.NZE
-    maxArea.AmE <- apply(AmE$data[,3:46],1,max)
-    AmE$data[,3:46] <- AmE$data[,3:46]/maxArea.AmE
-    
-  } else if (do.norm == "spk") {
-    
-    # Normalise data specific to speaker only
-    maxArea <- vector(length = numVTs)
-    for (i in 1:numVTs) {
-      m <- grep(VTlist[i], combined.df$spk)
-      maxArea[i] <- max(combined.df[m,3:46], na.rm = TRUE)
-      combined.df[m,3:46] <- combined.df[m,3:46]/maxArea[i]
-    }
-    
-  }
-  stopifnot(max(combined.df[,3:46], na.rm=T) == 1)
-}
-
 # Switch order of NZE data to match order of vowels in AmE
 NZE.switched <- NZE$data
 for (i in 1:NZE$numVTs) {
   m <- grep(VTlist[i], NZE$data$spk)
   for (j in 1:length(NZE$vowelNames)) {
-    n <- intersect(m, grep(AmE$vowelNames[j], NZE$data$vow))
+    n <- intersect(m, grep(paste("\\b",AmE$vowelNames[j],"\\b",sep=""), NZE$data$vow))
     k <- m[1] + j - 1
     NZE.switched[k,] <- NZE$data[n,]
   }
 }
 
 # Divide NZE by 100 to convert from mm2 to cm2
-NZE.switched[,3:46] <- NZE.switched[,3:46]/100
+if (do.norm == F) {
+  if (do.cm2) { NZE.switched[,3:46] <- NZE.switched[,3:46]/100 }
+}
 
 combined.df <- rbind(NZE.switched, AmE$data)
+
+if (do.norm == "spk") {
+  # Normalise data specific to speaker only
+  maxArea <- vector(length = numVTs)
+  for (i in 1:numVTs) {
+    m <- grep(VTlist[i], combined.df$spk)
+    maxArea[i] <- max(combined.df[m,3:46], na.rm = TRUE)
+    combined.df[m,3:46] <- combined.df[m,3:46]/maxArea[i]
+  }
+} else if (do.norm == "vow") {
+  # Normalise data specific to each individual vowel
+  maxArea <- apply(combined.df[,3:46],1,max)
+  combined.df[,3:46] <- combined.df[,3:46]/maxArea
+} 
+if (do.norm != F) {stopifnot(max(combined.df[,3:46], na.rm=T) == 1)}
 
 # Plot to visually check that all the area functions are looking in order ==============
 
@@ -136,7 +137,7 @@ if (do.plots) {
     
     # Each vowel
     for (vow in NZE$vowelNames) {
-      m <- grep(vow, combined.df$vow)
+      m <- grep(paste("\\b",vow,"\\b",sep=""), combined.df$vow)
       
       if (vow == Vowel.skip) {
         m <- m[m != intersect(m, grep(VT.skip, combined.df$spk))]
@@ -191,13 +192,13 @@ for (p in 1:p.max) {
       
       # Skip herd if comparing with SM2 since it doesn't have it.
       if ( (VTlist[i] == VT.skip ) | (VTlist[j] == VT.skip) ) {
-        m <- m[m != intersect(m, grep(Vowel.skip, combined.df$vow))]
-        n <- n[n != intersect(n, grep(Vowel.skip, combined.df$vow))]
+        m <- m[m != intersect(m, grep(paste("\\b",Vowel.skip,"\\b",sep=""), combined.df$vow))]
+        n <- n[n != intersect(n, grep(paste("\\b",Vowel.skip,"\\b",sep=""), combined.df$vow))]
       }
       
       # PCA
-      pca1 <- prcomp(~., data = combined.df[m, -c(1:2,46)], scale=T)
-      pca2 <- prcomp(~., data = combined.df[n, -c(1:2,46)], scale=T) 
+      pca1 <- prcomp(~., data = combined.df[m, -c(1:2,46)], scale=do.scale)
+      pca2 <- prcomp(~., data = combined.df[n, -c(1:2,46)], scale=do.scale) 
       
       # Interspeaker correlations
       cor <- cor.test(unname(pca1$x[,p]), unname(pca2$x[,p]))
@@ -224,7 +225,7 @@ colnames(vars.table) <- c(paste("PC", 1:p.max, sep=""), "PC1+PC2", "Total")
 rownames(vars.table) <- VTlist
 
 for(i in 1:numVTs) {
-  pca <- prcomp(~., data = combined.df[grep(VTlist[i], combined.df$spk), -c(1:2,46)], scale=T)
+  pca <- prcomp(~., data = combined.df[grep(VTlist[i], combined.df$spk), -c(1:2,46)], scale=do.scale)
   vars <- summary(pca)$importance[2,]
   vars.table[i,1:p.max] <- unname(vars[1:p.max])
   vars.table[i,p.max+1] <- vars[1] + vars[2]

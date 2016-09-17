@@ -1880,11 +1880,219 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
     \end{itemize}
 \end{itemize}
 
-\section*{To do list}
+\section*{09/09/16 Friday Midsem Break Wk 2, D-13: Report}
 \begin{itemize}
-    \item Check whether transforms between English accents in vowel space has been done before, both based on formants (probably has been done) and with MRI-derived vowel quadrilaterals with PC and resonance axes (unlikely to have been done, but if it has, that would suck... but ours would still be novel because it's NZE and surely no one has done that??)
-    \item Explore how much F3/F4 correlates to P3/P4? Look at higher order formants and see if they correlate with higher order PC's and estimated resonances.
-    \item Is there an objective way of quantifying if the vowel spaces are accurate enough/close enough to formant derived space? Just a simple residual sum of squares? Or is this beside the point, because the variation seen within each vowel for the MRI-derived quadrilaterals are due to that many-to-one mapping?
+    \item To dos that arose from writing draft report
+    \begin{itemize}
+        \item Variance analysis for intra-speaker, just add \verb|unname(summary(pca1)$importance[2,])| to \verb|correlations_intra_oneRegion.R| and output the results to csv. For section 3.4.1
+        \item Probably swap out all those ugly correlation tables for LaTeX ones?
+    \end{itemize}
+\end{itemize}
+
+\section*{12/09/16 Monday Week 7, D-10: Quantify variability}
+\begin{itemize}
+    \item Well, that was a long break (TLC website stuff) given that there are 10 days left.
+    \item 3.2.4 Individual speaker variance analysis
+    \begin{itemize}
+        \item Added individual speaker variance data as a series bar plot.
+        \item Talked about it a bit.
+    \end{itemize}
+    \item VT04 Had Heed finished off finally, now all read into R, just need to do the analyses
+\end{itemize}
+
+\section*{13/09/16 Tuesday Week 7, D-9: Quantify variability, analyse AmE}
+\begin{itemize}
+    \item Quantify variability
+    \begin{itemize}
+        \item Variances: really just to confirm that these are marked up all right, that there isn't any anomaly in the markup \begin{verbatim}
+                 PC1+PC2     PC1     PC2     PC3
+                Rep 1 0.89089 0.68860 0.20229 0.10911
+                Rep 2 0.86466 0.62363 0.24103 0.13535
+        \end{verbatim}
+        \item Correlations \begin{verbatim}
+                Correlation     P-value
+                PC1   0.9865975 0.013402549
+                PC2   0.9914800 0.008519955
+                PC3   0.9840155 0.015984521
+        \end{verbatim}
+        \item As expected/hoped, little variation between markups for the same person marking up.
+        \item Should do VT11 Set1 again to see the variability between different people marking up.
+    \end{itemize}
+    \item AmE - finally!
+    \begin{itemize}
+        \item Reading through Story (2005) Synergistic modes of vocal tract articulation for American English vowels
+        \item He found > 90\% variance accounted for by PC1-3, PC1 and PC2 highly correlated across six speakers (inter-speaker correlations)
+        \item Table XI holds the area functions for the 11 vowels. Could just copy and paste the tables from the PDF, it pastes quite nicely, space-separated. Will be easy to scrape.
+        \item Table IX is the one that Catherine transcribed across. Scaling coefficients of PC1-3
+        \item N.B. probably need to mention rounded vowels having longer VT lengths! But our analysis is already normalised for length just by virtue of having a set number of equispaced data points during the create\_curve step.
+        \item Three PCs were fitted with 8th order polynomials ``to further aid interspeaker comparison", ``smoothed by fitting them with eighth-order polynomials. This simplified the visual comparison of the modes but maintained their gross characteristics."
+        \item Plotted area functions reconstructed from PC1-3 * scaling factors (Figure 6) together for genders.
+        \item Is this an approach that merits inclusion in my project? My approach is definitely much more rough, but it’s shown results anyway. Too late to change anyway.
+    \end{itemize}
+    \item Meeting
+    \begin{itemize}
+        \item Read about how correlations are interpreted - data is probably stronger than you realise. Colours are almost misleading, maybe pull the green down and yellow around 50
+        \item Red-green colourblindness - use red-blue scale and include colour bars
+        \item R plots as vectors
+        \item Methodology and new contributions in methods
+        \item Intra add VT06 (sophie) Set 2 first if time allows
+        \item Quantifying accuracy/effectiveness of rotation vectors, just look at shape and distribution - Catherine's method, euclidean distance, taking internal vowels as \% distance between point vowels.
+        \item Rotation vectors applications: accent transformations, dubbing, automated speech generators (Siri, GPS), BabyX, AI.
+        \item For the talk, maybe get some sound recordings, compare more correlated ones with less correlated ones.
+    \end{itemize}
+\end{itemize}
+
+\section*{14/09/16 Wednesday Week 7, D-8: AmE}
+\begin{itemize} 
+    \item Added in the references from Catherine into report.
+    \item AmE dataset
+    \begin{itemize}
+        \item Copy and paste space-separated area functions from paper (Table XI onwards), use Text to Columns to delimit.
+        \item N.B. Story's area functions go from glottis at 1 to lips at 44, need to reverse the order.
+        \item No need to linearly interpolate since it has already been fitted with a cubic spline, resulting in 44 area sections of equal length increments.
+        \item Also doesn't need normalising. But to compare with NZE data, will have to normalise it a similar way, or maybe I won't have to depending on how they're scaled, because correlation just looks for a linear relationship between the two data sets. Length-wise normalisation is probably more important. Will plot them together to see that the peaks aren't too out of line.
+        \item Skip `herd' when SM2 is included in the pair that is being compared, since it's missing `herd'.
+        \item Inter-speaker correlations within AmE only: PC1 90\%, PC2 75\% except 40\% for SF1 SF2, 10-20\% for PC3.
+    \end{itemize}
+\end{itemize}
+
+\section*{15/09/16 Thursday Week 7, D-7: AmE}
+\begin{itemize}
+    \item AmE dataset
+    \begin{itemize}
+        \item Variances
+        \begin{itemize}
+            \item Recreate Table VIII. N.B. the variances in Story are of the diameter functions so exact matches are not expected. Our total variances captured by PC1-3 are 5-10\% lower, but follows same trends. Still around high 80's/90's so good amount of variance being captured, I reckon. Similar/better than our ones which had total variances more around low-mid 80's.
+        \end{itemize}
+        \item Inter-speaker correlations of combined dataset including NZE.
+        \begin{itemize}
+            \item Hmmm how to do this... we need the same number of X values, don't we? Interpolating our data to 44 points might be the best way, using the interpN already built into the reading scripts.
+            \item Just did a quick plot on Excel and I feel like correlations are going to be way higher within AmE not because of accent effects, but because their area functions are just way smoother and cleaner.
+            \item Will definitely have to interpolate, and maybe fit a cubic spline as well? 
+            \item Used \verb|smooth.spline| in R on the linearly interpolated data (n=44), but we only get a smooth area function if tolerance is as high as 1. Even when tol=0.9, it fits the data exactly including all the spikes.
+            \item Maybe I'll just leave it and see what the correlations are, since I didn't do it before.
+            \item Argh the linear interpolation to 44 points actually makes things quite a bit worse in terms of choppiness. Maybe use a cubic spline there?
+        \end{itemize}
+    \end{itemize}
+    \item Changed all the scripts to functions so they could be re-used/outputs renamed to specific things like AmE or NZE.
+    \item I SCREWED UP REAL BAD AND DELETED ALL THE DISTANCE FILES but I haven't committed so just git checkout!!!
+\end{itemize}
+
+\section*{17/09/16 Saturday Week 7, D-5: VT11 quantify variability}
+\begin{itemize}
+    \item Reverted the commit, the distance\_area files are all back thank goodness.
+    \item AmE
+    \begin{itemize}
+        \item Inter-speaker correlations of combined dataset including NZE
+        \begin{itemize}
+            \item When NZE is normalised, max is 1. For AmE currently, the values seem to go up to around 10. If needed, normalise AmE to 1 as well.
+            \item Okay so the results are as expected: They correlate within accents best, with VT02 showing slightly better correlations with AmE than with NZE. Pretty darn clear and looks very nice with the colours. Inter-speaker correlations within NZE are similar to the ones we got before we interpolated so that shows that the interpolation out to 44 points didn't harm it too much. Inter-speaker correlations within AmE verrrry similar to the ones we got before (like, to 0.001\% correlation estimates), they're just not identical because we removed X44 since X44 for NZE are zeros. 
+            \item The fact that correlations with AmE went up for VT02 AusE is crucial. Otherwise we would have no way of validating that the lower correlations between accents is because of actual accent differences - we could say it was due to method differences, which ended up giving different data. Even just plotting the area functions that are going into the PCA against each other, Story's data is always much smoother. But since AusE went up, it shows that regardless of method differences, at there must have been some factor causing that consistent increase in correlation between AusE and AmE, which can only really be attributed to accent.
+            \item I think NZE is really too spiky though. Putting in a cubic spline when reading area txt files, after interpolation out to 44 points.
+            \begin{itemize}
+                \item Did a quick \verb|splinetest.R|, \verb|smooth.spline| with \verb|nknots=15| seemed pretty good! Lower the nknots, the smoother it gets generally speaking (although there are variations in between). 15 looks like a great middle ground, could go slightly lower.
+                \item Added in an if statement about smoothing which can be switched off with \verb|smooth=F|.
+                \item Things definitely look a lot smoother now, the NZE plots are about as smooth as the AmE plots.
+                \item Hmm, correlations didn't improve at all, in fact they seem to have got slightly worse where NZE was involved. Scratch that, no need to interpolate.
+            \end{itemize}
+            \item I think I should try normalise AmE to 1 as well.
+            \begin{itemize}
+                \item Correlations for AmE (with NZE and AmE) decrease overall.
+                \item Very bad inter-speaker correlations for SM3 with everyone including other AmE speakers. \item Had a look at SM3's maxAreas and there is a lot of variability between them, SM3 definitely had the biggest maxAreas.
+                \item Wondering if we are neutralising the variability between vowels that distinguish them by normalising vowel-specifically - should just normalise according to speaker's max. 
+            \end{itemize}
+            \item Try normalising just to speaker's maximum across all vowels, rather than dividing my maximum for each vowel.
+            \begin{itemize}
+                \item Now everything is expressed as a percentage of each VT's maximum cross-sectional area across all vowels (supposedly a \% of that speaker's maximum cross-sectional area, how wide they can open their mouth).
+                \item Plotted them to visually check that all the area functions look similar, and they do, so that's great.
+                \item Shit. Shitty shit shit. Normalising for speaker but not vowel eliminates the lower correlations between VT02 and other NZE entirely! And VT02 correlations are no higher between AmE than NZE.
+                \item That's not bad, really, except we lose the validation that the lower correlations between accents is not due to method differences.
+                \item VT06 seemed to have marginally better correlations with some AmEs than the other NZEs.
+            \end{itemize}
+            \item Try normalising just to speaker's maximums AND smoothing
+            \begin{itemize}
+                \item Barely any changes, again no point in transforming the data more than necessary, right?
+                \item Unless that transformation is highlighting key features, unearthing it from the noise
+                \item But it doesn't seem to, so no point.
+            \end{itemize}
+            \item \textbf{Results so far:}
+            \begin{itemize}
+                \item Vowel and speaker-specific normalisation on NZE + no normalisation for AmE = strong intra-accent correlation + VT02 exception
+                \item Speaker-specific normalisation on both = strong intra-accent correlation
+                \item Vowel and speaker-specific normalisation on both = strong intra-accent correlation + VT02 exception + SM3 low correlations
+            \end{itemize}
+            \item What does this mean?
+            \begin{itemize}
+                \item Speaker-specific normalisation got rid of the VT02 exception. Why?
+                \item Vowel-and-speaker-specific normalisation gets rid of differences in overall mouth wideness or cross-sectional area between vowels, but amplifies differences WITHIN the area functions. E.g. If two area functions had very different amplitudes, but similar shapes (whether scaled or y-shifted), they would have a high correlation with this normalisation. On the other hand if two area functions had similar amplitudes but different shapes, this normalisation would give lower correlations between them.
+                \item Speaker-specific normalisation gets rid of differences in vocal tract size between speakers, but retains the area differences between different vowels. E.g. if two area functions of the SAME speaker have different amplitudes, but similar shapes............ wait but correlation, does it even matter about scale as long as increment is the same? No it doesn't, it doesn't matter whether it's y-shifted or scaled. It DOES matter if it's x-shifted, which is great for us because x = distance from lips which is a crucial parameter. So if two area functions of the SAME speaker had different amplitudes but similar shapes, we would see high correlations. Same amplitude, different shape = lower correlations. If area functions from different speakers (therefore different VT sizes or maxAreas that we divide by) have same amplitude, different shape, normalising with speaker-specific normalisation wouldn't change much I don't think.
+                \item Ah-hah! But the key is that the more dramatic the ups and downs the shapes have, which are being correlated, the bigger the effect of the correlation. Scaling does have an effect on the correlation in that if the two shapes are correlated, scaling up (stretching it in y direction) will increase correlations between them. If they are not very correlated, scaling up will exacerbate it and decrease correlations.
+                \item Speaker-specific normalisation improved correlations for VT02. This suggests that maybe the small amount of correlation that was there for VT02 was amplified by this normalisation, whereas before in vowel-and-speaker-specific normalisation, 
+                \item Vowel-and-speaker-specific normalisation gives a correlation advantage to 
+                \item Hey, why don't I check what kind of normalisation Story used?
+                \item Doesn't mention any normalisation. I wonder what sorts of units these are in, in that case. cm2 looks about right. Would just need to multiply by 100 to get to mm2 like I've got. Checking Story et. al. (1996) just in case. 
+                \item No normalisation of area, only of length if at all, and yes they are in cm$^2$. So imma divide mine by 100 to get cm^2 too, and not use any normalisation.
+                \item Why no normalisation? Because it exaggerates VT shapes (increases their amplitudes), e.g. for vowel-specific normalisation a rather flat area function where the tongue is quite plateaued may look very voluptuously up-and-down-y because it has been scaled to look that way. Speaker-specific normalisation does the same, but on a speaker scale e.g. if a particular speaker is very mumbly and doesn't move their tongue a lot, that effect is minimised, and the movements the tongue does make are amplified.
+            \end{itemize}
+            \item N.B. when doing PC1-PC2 plots that the order of vowels in AmE is different to the order in NZE!
+            \begin{itemize}
+                \item Shit maybe that has an effect on the PCAs. In fact I'm almost sure of it. Re-order AmE to be the same order as NZE.
+                \item Ordering the way Story has, since it's in the order on the vowel quad (going CCW starting at heed).
+                \item Okay it's throwing a bunch of warnings but it works, checked with original distance\_area files.
+                \item Wowza that improved correlations a lot. First tried it with speaker-specific normalisation,
+                there is a bit of intra-accent advantage in correlations but not much! Same with PC2, it's a mixed bag, no trends seen.
+                \item Try again with NO NORMALISATION, NO SMOOTHING, and NZE divided by 100 to get it in cm2, with the re-ordering.
+                \item Getting rid of normalisation did very little. Again, pretty weak differences within/outside of accents. A bit of difference in PC1, no visible difference for PC2 and PC3.
+                \item Also, no VT02 exception visible now :(
+                \item Dividing by 100 actually makes no difference at all to the correlations. Would only use it for plotting to get things fitting on the same y-axis.
+            \end{itemize}
+            \item \textbf{IGNORE ALL THE ABOVE RESULTS}. The parameters are thus:
+            \begin{itemize}
+                \item NO smoothing
+                \item NO dividing/multiplying by 100 to get things in the same units (no effect on correlations)
+                \item Area normalisation? (distance has already been normalised)
+                \begin{itemize}
+                    \item No normalisation: Very little differences in correlations across the board, maybe a bit of intra-speaker advantage in PC1.
+                    \item Speaker-specific: Literally no difference to no normalisation!
+                    \item Vowel-specific: Low correlations for VT02 and SM3, for all of them. Noticeably, correlations between NZE and AmE have improved elsewhere.
+                \end{itemize}
+            \end{itemize}
+            \item Results
+            \begin{itemize}
+                \item So the strong intra-accent correlations we were seeing at first are definitely attributed to me having the order the wrong way around, seeing as vowel-specific normalisation with the correct AmE order is now showing good correlations across all accents, but the VT02 and SM3 exceptions are remaining.
+                \item Ignoring VT02 and SM3 for now, vowel-specific correlation INCREASES correlations between NZE and AmE! Why?
+                \item 
+                \item Now for VT02 and SM3, why do they show such poor correlations when vowel-specific normalised, when in the unnormalised correlations, they show no signs of being an outlier at all, in PC1, 2 and 3?
+                \item Are they lagging by a bit? Because lag = huge drops in correlation.
+                \item Plotted VT02 and SM3 in bold against other plots for all the area functions, and they're seriously not that lagging or anything... Their correlations shouldn't be \textit{that} bad as they are showing.
+                \item Okay, plotted again with speaker-specific normalisation and the two rogues are looking a lot closer together.
+                \item Wait, it looks like for `hod', VT02 and SM3 are being plotted twice... 
+                \item Indeed it is. What the bejeepers is going on. All of them are plotting themselves twice! And only for the vowel 'hod'.
+                \item Grep finds 'whod' and 'hod' for the pattern 'hod'! Gaahhhh put in boundary characters \begin{verbatim}
+                    grep(paste("\\b",vow,"\\b",sep=""), combined.df\$vow)
+                \end{verbatim}
+                \item Debugged, VT02 and SM3 are now plotting as normal and still no sign of anomaly. Should in theory correlate perfectly well.
+                \item Checked the maxAreas for VT02 and SM3, they are well within the usual. And if they weren't would have seen it in the normalised plots anyway.
+                \item Genuinely don't know why these two are doing this.
+                \item Hmm okay, so their PCAs are definitely very different, both for rotation and x. Why would that be?
+                \item Huh, when I turn scaling off, VT02 and SM3 rotations and PCA x values look much better. When scaling is turned on, it scales the values to have unit variance before analysis. This eliminates the impact of variables with large variance (in our case, large VT sizes). We don't want this to be eliminated, right? This is an important factor for us, although it sounds kind of like speaker-specific normalisation. So it makes sense to turn off scaling?
+                \item When scaling is turned off, VT02 exception is eliminated, and SM3 improves but is still significantly lower than the others. This is reflected in the PC plots. But why?!
+                \item Turned scaling off for no normalisation. The lower correlations between accents is slightly more evident. Why?!
+            \end{itemize}
+            \item Wait, all that stuff I said before about correlations going up and down for scaling etc. is irrelevant because that's correlations between X values. But we're looking at correlations between principal components.
+        \end{itemize}
+    \end{itemize}
+    \item I wonder if I should have done a bit on general area functions with unnormalised length, average VT lengths between gender etc. (see how Story 2005 does it). Easy content. But then again, not enough pages.
+    \item Today has just been absolutely shit.
+\end{itemize}
+
+\section*{18/09/16 Sunday Week 8, D-4: Finish off AmE}
+\begin{itemize}
+    \item Just need to move on, get started on resonances!
+    \item VT11 Set 1 Cardinal Vowels for quantifying variability between users
+    \begin{itemize}
+        \item 
+    \end{itemize}    
 \end{itemize}
 
 \end{document}
