@@ -5,7 +5,16 @@
 # Adapted by Jenny Sahng
 # 07/08/2016
 
+
+rm(list=ls()) # clear workspace
+graphics.off() # close all graphics windows
+
+path <<- "H:\\Documents\\Part IV Project\\All VT data"
+
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
+NZE <- read.NZE.data()
+allSpeakers.df <- NZE$data
+VTlist <- NZE$VTlist
 
 # IPA symbols and custom colours for eplot
 levels(allSpeakers.df$vow) <- c()
@@ -35,11 +44,11 @@ eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T,
 title(main = "Vowel centroids on PC1-PC2 planes (12 VTs x 1 Set)", xlab = "PC1", ylab = "PC2")
 
 # Compare with interspeech
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, font=2, doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, font=2, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
 title(main = "Vowel centroids on negative PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Most vowel-quad-like
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
 title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Plot of standard deviations 

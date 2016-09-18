@@ -17,7 +17,7 @@ path <<- "H:\\Documents\\Part IV Project\\All VT data"
 filename <- "NZE_AmE_combined.csv"
 
 # Normalise area functions? (F, "spk" for speaker-specific or "vow" for vowel-specific)
-do.norm <- "vow"
+do.norm <- F
 
 # Plot normalised area functions?
 do.plots <- F

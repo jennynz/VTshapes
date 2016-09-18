@@ -43,7 +43,7 @@
   return(alldat.df)
 }
 
-"read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE, smooth = TRUE) {
+"read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE, smooth = FALSE) {
   
   setwd("~/Part IV Project/R code")
   
