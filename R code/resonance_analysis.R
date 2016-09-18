@@ -46,16 +46,16 @@ source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R')
 AmE <- read.Story.data(interpN = M)
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
 NZE <- read.NZE.data(path = path, interpN = M+1, smooth = do.spline)
-# Interpolate one more because the value for NZE is zero, which is going to get
-# cut when passing into calc.reflection.coef
-
+# Interpolate one more because the value for NZE is zero, which needs to be
+# ommitted before passing into calc.reflection.coef
+NZE$data <- NZE$data[,-length(NZE$data)]
 
 # Combine datasets
 numVTs <- AmE$numVTs + NZE$numVTs
 VTlist <- c(NZE$VTlist, AmE$VTlist)
 
 # Switch order of NZE data to match order of vowels in AmE
-NZE.switched <- NZE$data[,-length(NZE$data)]
+NZE.switched <- NZE$data
 for (i in 1:NZE$numVTs) {
   m <- grep(VTlist[i], NZE$data$spk)
   for (j in 1:length(NZE$vowelNames)) {
@@ -125,8 +125,17 @@ c = 3400        # c = speed of sound in air (cm/s)
 fs <- (M * c) / (2 * L)
 
 # Scaled frequency bins for each spectrum. Should be 198 x 512
-freqbins = 1:numVowels
-freqbins.t=t(freqbins)*fs/(2*512) 
+freqbins <- matrix(rep(1:512, numVowels), ncol = 512, byrow = T)
+freqbins <- freqbins * fs / (2*512) 
+
+# Check that last column is half the sampling frequency.
+sum(freqbins.t[,512]==fs/2)
+
+bin_vals = [0 : N-1];
+fax_Hz = bin_vals*fs/N;
+
+(bin_vals*fs/N)/fnyquist; % same as bin_vals/(N/2)
+
 
 # PCA on spectra ===========================================================
 
