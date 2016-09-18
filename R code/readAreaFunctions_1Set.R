@@ -69,7 +69,7 @@
                                     vowelNames = vowelNames, VTlist = VTlist, path = path,
                                     spk=VTlist[i], VTlengths <- VTlengths, interpN = interpN, smooth = smooth)
     VTlengths <- allVowels.df$lengths
-    allSpeakers.df <- rbind(allSpeakers.df, allVowels.df$data)
+    allSpeakers.df <- rbind(allSpeakers.df, allVowels.df$areas)
   }
   
   output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames, "lengths" = VTlengths)

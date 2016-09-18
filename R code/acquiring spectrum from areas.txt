@@ -27,7 +27,7 @@ fs<-340000*16/(allMRIleng.df16[,19]*2)
 
 # Next work out the correct frequency bins scaling for each spectrum - - need to transpose the matrix so now 110 by 512
 
-freqbins.t=t(freqbins)*fs/(2*512)
+freqbins.t=t(freqbins)*fs/(2*512) 
 
 ## checked that last column of the freqbins.t is half the sampling frequency - it was
 

@@ -120,9 +120,13 @@ lines(spectrum[,9],col="green")
 
 ## Sampling frequency of each spectrum (fs in Hz)
 # M = number of cross-sectional areas (defined earlier)
-L <-  c(NZE$lengths, read.Story.VTlengths) # L = length in cm
+L <-  c(NZE$lengths/10, read.Story.VTlengths()) # L = length in cm
 c = 3400        # c = speed of sound in air (cm/s)
 fs <- (M * c) / (2 * L)
+
+# Scaled frequency bins for each spectrum. Should be 198 x 512
+freqbins = 1:numVowels
+freqbins.t=t(freqbins)*fs/(2*512) 
 
 # PCA on spectra ===========================================================
 
