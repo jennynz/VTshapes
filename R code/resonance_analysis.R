@@ -64,6 +64,7 @@ for (i in 1:NZE$numVTs) {
     NZE.switched[k,] <- NZE$data[n,]
   }
 }
+vowelNames <- AmE$vowelNames
 
 # Divide NZE by 100 to convert from mm2 to cm2
 if (do.norm == F) {
@@ -102,23 +103,9 @@ source('~/Part IV Project/R code/LPCfromArea.R')
 # }
 RC <- apply(combined.df[,-c(1:2)], 1, calc.reflection.coef)
 LPC <- apply(RC, 2, rc2lpc.II)
-spectrum <- apply(LPC, 2, lpc2spec.III, n = 512)
+vtspec <- t(apply(LPC, 2, lpc2spec.III, n = 512))
 
-## Quick check of spectra
-
-# Same vowel
-plot(spectrum[,11],type="l")
-lines(spectrum[,22],col="red")
-lines(spectrum[,33],col="blue")
-lines(spectrum[,44],col="green")
-
-# Different vowels for same VT
-plot(spectrum[,2],type="l")
-lines(spectrum[,3],col="red")
-lines(spectrum[,6],col="blue")
-lines(spectrum[,9],col="green")
-
-## Sampling frequency of each spectrum (fs in Hz)
+## Sampling frequency of each vtspec (fs in Hz)
 # M = number of cross-sectional areas (defined earlier)
 L <-  c(NZE$lengths/10, read.Story.VTlengths()) # L = length in cm
 c = 3400        # c = speed of sound in air (cm/s)
@@ -129,19 +116,118 @@ freqbins <- matrix(rep(1:512, numVowels), ncol = 512, byrow = T)
 freqbins <- freqbins * fs / (2*512) 
 
 # Check that last column is half the sampling frequency.
-sum(freqbins.t[,512]==fs/2)
+# sum(freqbins[,512]==fs/2)#
 
-bin_vals = [0 : N-1];
-fax_Hz = bin_vals*fs/N;
+## Plot a few to visually check
+par(mfrow=c(3,2))
+plot(freqbins[1,],log10(vtspec[1,]),type="l")
+plot(freqbins[2,],log10(vtspec[2,]),type="l")
+plot(bark(freqbins[1,]),log10(vtspec[1,]),type="l")
+plot(bark(freqbins[2,]),log10(vtspec[2,]),type="l")
 
-(bin_vals*fs/N)/fnyquist; % same as bin_vals/(N/2)
+## find out the min and max fs/2 value - that will be around the maximum
+## frequency value for all spectrums (want all spectrums to be on same scale)
+min(freqbins[,512], na.rm = T)
+max(freqbins[,512], na.rm = T)
 
+############## NEED TO FINISH OFF ####################
+
+# Not sure what is happening here with truncation etc. Don't know what endbin is.
+
+## find the index for each frequency bin vector which is the maximum frequency value that is less than or equal to the min fs/2 value
+
+##Want to see what actuall frequency value this equates too
+
+# diag(freqbins.t[1:110,endbin[1:110]])
+# 
+# ## what is the difference between these values and the minimum fs/2 value
+# diag(freqbins.t[1:110,endbin[1:110]])-min(freqbins.t[,512])
+# 
+# ## and what is this difference in Bark?
+# bark(diag(freqbins.t[1:110,endbin[1:110]]))-bark(min(freqbins.t[,512]))
+# 
+# trunc.freqbinb=matrix(NA,ncol=256,nrow=110,byrow=TRUE)
+# trunc.vtspecb=matrix(NA,ncol=256,nrow=110,byrow=TRUE)
+# 
+# for(i in 1:110)
+# {
+#   foo=approx(bark(freqbins.t[i,1:endbin[i]]),vtspec[i,1:endbin[i]],n=256)
+#   trunc.freqbinb[i,1:256]=foo$x[1:256]
+#   trunc.vtspecb[i,1:256]=foo$y[1:256]
+# }
 
 # PCA on spectra ===========================================================
 
+# # Bark scale the spectra
+# # Omitting the first column because they are zeros and NaNs
+# vtspec <- bark(vtspec[,-1])
+# 
+# # To take logs of spectra, replace zero ammplitudes in spectrum with very small number
+ which <- vtspec==0
+ vtspec[which] <- 10^-16
+# 
+# barkspec <- prcomp(log10(vtspec[,1:200]), scale=T)
+# summary(barkspec)
+# 
+# ## PCA plots from areas and resonances
+# par(mfrow = c(1,2))
+# eplot(barkspec$x[,1:2], labs = combined.df$vow, centroid = T, main = "PC of Bark scaled log spectra")
+# eplot(foo3$x[,1:2], labs = vowelNames, centroid = TRUE, formant = T)
+# eplot(barkspec$x[,1:2], labs = combined.df$vow, centroid = T, main = "PC of Bark scaled log spectra", formant = T)
+# eplot(foo3$x[,1:2], labs = vowelNames, centroid = TRUE, formant = T, main = "PC of areas")
+# 
+# ## Plotting the rotation vectors.
+# plot(trunc.freqbinb[1,1:200], barkspec$rotation[,1], main = "resonances, pc1", ylim = c(-0.15,0.15))
+# plot(trunc.freqbinb[1,1:200], barkspec$rotation[,2], main = "resonances, pc2", ylim = c(-0.15,0.15))
+# plot(foo3$rotation[,1], main = "areas, pc1", ylim = c(-0.4,0.3))
+# plot(foo3$rotation[,2], main = "areas, pc2", ylim = c(-0.4,0.3))
+# 
+# 
 
+# Calculating resonances ======================================================
 
-
+# Identify peaks 
+numRes <- 3
+tol <- 5
+vtres <- matrix(ncol = numRes, nrow = numVowels, byrow = T)
+resfreq <- matrix(ncol = numRes, nrow = numVowels, byrow = T)
+for(i in 1:numVowels){
+  
+  # Double differentiate
+  out <- diff(diff(vtspec[i,]))
+  
+  # values less than or equal to zero (where the peaks are, maxima)
+  numbins <- 1:512
+  index <- numbins[out <= 0]
+  index <- index[-c(1,length(index))]
+  
+  #Ignore indices if they're too close - a 'peak' might just be two very similar
+  #values, so whilst by eye can clearly pick out peaks, can't get these
+  #automatically by doing just the second difference. If there are two 'peaks'
+  #which are very close together (within a certain tolerance), take the highest
+  #one.
+  checked <- c()
+  j <- 1
+  is.similar <- T
+  while (j < length(index)) {
+    while (is.similar == T) {
+      if ( (abs(index[j] - index[j+1])) < tol ) {
+        j <- j + 1  
+        if (j >= length(index)) { break }
+      } else {
+        is.similar <- F
+      }
+    }
+    
+    checked <- c(checked, index[j])
+    j <- j + 1
+    is.similar <- T
+  }
+  
+  # Grab the spectra values at those peak points, and the frequencies that correspond in the frequency bins.
+  vtres[i,] <- vtspec[i, index[1:numRes]+1]
+  resfreq[i,] <- freqbins[i, index[1:numRes]+1]
+}
 
 
 
