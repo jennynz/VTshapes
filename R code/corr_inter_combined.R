@@ -1,7 +1,7 @@
-# Inter-speaker Correlations for AmE and NZE datasets combined
+# Inter-speaker Correlations between AmE and NZE area function PCs
 
 # Performs Pearson's product-moment correlations between principal component p 
-# of each speaker with all other speakers.
+# of each speaker's area functions with all other speakers.
 
 # Written by Jenny Sahng
 # 15/09/2016

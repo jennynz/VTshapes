@@ -17,8 +17,8 @@ path <<- "H:\\Documents\\Part IV Project\\All VT data"
 # Number of cylinders
 M <- 16
 
-# Final csv file with all information (correlation and variances)
-filename <- "resonances_correlations.csv"
+# Number of resonances to pick out
+numRes <- 3
 
 # Normalise area functions? (F, "spk" for speaker-specific or "vow" for vowel-specific)
 do.norm <- F
@@ -38,13 +38,11 @@ VT.skip <- "SM2"
 Vowel.skip <- "herd"
 row.skip <- 180
 
-# Principal components to analyse
-p.max <- 3
-
 # Pre-amble ====================================================
 
 source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R')
 AmE <- read.Story.data(interpN = M)
+setwd("~/Part IV Project/R code")
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
 NZE <- read.NZE.data(path = path, interpN = M+1, smooth = do.spline)
 # Interpolate one more because the value for NZE is zero, which needs to be
@@ -188,7 +186,6 @@ max(freqbins[,512], na.rm = T)
 # Calculating resonances ======================================================
 
 # Identify peaks 
-numRes <- 3
 tol <- 5
 vtres <- matrix(ncol = numRes, nrow = numVowels, byrow = T)
 resfreq <- matrix(ncol = numRes, nrow = numVowels, byrow = T)
