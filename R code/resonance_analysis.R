@@ -15,7 +15,7 @@ graphics.off() # close all graphics windows
 path <<- "H:\\Documents\\Part IV Project\\All VT data"
 
 # Number of cylinders
-n <- 16
+M <- 16
 
 # Final csv file with all information (correlation and variances)
 filename <- "resonances_correlations.csv"
@@ -43,9 +43,9 @@ p.max <- 3
 # Pre-amble ====================================================
 
 source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R')
-AmE <- read.Story.data(interpN = n)
+AmE <- read.Story.data(interpN = M)
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
-NZE <- read.NZE.data(path = path, interpN = n+1, smooth = do.spline)
+NZE <- read.NZE.data(path = path, interpN = M+1, smooth = do.spline)
 # Interpolate one more because the value for NZE is zero, which is going to get
 # cut when passing into calc.reflection.coef
 
@@ -55,7 +55,7 @@ numVTs <- AmE$numVTs + NZE$numVTs
 VTlist <- c(NZE$VTlist, AmE$VTlist)
 
 # Switch order of NZE data to match order of vowels in AmE
-NZE.switched <- NZE$data
+NZE.switched <- NZE$data[,-length(NZE$data)]
 for (i in 1:NZE$numVTs) {
   m <- grep(VTlist[i], NZE$data$spk)
   for (j in 1:length(NZE$vowelNames)) {
@@ -100,14 +100,31 @@ source('~/Part IV Project/R code/LPCfromArea.R')
 # for (i in 1:numVowels) {
 #   RC.df[i, -c(1,2)] <- calc.reflection.coef(unname(unlist(combined.df[i, -c(1,2,46)])))
 # }
-cat(dim(combined.df))
-RC <- apply(combined.df[,3:45], 1, calc.reflection.coef)
+RC <- apply(combined.df[,-c(1:2)], 1, calc.reflection.coef)
 LPC <- apply(RC, 2, rc2lpc.II)
 spectrum <- apply(LPC, 2, lpc2spec.III, n = 512)
 
+## Quick check of spectra
 
+# Same vowel
+plot(spectrum[,11],type="l")
+lines(spectrum[,22],col="red")
+lines(spectrum[,33],col="blue")
+lines(spectrum[,44],col="green")
 
+# Different vowels for same VT
+plot(spectrum[,2],type="l")
+lines(spectrum[,3],col="red")
+lines(spectrum[,6],col="blue")
+lines(spectrum[,9],col="green")
 
+## Sampling frequency of each spectrum (fs in Hz)
+# M = number of cross-sectional areas (defined earlier)
+L <-  c(NZE$lengths, read.Story.VTlengths) # L = length in cm
+c = 3400        # c = speed of sound in air (cm/s)
+fs <- (M * c) / (2 * L)
+
+# PCA on spectra ===========================================================
 
 
 

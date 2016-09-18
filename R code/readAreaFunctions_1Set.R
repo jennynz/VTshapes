@@ -9,7 +9,7 @@
 
 "compileMRIAreas" <- function(areaFiles = areaFiles, numVowels = numVowels,
                               vowelNames = vowelNames, VTlist = VTlist, path,
-                              spk, interpN = FALSE, smooth = TRUE)
+                              spk, VTlengths, interpN = FALSE, smooth = TRUE)
 {
 
     # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
@@ -25,6 +25,7 @@
   {
     filepath <- paste(path,spk,"Set1","distance_area",areaFiles[i],sep="\\")
     datfile <- read.table(filepath)
+    VTlengths <- c(VTlengths, datfile[dim(datfile)[1],1])
     
     # Need to linearly interpolate data, as different distance step in oral region than pharyngeal region.
     LinDatfil <- approx(datfile[,1],datfile[,2],n=n)
@@ -40,7 +41,7 @@
   
   # Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
   alldat.df=data.frame(spk=factor(rep(spk,numVowels)),vow=factor(vowelNames),alldat)
-  return(alldat.df)
+  return(list("areas" = alldat.df, "lengths" = VTlengths))
 }
 
 "read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE, smooth = FALSE) {
@@ -60,16 +61,18 @@
   }
   
   allSpeakers.df <- NULL
+  VTlengths <- c()
   
   for (i in 1:numVTs)
   {
     allVowels.df <- compileMRIAreas(areaFiles = areaFiles, numVowels = numVowels,
                                     vowelNames = vowelNames, VTlist = VTlist, path = path,
-                                    spk=VTlist[i], interpN = interpN, smooth = smooth)
-    allSpeakers.df <- rbind(allSpeakers.df, allVowels.df)
+                                    spk=VTlist[i], VTlengths <- VTlengths, interpN = interpN, smooth = smooth)
+    VTlengths <- allVowels.df$lengths
+    allSpeakers.df <- rbind(allSpeakers.df, allVowels.df$data)
   }
   
-  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames)
+  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames, "lengths" = VTlengths)
   return(output)
   
 }

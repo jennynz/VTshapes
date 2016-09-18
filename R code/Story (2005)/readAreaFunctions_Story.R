@@ -75,3 +75,10 @@
   return(output)
   
 }
+
+"read.Story.VTlengths" <- function() {
+  setwd("~/Part IV Project/R code/Story (2005)")
+  vtl <- read.csv("vocal_tract_lengths.csv", header=F)
+  vtl <- as.vector(unname(unlist(t(vtl[,-1]))))
+  return(vtl)
+}
