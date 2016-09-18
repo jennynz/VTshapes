@@ -36,6 +36,7 @@ do.spline <- F
 # The VT and vowel number to skip in correlations if it's missing (SM2 herd)
 VT.skip <- "SM2"
 Vowel.skip <- "herd"
+row.skip <- 180
 
 # Principal components to analyse
 p.max <- 3
@@ -156,7 +157,7 @@ max(freqbins[,512], na.rm = T)
 #   trunc.vtspecb[i,1:256]=foo$y[1:256]
 # }
 
-# PCA on spectra ===========================================================
+# PCA on spectra for correlations ===========================================================
 
 # # Bark scale the spectra
 # # Omitting the first column because they are zeros and NaNs
@@ -194,11 +195,11 @@ resfreq <- matrix(ncol = numRes, nrow = numVowels, byrow = T)
 for(i in 1:numVowels){
   
   # Double differentiate
-  out <- diff(diff(vtspec[i,]))
+  dxdt2 <- diff(diff(vtspec[i,]))
   
   # values less than or equal to zero (where the peaks are, maxima)
   numbins <- 1:512
-  index <- numbins[out <= 0]
+  index <- numbins[dxdt2 <= 0]
   index <- index[-c(1,length(index))]
   
   if (is.na(index[1]) == F) {
@@ -233,9 +234,51 @@ for(i in 1:numVowels){
 
 }
 
+# PCA on resonances for R1-R2 plots ===========================================================
 
+pca.res <- prcomp(na.omit(resfreq))
+pca.res.bark <- prcomp(bark(na.omit(resfreq))) 
 
+r1 <- resfreq[-row.skip,1]
+r2 <- resfreq[-row.skip,2]
+r1r2 <- cbind(r1,r2)
 
+colpalette <- c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4",
+                "darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
+
+combined.df$vow <- factor(combined.df$vow, levels = vowelNames)
+levels(combined.df$vow) <- c() # copy and paste IPA symbols from IPAvowels_story.txt
+
+par(mfrow = c(1,1))
+# # PC1-PC2 on area functions
+# eplot(foo3$x[,1:2],labs=allMRI.df[,3],centroid=TRUE,formant=T,main="Pareas")
+# # PCA on bark scaled spectra
+# eplot(x=pc.vtspecb$x[,1:2],labs=allMRI.df16$vow,centroid=T,formant=T,main="bark scaled spectra,all")
+# # PCA on resonances
+# eplot(pca.res$x[,1:2], labs = as.character(combined.df[-180,2]), centroid = T,
+#       main="PCs of resonant frequencies for combined 18 VT data set",
+#       formant = T, doellipse = F)
+# # PCA on bark scaled resonances
+# eplot(pca.res.bark$x[,1:2], labs = as.character(combined.df[-180,2]), centroid = T,
+#       main="PCs of Bark-scaled resonant frequencies for combined 18 VT data set",
+#       formant = T, doellipse = F)
+# title("Centroids")
+
+## Resonance plots (R1/R2)
+
+# Centroids
+eplot(r1r2, labs = as.character(combined.df[-180,2]), centroid = T,
+      main="Centroids of vowels plotted by resonant frequencies in combined 18 VT data set",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette)
+# Bark-scaled
+eplot(bark(r1r2), labs = as.character(combined.df[-180,2]), centroid = T,
+      main="PCs of Bark-scaled resonant frequencies for combined 18 VT data set",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F)
+
+# Clusters
+eplot(r1r2, labs = as.character(combined.df[-180,2]), dopoints = T,
+      main="All vowels plotted by resonant frequencies in combined 18 VT data set",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = T, col = colpalette)
 
 
 
