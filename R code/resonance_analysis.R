@@ -201,32 +201,36 @@ for(i in 1:numVowels){
   index <- numbins[out <= 0]
   index <- index[-c(1,length(index))]
   
-  #Ignore indices if they're too close - a 'peak' might just be two very similar
-  #values, so whilst by eye can clearly pick out peaks, can't get these
-  #automatically by doing just the second difference. If there are two 'peaks'
-  #which are very close together (within a certain tolerance), take the highest
-  #one.
-  checked <- c()
-  j <- 1
-  is.similar <- T
-  while (j < length(index)) {
-    while (is.similar == T) {
-      if ( (abs(index[j] - index[j+1])) < tol ) {
-        j <- j + 1  
-        if (j >= length(index)) { break }
-      } else {
-        is.similar <- F
+  if (is.na(index[1]) == F) {
+      
+    #Ignore indices if they're too close - a 'peak' might just be two very similar
+    #values, so whilst by eye can clearly pick out peaks, can't get these
+    #automatically by doing just the second difference. If there are two 'peaks'
+    #which are very close together (within a certain tolerance), take the highest
+    #one.
+    checked <- c()
+    j <- 1
+    is.similar <- T
+    while (j < length(index)) {
+      while (is.similar == T) {
+        if ( (abs(index[j] - index[j+1])) < tol ) {
+          j <- j + 1  
+          if (j >= length(index)) { break }
+        } else {
+          is.similar <- F
+        }
       }
+      
+      checked <- c(checked, index[j])
+      j <- j + 1
+      is.similar <- T
     }
     
-    checked <- c(checked, index[j])
-    j <- j + 1
-    is.similar <- T
+    # Grab the spectra values at those peak points, and the frequencies that correspond in the frequency bins.
+    vtres[i,] <- vtspec[i, checked[1:numRes]+1]
+    resfreq[i,] <- freqbins[i, checked[1:numRes]+1]    
   }
-  
-  # Grab the spectra values at those peak points, and the frequencies that correspond in the frequency bins.
-  vtres[i,] <- vtspec[i, index[1:numRes]+1]
-  resfreq[i,] <- freqbins[i, index[1:numRes]+1]
+
 }
 
 
