@@ -41,10 +41,10 @@ p.max <- 3
 
 # Pre-amble ====================================================
 
-source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R', echo=TRUE)
-AmE <- read.Story.data()
-source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
-NZE <- read.NZE.data(path = path, interpN = 44, smooth = do.spline)
+source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R')
+AmE <- read.Story.data(interpN = 20)
+source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
+NZE <- read.NZE.data(path = path, interpN = 20, smooth = do.spline)
 
 # Tests to see if interpolation or smoothing is needed (comment out later)
 # NZE1 <- read.NZE.data()

@@ -11,7 +11,7 @@ graphics.off() # close all graphics windows
 
 path <<- "H:\\Documents\\Part IV Project\\All VT data"
 
-source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
+source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
 NZE <- read.NZE.data()
 allSpeakers.df <- NZE$data
 VTlist <- NZE$VTlist
