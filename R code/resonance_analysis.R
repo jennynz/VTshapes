@@ -261,28 +261,52 @@ legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","do
 
 ## Story formants ----
 
+source('~/Part IV Project/R code/Story (2005)/readFormants_Story.R')
+
+story.formants <- read.Story.formants()
 par(new=F)
-f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk[-row.skip])
-m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk[-row.skip])
-eplot(r1r2[f,], labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
-      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "deeppink",
-      xlim = c(800,2700), ylim = c(200,800))
+
+# Story 'natural formants'
+story.f1f2 <- story.formants$data[,3:4]
+eplot(story.f1f2, labs = as.character(combined.df[c(133:198),2]), centroid = T,
+      main="Formant and resonance plot comparisons with Story (2005) data",
+      xlab = "R2 or F2", ylab = "R1 or F1", formant = T, doellipse = F, col = "darkorange1",
+      xlim = c(800,2700), ylim = c(200,900))
 par(new=T)
-eplot(r1r2[m,], labs = as.character(combined.df[m,2]), centroid = T,
-      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "blue",
-      xlim = c(800,2700), ylim = c(200,800))
-legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","blue"))
+
+# Story 'calculated formants'
+story.r1r2 <- story.formants$data[-48,5:6]
+eplot(story.r1r2, labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "darkorange3",
+      xlim = c(800,2700), ylim = c(200,900))
+par(new=T)
+
+# My AmE resonances
+eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "dodgerblue",
+      xlim = c(800,2700), ylim = c(200,900))
+legend("topleft", bty="n", c("Story (2005) natural formants", "Story (2005) calculated formants (resonances)",
+                             "My resonances"), lty=c(1,1,1), col=c("darkorange1","darkorange3","dodgerblue"))
 
 # Bark scaled
 par(new=F)
-eplot(bark(r1r2[f,]), labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
-      xlab = "", ylab = "", formant = T, doellipse = F, col = "deeppink",
-      xlim = c(8,16), ylim = c(2,7))
+eplot(bark(story.f1f2), labs = as.character(combined.df[c(133:198),2]), centroid = T,
+      main="Formant and resonance plot comparisons with Story (2005) data",
+      xlab = "R2 or F2", ylab = "R1 or F1", formant = T, doellipse = F, col = "darkorange1",
+      xlim = c(8,16), ylim = c(2,8))
 par(new=T)
-eplot(bark(r1r2[m,]), labs = as.character(combined.df[m,2]), centroid = T,
-      xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "dodgerblue3",
-      xlim = c(8,16), ylim = c(2,7))
-legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
 
+# Story 'calculated formants'
+eplot(bark(story.r1r2), labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "darkorange3",
+      xlim = c(8,16), ylim = c(2,8))
+par(new=T)
+
+# My AmE resonances
+eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "dodgerblue",
+      xlim = c(8,16), ylim = c(2,8))
+legend("topleft", bty="n", c("Story (2005) natural formants", "Story (2005) calculated formants (resonances)",
+                             "My resonances"), lty=c(1,1,1), col=c("darkorange1","darkorange3","dodgerblue"))
 
 
