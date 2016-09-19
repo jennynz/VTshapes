@@ -10,7 +10,7 @@ rm(list=ls()) # clear workspace
 graphics.off() # close all graphics windows
 
 # Normalise area functions? (F, "spk" or "vow")
-do.norm <- "vow"
+do.norm <- F
 
 # NZE or AmE?
 set <- "AmE"
@@ -65,23 +65,28 @@ pca <- prcomp(~., data = allSpeakers.df[,r], scale=T)
 pca.summ <- summary(pca)
 
 # Plot of PC1 and PC2, all vowels
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette, doellipse = F, dopoints = T)
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette,
+      doellipse = F, dopoints = T)
 title(main = "Vowels on PC1-PC2 planes (12 VTs x 1 Sets)", xlab = "PC1", ylab = "PC2")
 
 # Compare with old 12VT1Set plot where hood was huddled in corner.
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette, doellipse = F, dopoints = T, xlim = c(-6,6), ylim = c(-6, 6))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette,
+      doellipse = F, dopoints = T, xlim = c(-6,6), ylim = c(-6, 6))
 title(main = "Vowels on PC1-PC2 planes (12 VTs x 1 Sets)", xlab = "PC1", ylab = "PC2")
 
 # Plot of PC1 and PC2, centroids only
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T, col=colpalette, doellipse = F, xlim = c(-4,4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T, col=colpalette,
+      doellipse = F, xlim = c(8,-8), ylim = c(8,-8))
 title(main = "Vowel centroids on PC1-PC2 planes (12 VTs x 1 Set)", xlab = "PC1", ylab = "PC2")
 
 # Compare with interspeech
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, font=2, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
+      font=2, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
 title(main = "Vowel centroids on negative PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Most vowel-quad-like
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette, doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
+      doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
 title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Plot of standard deviations 

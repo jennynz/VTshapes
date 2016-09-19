@@ -3,16 +3,21 @@
 # Written by Jenny Sahng
 # 7/09/2016
 
-source('~/Part IV Project/R code/readAreaFunctions_1Set.R', echo=TRUE)
+source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
+spkdata <- read.NZE.data()
+allSpeakers.df <- spkdata$data
+VTlist <- spkdata$VTlist
+numVTs <- spkdata$numVTs
+vowelNames <- spkdata$vowelNames
 
 # Principal components to analyse
 p.max <- 3
 
 # Normalise?
-isNorm <- T
+isNorm <- F
 
 # Oral (o) or pharyngeal (p)?
-cavity <- "o"
+cavity <- "p"
 switch(cavity,
        "o" = {
          cavity.index <- c(4:17)
