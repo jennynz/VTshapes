@@ -49,6 +49,10 @@ NZE <- read.NZE.data(path = path, interpN = M+1, smooth = do.spline)
 # ommitted before passing into calc.reflection.coef
 NZE$data <- NZE$data[,-length(NZE$data)]
 
+# Load emuR
+.libPaths('H:/Documents/Rlibraries')
+library('emuR')
+
 # Combine datasets
 numVTs <- AmE$numVTs + NZE$numVTs
 VTlist <- c(NZE$VTlist, AmE$VTlist)
@@ -200,7 +204,7 @@ par(mfrow = c(1,1))
 eplot(r1r2, labs = as.character(combined.df[-180,2]), centroid = T,
       main="Centroids of vowels plotted by resonant frequencies in combined 18 VT data set",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
-      xlim = c(80,270), ylim = c(20,80))
+      xlim = c(800,2700), ylim = c(200,800))
 # Bark-scaled
 eplot(bark(r1r2), labs = as.character(combined.df[-180,2]), centroid = T,
       main="PCs of Bark-scaled resonant frequencies for combined 18 VT data set",
@@ -215,20 +219,20 @@ eplot(r1r2, labs = as.character(combined.df[-180,2]), dopoints = T,
 par(mfrow=c(1,2))
 eplot(r1r2[1:132,], labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE centroids",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
-      xlim = c(80,270), ylim = c(20,80))
+      xlim = c(800,2700), ylim = c(200,800))
 eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T, main="AmE centroids",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
-      xlim = c(80,270), ylim = c(20,80))
+      xlim = c(800,2700), ylim = c(200,800))
 
 # Plot together
 par(new=F, mfrow=c(1,1))
 eplot(r1r2[1:132,], labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE and AME centroids",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "black",
-      xlim = c(80,270), ylim = c(20,90))
+      xlim = c(800,2700), ylim = c(200,900))
 par(new=T)
 eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "red",
-      xlim = c(80,270), ylim = c(20,90))
+      xlim = c(800,2700), ylim = c(200,900))
 legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
 
 
