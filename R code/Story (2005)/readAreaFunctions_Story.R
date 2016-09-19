@@ -54,6 +54,8 @@
   	      VTareas[i,] <- approx(area.fn[i,], n=n)$y 
   	    }
   	  }
+  	} else {
+  	  VTareas <- area.fn
   	}
   	
   	# Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
