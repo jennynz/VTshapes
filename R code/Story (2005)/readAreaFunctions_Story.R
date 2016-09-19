@@ -10,7 +10,8 @@
   setwd("~/Part IV Project/R code/Story (2005)")
 
   # List of VT name strings (SF1, SM1...)
-  areaFiles <- dir(pattern = "^S[FM]")
+  files <- dir()
+  areaFiles <- files[!grepl("formant", files) & (grepl("^S", files))]
   numVTs <- length(areaFiles)
   VTlist <- vector(length = numVTs)
   for(i in 1:numVTs) {

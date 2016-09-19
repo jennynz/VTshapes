@@ -259,7 +259,7 @@ eplot(bark(r1r2[m,]), labs = as.character(combined.df[m,2]), centroid = T,
       xlim = c(8,16), ylim = c(2,7))
 legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
 
-## Story formants ----
+## Story formants, resonance calculation validation ----
 
 source('~/Part IV Project/R code/Story (2005)/readFormants_Story.R')
 
@@ -308,5 +308,3 @@ eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2
       xlim = c(8,16), ylim = c(2,8))
 legend("topleft", bty="n", c("Story (2005) natural formants", "Story (2005) calculated formants (resonances)",
                              "My resonances"), lty=c(1,1,1), col=c("darkorange1","darkorange3","dodgerblue"))
-
-
