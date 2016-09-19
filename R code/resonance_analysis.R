@@ -107,7 +107,7 @@ vtspec <- t(apply(LPC, 2, lpc2spec.III, n = 512))
 ## Sampling frequency of each vtspec (fs in Hz)
 # M = number of cross-sectional areas (defined earlier)
 L <-  c(NZE$lengths/10, read.Story.VTlengths()) # L = length in cm
-c = 3400        # c = speed of sound in air (cm/s)
+c = 34000        # c = speed of sound in air (cm/s)
 fs <- (M * c) / (2 * L)
 
 # Scaled frequency bins for each spectrum. Should be 198 x 512
@@ -128,60 +128,6 @@ plot(bark(freqbins[2,]),log10(vtspec[2,]),type="l")
 ## frequency value for all spectrums (want all spectrums to be on same scale)
 min(freqbins[,512], na.rm = T)
 max(freqbins[,512], na.rm = T)
-
-############## NEED TO FINISH OFF ####################
-
-# Not sure what is happening here with truncation etc. Don't know what endbin is.
-
-## find the index for each frequency bin vector which is the maximum frequency value that is less than or equal to the min fs/2 value
-
-##Want to see what actuall frequency value this equates too
-
-# diag(freqbins.t[1:110,endbin[1:110]])
-# 
-# ## what is the difference between these values and the minimum fs/2 value
-# diag(freqbins.t[1:110,endbin[1:110]])-min(freqbins.t[,512])
-# 
-# ## and what is this difference in Bark?
-# bark(diag(freqbins.t[1:110,endbin[1:110]]))-bark(min(freqbins.t[,512]))
-# 
-# trunc.freqbinb=matrix(NA,ncol=256,nrow=110,byrow=TRUE)
-# trunc.vtspecb=matrix(NA,ncol=256,nrow=110,byrow=TRUE)
-# 
-# for(i in 1:110)
-# {
-#   foo=approx(bark(freqbins.t[i,1:endbin[i]]),vtspec[i,1:endbin[i]],n=256)
-#   trunc.freqbinb[i,1:256]=foo$x[1:256]
-#   trunc.vtspecb[i,1:256]=foo$y[1:256]
-# }
-
-# PCA on spectra for correlations ===========================================================
-
-# # Bark scale the spectra
-# # Omitting the first column because they are zeros and NaNs
-# vtspec <- bark(vtspec[,-1])
-# 
-# # To take logs of spectra, replace zero ammplitudes in spectrum with very small number
- which <- vtspec==0
- vtspec[which] <- 10^-16
-# 
-# barkspec <- prcomp(log10(vtspec[,1:200]), scale=T)
-# summary(barkspec)
-# 
-# ## PCA plots from areas and resonances
-# par(mfrow = c(1,2))
-# eplot(barkspec$x[,1:2], labs = combined.df$vow, centroid = T, main = "PC of Bark scaled log spectra")
-# eplot(foo3$x[,1:2], labs = vowelNames, centroid = TRUE, formant = T)
-# eplot(barkspec$x[,1:2], labs = combined.df$vow, centroid = T, main = "PC of Bark scaled log spectra", formant = T)
-# eplot(foo3$x[,1:2], labs = vowelNames, centroid = TRUE, formant = T, main = "PC of areas")
-# 
-# ## Plotting the rotation vectors.
-# plot(trunc.freqbinb[1,1:200], barkspec$rotation[,1], main = "resonances, pc1", ylim = c(-0.15,0.15))
-# plot(trunc.freqbinb[1,1:200], barkspec$rotation[,2], main = "resonances, pc2", ylim = c(-0.15,0.15))
-# plot(foo3$rotation[,1], main = "areas, pc1", ylim = c(-0.4,0.3))
-# plot(foo3$rotation[,2], main = "areas, pc2", ylim = c(-0.4,0.3))
-# 
-# 
 
 # Calculating resonances ======================================================
 
@@ -247,19 +193,6 @@ combined.df$vow <- factor(combined.df$vow, levels = vowelNames)
 levels(combined.df$vow) <- c() # copy and paste IPA symbols from IPAvowels_story.txt
 
 par(mfrow = c(1,1))
-# # PC1-PC2 on area functions
-# eplot(foo3$x[,1:2],labs=allMRI.df[,3],centroid=TRUE,formant=T,main="Pareas")
-# # PCA on bark scaled spectra
-# eplot(x=pc.vtspecb$x[,1:2],labs=allMRI.df16$vow,centroid=T,formant=T,main="bark scaled spectra,all")
-# # PCA on resonances
-# eplot(pca.res$x[,1:2], labs = as.character(combined.df[-180,2]), centroid = T,
-#       main="PCs of resonant frequencies for combined 18 VT data set",
-#       formant = T, doellipse = F)
-# # PCA on bark scaled resonances
-# eplot(pca.res.bark$x[,1:2], labs = as.character(combined.df[-180,2]), centroid = T,
-#       main="PCs of Bark-scaled resonant frequencies for combined 18 VT data set",
-#       formant = T, doellipse = F)
-# title("Centroids")
 
 ## Resonance plots (R1/R2)
 

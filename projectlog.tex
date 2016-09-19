@@ -2089,10 +2089,128 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
 \section*{18/09/16 Sunday Week 8, D-4: Finish off AmE}
 \begin{itemize}
     \item Just need to move on, get started on resonances!
-    \item VT11 Set 1 Cardinal Vowels for quantifying variability between users
+    \item Resonances
+    \begin{itemize}
+        \item Reading through \verb|Correlation Analysis of resonances.txt|. Looks like these are doing PCA then correlations on resonances which have already been found. Just a massive list of cor.tests
+        \item Reading through \verb|acquiring spectrum from areas.txt|
+        \begin{itemize}
+            \item First interpolates to get 16 tubes. Why 16? (Maybe try different number of tubes later and compare results, or read some studies like Story which might justify it.)
+            \item Note for later: In Techniques in Speech Acoustics, page 226, for voiced speech, number of coefficients used to calculate spectrum (fewer coeffs = smoother spectrum) should be at least equal to sampling frequency in kHz for typical adults male vocal tract. Number of coefficients is twice the number of formant frequencies synthesised (p.228).
+            \item Oh no, it looks like I'm missing a key part of the puzzle... another R script with the custom function \verb|calc.reflection.coef|....... the output of which is used to calculate LPC (\verb|rc2lpc.II|) which is then turned into a spectrum (\verb|lpc2spec.III|).
+            \item For area functions to RCs, RCs "are entirely a function of the ratio of the abutting cylinders' cross-sectional areas. (find formula that Catherine will have written for me at some point. Equation 8.11 in Techniques, page 233, from Markel \& Gray, 1976, p.70). So this step, we can do. A[p] (area just behind glottis) often set equal to 1. Absolute values of areas are irrelevant since the RCs are obtained by ratios between adjacent cylinder areas. m[1] evaluates to 1 since A[0] is infinity (outside of lips, A[1] negligible.)
+            \begin{equation}
+                m[i] = \frac{A[i - 1] - A[i]}{A[i-1] + A[i]}
+            \end{equation}
+            \item For the latter (LPC to spectrum), there are packages available for this in other languages.
+            \item How to go from RC to LPC?
+        \end{itemize}
+    \end{itemize}
+    \item Techniques in Speech Acoustics, Harrington \& Cassidy, 1997, Chapter 8 Linear prediction of speech
+    \begin{itemize}
+        \item Number of cross-sectional areas M calculated from reflection coefficients constrained by sampling freq of speech waveform ($f_s$), total length of VT ($L$ in cm) and estimated speed of sound in air ($c$ in cm/s). \begin{equation}
+            M = \frac{2Lf_s}{c}
+        \end{equation}
+        \item Under assumptions of $L = 17cm$, $c = 3400 cm/s$, I guess for us we can determine M to figure out what kind of "sampling frequency" we want to simulate. I guess if we want to be able to calculate at least the first 3 formants, we need 6 coefficients (maximum of $l/2$ peaks can be derived from an LPC model of order $l$), therefore at least 6 kHz sampling frequency needed, so 6 cross-sectional areas. That seems really meagre, maybe go with the example in the book and do 20 kHz = 20 cross-sectional areas, or 16 that Catherine had so we can directly compare again?
+        \item 8.5.2 Limitations of lossless tube model
+        \begin{itemize}
+            \item Sondhi (1979) this model is at least a gross approximation, at worst provides misleading, inaccurate information.
+            \item Unaccounted losses due to heat condution through VT walls, assumes plane wave propagation which is only valid for < 4000 Hz frequencies (many consonants would have higher freqs but this doesn't matter for us since we're just looking at vowels), does not model anti-resonances (affects nasals and laterals, meh, again we're looking at vowels, and tbh vowels are what determine accent - check reference). Also, LPC blackboxes vocal tract filter, glottal flow and lip radiation effects together into one, so things that have negligible perceptual effect like pre-emphasising the signal +6dB/octave to eliminate the spectral contributions of glottal filter (-12dB/octave, p. 226) and lip radiation (+6dB/octave) when decomposing speech sounds into LPC coefficients to find formants, might have a major effect on calculated area functions.
+        \end{itemize}
+        \item 8.6 Speech synthesis from LPC-parameters
+        \begin{itemize}
+            \item Speech signal from area functions!
+            \item Could adapt Figure 8.13 to include in report.
+            \item Cylinders must be equal length. The larger the number of equal-length cylinders. For Nyquist freq 4000 Hz (suitable freq range for modelling vowels), sampling freq must be at least 8000 Hz, therefore minimum 8 cylinders. (so looks like 16 is more than enough, let's keep it at that for comparability with Interspeech).
+            \item RC to LPC calculated from recursive relationship described in Section 8.3 uggghhh do I have to implement this myself?!
+            \item Resynthesise by passing source through recursive filter (LPC coefficients are the estimated weights on delayed output values).
+        \end{itemize}
+    \end{itemize}
+    \item I'm basically stuck since I need Catherine's advice on both the AmE and resonance analyses, so imma try knock off the other smaller things on my list (which are unfortunately not as important).
+    \item Fix up things from report feedback
     \begin{itemize}
         \item 
-    \end{itemize}    
+    \end{itemize}
+    \item Finish methods and move new contributions to methods
+    \begin{itemize}
+        \item
+    \end{itemize}
+    \item R plots as vectors: eps works!
+    \begin{itemize}
+        \item Trying to make vowel plots again and it's appearing in reverse order.. like they're rotated 180 degrees. Whut. (\verb||pca_1Set_combined.R)
+        \item Hey, there's normalisation going on here.. I guess we should get rid of that.....
+        \item Maybe I need to wait until Catherine gets back to me about normalisation for all of this...
+        \item Tried unnormalised data: all the vowel centroid plots appear very squashed, PC2s only range from -1 to +1. When zoomed in, shows that separation by height is DEFINITELY not happening.
+        \item Tried normalised unscaled (PCA) data: Just looked scrunched.
+        \item Even when I rotate the axes to match Interspeech or the existing plots I had, the separations between the vowels are actually different! Must be the modified readAreaFunctions code.
+        \item Ah hah! Smoothing was turned on by default. Things are back around the right way now. Dunno why that happened, but hey.
+        \item Still going to wait because the normalisation stuff might affect this.
+    \end{itemize}
+    \item Correlation colour bars: no point in doing this until we've decided on stuff for normalisation & scaling for all the analyses, output new plots with those in mind, as vectors, and set up color bars.
+    \item Resonances - Catherine sent me her functions!!!
+    \begin{itemize}
+        \item Carefully read through comments and commands.
+        \item Need the same number of equal-width cylinders in NZE and AmE, but NZE ends in zero. The function calc.refl.coeffs appends a zero onto the end of the area functions that it receives, so I can just omit the last value in the NZE area functions. But this means that we also have to omit the end of the AmE functions.
+        \item Also, 44 interpolated points is way more than necessary. Rewrote read_story_data to allow interpolation to n data points as well, set n = 16.
+        \item Cool, so it runs all the way through to spectrums. 
+        \item Uggghh need to find the sampling frequencies for each spectrum, so we need the VT lengths for each spectrum.
+        \item Not sure what this next bit about frequency bins is, but it seems to end up being the x values for the... plots? This \href{link}{https://dadorran.wordpress.com/2014/02/20/plotting-frequency-spectrum-using-matlab/#3} seems to suggest freqbins = 0 : N-1 where N is the number of samples in the signal.
+        \item Got it. \verb|freqbins <- matrix(rep(1:512, numVowels), ncol = 512, byrow = T)|
+        \item Catherine's minimum frequency value was 6259 Hz while mine was 596 Hz. This difference is kind of worrying.
+        \item Now what is \verb|endbin|? Looks like I'm missing half of this script. Some kind of truncation going on around minimum $f_s / 2$, then interpolating between. But the spectra look fine as they are, maybe we could just leave them and try the PCA?
+        \item The first value in vtspec are zeros and NaNs. Why? Might just omit.
+        \item Doesn't like it. I need the endbin vector, looks like it defines where we should truncate to on the VTspec, which is specific to each vowel.
+        \item Definitely missing some of this script. No previous mention of foo3 and it just appears.
+        \item Catherine went on to add back the frequency bins that she had truncated, but it made no difference. She goes on to try a lot of different things with the frequency bands... Concludes that PCA on spectrums is better than on bark banded spectra since they gave nonsense PC plots.
+        \item Calculating the resonances: identifying the peaks! This is what we want!
+        \item Wrote a little loop to only take indices of negative double derivatives which are not close together.. which actually took ages to get right. Catherine hand-corrected these instances (she only had 2 - I had far more).
+        \item Managed to extract the resonant frequencies (the three lowest peaks) but they are very low... like some are as low as 15 Hz. Like we should be expecting 85 to 180 for male, 165 to 255 Hz for females, for the fundamental.
+        \item This is visible on the plots themselves. The lowest peak is far too low.
+        \item PCA on the resonances, bark scaling a good idea according to Catherine's notes since it removes gender and speaker differences. Very little difference in PCAs, variance accounted for PC1 and PC2 dropped very slightly but barely. Non-bark scaled frequencies do not give useful PC1 PC2 plots.
+        \item PCA of resonances
+        \begin{itemize}
+            \item Creating a plot of ``PCs of Bark-scaled resonant frequencies for combined 18 VT data set". If this looks like a vowel quadrilateral, this is significant because it means we can analyse combined datasets like these with different genders, ages and accents and still extract vowel properties from it. 
+            \item I found very little difference between the bark-scaled and non-bark-scaled centroid plots :(
+        \end{itemize}
+        \item R1/R2 plots
+        \begin{itemize}
+            \item How about just straight up resonance plots, no PC at all?
+            \item YESSSSSS R1/R2 PLOTS LOOKIN FINNNNNNE!!!!!!!!!!!
+            \item Looks like a vowel quadrilateral, but R1 inversely correlates with phonetic height which doesn’t really make sense – as height increases, area decreases therefore the fundamental frequency should increase.
+            \item Bark scaling has virtually no effect on the shape of the plots.... why do we need it?
+            \item Now trying plotting centroids of NZE and AmE separately and seeing if any expected trends are seen.
+            \begin{itemize}
+                \item NZE more clumped – lazy speech?
+                \item Had vowel much lower for AmE
+                \item AmE who’d does not align with NZE hoard.
+                \item NZE hid vowel is quite centre, schwa-ish, as expected (fush and chups).
+                \item NZE who’d much further forward compared to AmE.
+                \item Not seeing much merging of cot (hod) and caught (horde) vowels in AmE.
+                \item Who’d vowel is very far back for AmE which isn’t expected – it’s usually fronted.
+            \end{itemize}
+        \end{itemize}
+        \item Correlations between R1, R2 and R3
+        \begin{itemize}
+            \item If R1/R2 plots with no PCA worked out well, could it be the same for correlations? :D
+            \item Resonance correlation WITH PCA on the resonances (\verb|resonances_correlations_PCA|): PC1 captures vast majority of data, around 75\% to 90\%. PC2 captures 15\%ish, PC3 captured 5\%. PC1 very similar to area function correlations, no trends anywhere, all strong correlations. PC2 pretty motly, but PC3 seeing slight suggestion of worse inter-speaker correlations for different accents (but again, may be due to method differences).
+            \item Resonance correlations on just the resonances, no PCA (\verb|resonances_correlations_noPCA|): Basically the same results as with PCA but exaggerated slightly. R1 and R2 both show strong inter-speaker correlations across the board, slightly less between speakers, R3 has weak correlations throughout but especially for the AmE speakers.
+            \item N.B. that both of these correlation analyses are on snippets of data 10 points long.
+        \end{itemize}
+        \item Write-up!!!
+    \end{itemize}
+\end{itemize}
+
+\section*{19/09/16 Monday Week 8, D-3: Everything}
+\begin{itemize}
+    \item VT11 Set 1 Cardinal Vowels (Had, Heed, Hod, Who'd) for quantifying variability between users
+    \begin{itemize}
+        \item Can confirm that Set1 had the tongue artifact in the mid-saggital section as well.
+        \item Interesting, the existing area.txt functions had 0 at the first and last values.
+        \item Hod: done
+        \item Had: Oral area.txt had two zero values in the middle. Weird! Anyway, replacing them with my new repeated ones.
+        \item Heed: done
+        \item Who'd: done
+        \item Now just need to run areacalc.m on matlab to get the distance\_areas and run through quantify\_variability.R
+    \end{itemize}   
 \end{itemize}
 
 \end{document}
