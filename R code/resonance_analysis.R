@@ -181,10 +181,7 @@ for(i in 1:numVowels){
 
 }
 
-# PCA on resonances for R1-R2 plots ===========================================================
-
-pca.res <- prcomp(na.omit(resfreq))
-pca.res.bark <- prcomp(bark(na.omit(resfreq))) 
+## Resonance plots (R1/R2) ===========================================================
 
 r1 <- resfreq[-row.skip,1]
 r2 <- resfreq[-row.skip,2]
@@ -198,9 +195,7 @@ levels(combined.df$vow) <- c() # copy and paste IPA symbols from IPAvowels_story
 
 par(mfrow = c(1,1))
 
-## Resonance plots (R1/R2)
-
-# Centroids
+## Centroids ----
 eplot(r1r2, labs = as.character(combined.df[-180,2]), centroid = T,
       main="Vowel centroids from combined 18 VT data set",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
@@ -210,22 +205,15 @@ eplot(bark(r1r2), labs = as.character(combined.df[-180,2]), centroid = T,
       main="PCs of Bark-scaled resonant frequencies for combined 18 VT data set",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F)
 
-# Clusters
+## Clusters ----
 eplot(r1r2, labs = as.character(combined.df[-180,2]), dopoints = T,
       main="All vowels from combined 18 VT data set",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette)
 
-# Centroids for NZE and AmE compared
-par(mfrow=c(1,2))
-eplot(r1r2[1:132,], labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE centroids",
-      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
-      xlim = c(800,2700), ylim = c(200,800))
-eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T, main="AmE centroids",
-      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
-      xlim = c(800,2700), ylim = c(200,800))
+## Centroids for NZE and AmE compared ----
 
 # Plot together
-par(new=F, mfrow=c(1,1))
+par(new=F)
 eplot(r1r2[1:132,], labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE and AME centroids",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "black",
       xlim = c(800,2700), ylim = c(200,900))
@@ -234,6 +222,67 @@ eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), ce
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "red",
       xlim = c(800,2700), ylim = c(200,900))
 legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
+
+# Bark scaled
+par(new=F)
+eplot(bark(r1r2[1:132,]), labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE and AME centroids",
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "black",
+      xlim = c(8,16), ylim = c(2,8))
+par(new=T)
+eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "red",
+      xlim = c(8,16), ylim = c(2,8))
+legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
+
+## Genders ----
+
+par(new=F)
+f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk[-row.skip])
+m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk[-row.skip])
+eplot(r1r2[f,], labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "deeppink",
+      xlim = c(800,2700), ylim = c(200,800))
+par(new=T)
+eplot(r1r2[m,], labs = as.character(combined.df[m,2]), centroid = T,
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "blue",
+      xlim = c(800,2700), ylim = c(200,800))
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","blue"))
+
+# Bark scaled
+par(new=F)
+eplot(bark(r1r2[f,]), labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "deeppink",
+      xlim = c(8,16), ylim = c(2,7))
+par(new=T)
+eplot(bark(r1r2[m,]), labs = as.character(combined.df[m,2]), centroid = T,
+      xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "dodgerblue3",
+      xlim = c(8,16), ylim = c(2,7))
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
+
+## Story formants ----
+
+par(new=F)
+f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk[-row.skip])
+m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk[-row.skip])
+eplot(r1r2[f,], labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "deeppink",
+      xlim = c(800,2700), ylim = c(200,800))
+par(new=T)
+eplot(r1r2[m,], labs = as.character(combined.df[m,2]), centroid = T,
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = "blue",
+      xlim = c(800,2700), ylim = c(200,800))
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","blue"))
+
+# Bark scaled
+par(new=F)
+eplot(bark(r1r2[f,]), labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "deeppink",
+      xlim = c(8,16), ylim = c(2,7))
+par(new=T)
+eplot(bark(r1r2[m,]), labs = as.character(combined.df[m,2]), centroid = T,
+      xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "dodgerblue3",
+      xlim = c(8,16), ylim = c(2,7))
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
 
 
 
