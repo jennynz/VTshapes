@@ -30,11 +30,12 @@ for(i in 1:numVowels) {
   vowelNames[i] <- unlist(strsplit(areaFiles[i],"\\."))[1] # Remove .txt
 }
 
-compileMRIAreas<-function(spk,interpN=FALSE)
+"compileMRIAreas" <- function(spk,interpN=FALSE)
 {
   # Can decide how many values to interpolate over, or leave it with the default which is 29 (the number of data points in the area functions/numrows in .txt files)
   
   # Make data matrix and vowel names vector
+  datfile <- read.table(paste(path,spk,SetList[1],"distance_area",areaFiles[1],sep="\\"))
   if (interpN) { n <- interpN }
   else { n <- nrow(datfile) }
   alldat <- matrix(nrow=numVowels*numSets,ncol=n,byrow=T)

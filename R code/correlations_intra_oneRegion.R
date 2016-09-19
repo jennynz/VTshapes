@@ -7,13 +7,13 @@
 # Written by Jenny Sahng
 # 07/09/2016
 
-source('~/Part IV Project/R code/readAreaFunctions_2Set.R', echo=TRUE)
+source('~/Part IV Project/R code/readAreaFunctions_2Set.R')
 
 # Number of principal components to test
 np <- 5
 
 # Oral (o) or pharyngeal (p)?
-cavity <- "o"
+cavity <- "p"
 switch(cavity,
   "o" = {
     cavity.index <- c(5:18)
@@ -36,7 +36,7 @@ for (i in 1:np) {
 rownames(corr) <- rowlist
 
 # Normalise?
-isNorm <- T
+isNorm <- F
 
 # Maximum areas for normalising. X1 is omitted since it is unreliable (MRI
 # showed little of mouth opening at front of lips) and X29 omitted since it is

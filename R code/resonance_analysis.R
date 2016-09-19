@@ -202,7 +202,7 @@ par(mfrow = c(1,1))
 
 # Centroids
 eplot(r1r2, labs = as.character(combined.df[-180,2]), centroid = T,
-      main="Centroids of vowels plotted by resonant frequencies in combined 18 VT data set",
+      main="Vowel centroids from combined 18 VT data set",
       xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette,
       xlim = c(800,2700), ylim = c(200,800))
 # Bark-scaled
@@ -212,8 +212,8 @@ eplot(bark(r1r2), labs = as.character(combined.df[-180,2]), centroid = T,
 
 # Clusters
 eplot(r1r2, labs = as.character(combined.df[-180,2]), dopoints = T,
-      main="All vowels plotted by resonant frequencies in combined 18 VT data set",
-      xlab = "R2", ylab = "R1", formant = T, doellipse = T, col = colpalette)
+      main="All vowels from combined 18 VT data set",
+      xlab = "R2", ylab = "R1", formant = T, doellipse = F, col = colpalette)
 
 # Centroids for NZE and AmE compared
 par(mfrow=c(1,2))
