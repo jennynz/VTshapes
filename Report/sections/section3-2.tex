@@ -1,0 +1,75 @@
+\section{Principal component analysis on combined area functions}\label{results-pca}
+
+\subsection{Reading in area functions to R}
+
+The R script which read in the area function .txt files was reworked to automatically create a data frame of all speaker data, with columns indicating speaker number, set number (Set 1 or 2, if applicable), vowel, followed by a series of columns from X1 to X29 which are the linearly interpolated, equispaced area values along the vocal tract. Interpolation was required due to the different distance step sizes between the oral and pharyngeal regions. A plot comparing the raw area function data (with uneven distance steps between oral and pharyngeal) with the linear equispaced interpolation points showed that the linear interpolation is true to the underlying vocal tract shape despite a slight lag which develops halfway through the function (Figure \ref{fig:interp-had}).
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{img/R_interp_had}
+  \caption{Raw and interpolated area functions for the VT04 and VT09 `had' vowel. The interpolated area function follows the raw data closely despite a slight lag. Also, despite VT04's smaller area function size relative to VT07, the same general VT shape is seen for the same vowel.}
+  \label{fig:interp-had}
+\end{figure}
+
+\subsection{Vowel plots on PC1-PC2 planes}
+
+A plot of all the vowels across all 12 speakers on PC1-PC2 planes show moderate clustering. This shows that through this process of area function extraction and principal component analysis, we are able to deduce some information on vowel quality even in a combined, diverse data set such as this. Plotting each vowel's centroid on a PC1-PC2 plane shows a tight congruence with the centroid plot in Watson \cite{watson2014mappings}, with a flipped y-axis (Figure \ref{fig:centroids}). Given the near-perfect match between the two plots (with the exception of the `hid' vowel which has merged with the `head' vowel in our plot), and its resemblance to the configuration of the standard vowel quadrilateral in Figure \ref{fig:12VT1Set_centroids_quad}, it appears that even with the addition of 7 new speakers to the data set, PCA is able to extract meaningful vowel height and backness information from MRI images.
+
+It does appears that PC1 represents phonetic backness more closely than PC2 does for phonetic height. In Figure \ref{fig:12VT1Set_centroids_quad}, we see the vowel centroids accurately separated out by their backness values when compared with a standard vowel quadrilateral, with relatively few errors. However, there are several instances where the vowel \textit{heights} appear to be out of order, such as the \textipa{/O:/} vowel appearing higher than the \textipa{/U/} and \textipa{/u:/} vowels, and \textipa{/2/} being lower than both \textipa{/A:/} and \textipa{/6/}. It appears that PC2 is a relatively weak predictor of vowel height.
+
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{img/12VT1Set_centroids_interspeech}
+  \caption{Centroids from combined dataset (12 VT 1 Set)}
+  \label{fig:12VT1Set_centroids_interspeech}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{img/interspeech_pc1pc2_centroids}
+  \caption{Centriods from interspeech (5 VT 2 Set)}
+  \label{fig:interspeech_pc1pc2_centroids}
+\end{subfigure}
+\caption{Comparison of vowel centroid plots from a 1 $\times$ 12 VT set and a 2 $\times$ 5 VT set.}
+\label{fig:centroids}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/12VT1Set_centroids_quad}
+  \caption{Vowel centroid plot on PC1-PC2 plane with both axes negative, showing strong resemblence to vowel quadrilateral.}
+      \label{fig:12VT1Set_centroids_quad}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/12VT1Set_pc1pc2}
+  \caption{All vowels for 12 speakers plotted on PC1-PC2 plane.}
+  \label{fig:12VT1Set_pc1pc2}
+\end{figure}
+
+\subsection{Proportions of variance}
+
+The first two principal components (PC1 and PC2) of the combined dataset of all 132 area functions (11 vowels $\times$ 1 set $\times$ 12 speakers) accounted for 60.1\% of the variance, virtually the same proportion captured in the original study \cite{watson2014mappings} done with a combined dataset of just 5 speakers with 2 sets each (Figure \ref{fig:12VT1Set_variance}; also see Table \ref{variance}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/12VT1Set_variance}
+  \caption{Variance accounted for by principal components in decreasing order for combined data set of 12 speakers with 1 set each (12VT 1Set). The significance of the PCs drop significantly after PC3.}
+  \label{fig:12VT1Set_variance}
+\end{figure}
+
+\subsection{Validating individual speaker data}
+
+In order to validate these results, principal component analysis was performed on each individual speaker's data (one set of 11 vowels each) to check for consistency between the speakers' area functions. Firstly, the proportion of variances for each individual speaker was assessed. The results in Figure \ref{fig:speaker-variance} show that for all of the speakers except VT06, the variances are still largely accounted for by PC1 and PC2 alone. A correlation analysis between the first principal components of the speakers also showed very strong evidence (p < 0.01) for correlation (above 70\%) between individual speakers (Table \ref{fig:inter_PC1}). Despite reservations about the quality of the VT04 and VT07 data, little difference between the other VTs is seen for both the variance and correlation analyses.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{img/variance_individual}
+  \caption{Percentages of total variance in each speaker's area functions coming from first three principal components. The majority of individual speaker variance is accounted for by PC1 and PC2, surpassing the orange line which indicates 70\% variance.}
+  \label{fig:speaker-variance}
+\end{figure}
+
+\subsection{PCA on combined AmE data set}
+
+Principal component analysis was also performed in bulk on a combined American English data set from Story [citation needed].

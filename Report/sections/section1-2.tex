@@ -1,0 +1,39 @@
+\section{Vowels and Formant Analysis}
+
+\subsection{The phonetics of vowels}
+
+Unlike consonants, vowels are speech sounds which resonate at a certain frequency, with air vibrating in the vocal tract in a uniform, laminar manner\footnote{The most common consonants tend to be characterised by turbulent airflow and the indistinct spread of energy across the frequency spectrum as opposed to clearly defined resonant frequencies.}, vowel analysis has traditionally focused on resonant frequencies and \textit{formants} (which may be roughly translated to \textit{harmonics} for the time being) in speech recordings. Alternatively, the resonant frequencies may be estimated from the vocal tract profile measured with acoustic pulse reflectometry (APR) \cite{gray2005}. More recently, an alternative analysis for vocal tract shape has been introduced in the form of MRI images, taken during \textit{phonation}\footnote{The utterance of a speech sound.}.
+
+We make vowel sounds by positioning our tongue in certain precise positions around our vocal tract. The placement of the tongue when uttering a particular vowel is called the \textit{vocal tract shape}. It is made up of two parameters: phonetic height and phonetic backness, that is, how high or low and front or back your tongue is when articulating the vowel. This shape can be recorded by imaging sections of the vocal tract during speech production, and plotting the cross-sectional area against the distance of the slice from the lips. We call this plot the \textit{area function} - the cross-sectional area of the vocal tract at a given distance from the lips.
+
+\subsection{Resonances and the acoustic tube model}
+
+We can also calculate the resonances of the vocal tract from these shapes or area functions using an acoustic tube model. The vocal tract is modelled as a series of adjacent tubes of equal width, with varying cross-sectional area. There is some reflection at the boundaries, determined by the reflection coefficients (Equation \ref{reflection}), and filter coefficients which are related to these reflection coefficients.
+
+\begin{equation}
+    \label{reflection}
+    \Gamma = \left( \frac{A_{n-1} - A_n}{A_{n-1} + A_n} \right)
+\end{equation}
+
+[MAY NEED TO INCLUDE A BIT HERE ON THE FULL ACOUSTIC TUBE MODEL WITH ALL POLE SECOND-ORDER DIGITAL FILTER AND DIAGRAM]
+
+Once the resonant frequencies are found, we  may compare these against the resonant frequencies that we hear in a recorded speech signal of the same vowel. Resonant frequencies occur in speech signals as a result of the various cavity in your vocal tract. The two main chambers are the \textit{oral cavity} (the space above and before the highest point of your tongue, before the uvula) and the \textit{pharyngeal cavity} (the space between the tongue and the vertical back wall of the mouth, from the uvula to the glottis). As these cavities change size depending vocal tract shape (i.e. tongue position), the resonant frequencies of these tubes change accordingly. When the frequency spectrum with peaks of resonant frequencies is filtered by other phonetic features such as lip rounding, the final output is the speech that we hear, with slightly altered frequency peaks which are called \textit{formants}.
+
+\subsection{Formants and the Vowel Quadrilateral}
+
+There is a well-established correlation between the first and second formants, and phonetic height and backness, respectively. Since vowels are distinguished by their specific height and backness, formants are therefore a widely accepted representation of a vowel, commonly used in analysis. When the the first and second formants (F1 and F2) are plotted on the y and x axes, we obtain the vowel quadrilateral, a representation of all the vowel positions in your vocal tract (Figure \ref{fig:vowelquad}). New Zealand English has 11 of these simple vowels, which are circled.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 0.6\textwidth]{img/vowel-quadrilateral}
+\caption{Vowel quadrilateral showing positions of all the vowels in the International Phonetic Alphabet, mapped onto a mid-sagittal section of the vocal tract.}
+\label{fig:vowelquad}
+\end{figure}
+
+\subsection{Effects of age, gender and accent}
+
+The effect of age on vowel sounds is complex, given that vowels are so reliant on the resonant frequencies, and therefore the anatomy of the mouth. As we age, the tissues in the mouth relax, the mucous membranes become more thin and dry, and fine motor control may become compromised \cite{voiceaging}. Vocal chords also undergo atrophy, resulting in changes in pitch, volume, and importantly, resonance. Though these changes are likely to be subtle, it will be interesting to see if they are significant enough to be picked up through an analysis of the vowel spaces.
+
+On the other hand, the effect of gender on vowel sounds is relatively simple. It is well established that human male voices are on average twice as deep as those of females, despite males only being 10\% taller and 20\% heavier on average \cite{ghazanfar2008evolution}. This disproportionate decrease in resonant frequency is likely to originate from the increased thickness and length of male vocal chords due to testosterone, as well as the slightly larger size of the vocal cavities. In terms of the vowel space, there should be no relative shift between the vowels purely due to the speaker's gender when all else is kept constant, as the difference is simply a drop in the resonant frequencies of their vocal cavities and vocal chords. 
+
+Lastly, we expect comparisons between vowel spaces across different accents to produce some interesting results. Accents within a certain language are largely defined by the quality of their vowels\footnote{As well as differences in consonants}, and a comparison of vowel spaces may be a way of quantifying these differences.

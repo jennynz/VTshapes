@@ -1,0 +1,81 @@
+[Some general comments here]
+
+One of the overall aims of this project was to assess the validity of analysing MRI-derived vocal tract data together as a combined data set. This was important, as it would provide us with a novel method of analysing at group trends (e.g. age, gender, accent) while ignoring individual speaker differences. It became clear early on that the reliability of any conclusions drawn from this MRI-based analysis would be dependent on the the validity of how we process our raw MRI data. Consequently, adding in extra analyses to further explore and to validate findings, particularly quirks and irregularities in the data, became routine.
+
+\section{Area functions of VT04 and VT07}
+
+\section{Principal component analysis on combined area functions}
+
+\subsection{Reading in area functions to R}
+
+\subsection{Vowel plots on PC1-PC2 planes}
+
+\subsection{Proportions of variance}
+
+Despite adding 7 new speakers to the data set, with a variety of ages and genders, the proportions of variance accounted for by the first two principal components barely dropped at all, indicating that the principal components are robustly capturing meaningful vowel-related information.
+
+\subsection{Validating individual speaker data}
+
+\subsection{PCA on combined AmE data set}
+
+\section{Inter-speaker PCA correlations and demographic trends}
+
+The extremely strong correlations between the first principal components of the different speakers' vowel sets gives powerful evidence towards PC1 being a surrogate for phonetic backness. This is further supported by the vowel centroid plot in Figure \ref{fig:12VT1Set_centroids_quad}, which accurately separates out the vowels by backness. The second principal components however exhibited a wide range of correlation strengths, and was a moderately poor representation of phonetic height. 
+
+From the extremely low correlation estimates seen for PC3, noise dominates the higher order principal components. [However, as discovered while quantifying the variability between users who process the MRI images (section \ref{sec:methodology-validation}), the method of deriving this data itself is holds at least this much noise. Therefore, it is not clear at this stage whether elimination of this variability (due to the manual, approximate way that the cross-sectional areas are defined) will uncover more underlying dimensions in the higher order principal components. 
+
+\subsubsection{Australian VT02}
+
+VT02 showed markedly low correlations with the first principal components of other speakers. Plot twist: she's Australian! According to literature, Australian English (AusE) vowels differ from NZE in several prominent ways. Their `hid' vowel is noticeably higher, and their `had' and `hood' vowel more central \& low [check these and cite watson et. al.]. We analysed the variance of data VT02 was removed from the combined dataset, compared to the removal of other VTs, to see whether the variances decreased when VT02 was removed. It was hypothesised that a decrease in variance would indicate that VT02's area functions were outliers to some extent, reflecting the differences of an Australian accent. However, no conclusive results were drawn as the variance of PC1 of the VT02-excluded dataset was not significantly different to the variances of data sets with any other VT removed. Variances accounted for by the first three PCs were also similar, regardless of which VT was excluded.
+
+Although no quantitative representation of VT02's Australian accent could be drawn from these analyses\footnote{Even if there had been an effect of accent in VT02's principal components, the removal of one VT within a set of twelve is unlikely to have made a significant difference to the variances.}, the seemingly chaotic plot of VT02's vowels in the PC1-PC2 plane (Figure [X]) showed that the dichotomy of PC1 encoding backness and PC2 encoding height is not always as clear cut as other studies may suggest [citations needed]. In Figure [X], it appears a if PC1 seems to encode a mix of height and backness, that is, the direction of largest variation was backness for some vowels, but height for others.
+
+Also, while the `hid' vowel is still separated out strongly by PC1, the `hood' vowel is very similar to that of NZE. This may be because VT02 has lived in NZ for several decades. It is likely that many of her vowels (such as `hood') may have assimilated to those of NZE, with the exception of a few target vowels. This is a common phenomenon for immigrants, where the most prominent, characteristic vowels (in this case, the Australian `hid') are the most resistant to assimilation. A possible avenue for future research may be to compare only the PCs of the target vowels `hid' and `had' with those of NZE speakers to see if correlations are lower in those cases than with seemingly assimilated vowels like `hard', `hod' and `who'd' which are unlikely to be very different between AusE and NZE\footnote{This is only possible with at least 2 sets per speaker, which is why the analysis was not carried out for this project.}.
+
+\subsection{Age \& Gender}
+
+Makes sense that there is no conclusive difference across age. The only place it might affect is the pharyngeal region, where we saw [X]. Sociolinguistically, older speakers could have more British-leaning accents which should affect the vocal tract shapes
+
+The non-results within the age and gender groups are actually expected - you shouldn't really be able to see age and gender differences from the MRI scans, especially if the derived data is normalised.
+
+Again, we did not expect to see any differences in vocal tract shape across gender, since speakers of different gender with the same accent should articulate their vowels in the same manner.
+
+\subsection{Accents}
+
+[NZE vs AmE]
+
+[Keeping an eye out to see how VT02 behaves. Would expect AusE to be more correlated with NZE group than with AmE group, and for NZE to be more correlated within its accent group than with AmE]
+
+\section{Intra-speaker PCA correlations}
+
+\subsection{Analysing oral and pharyngeal cavities separately}
+
+\section{Resonance analysis}
+
+\subsection{Vowel plots on R1-R2 planes}
+
+\subsection{Inter-speaker resonance correlations}
+
+[Or LPC coefficients, whichever is more appropriate]
+
+\subsection{Intra-speaker resonance correlations}
+
+\section{Rotations between NZE and AmE}
+
+\section{Limitations \& improvements to data}
+
+Although a sample size of 12 is a considerable size in these kinds of voice studies [citations], there were several inconsistencies in the dataset which may have had some minor effects on these results. Firstly, not all of the speakers were supervised by a phonetician during the MRI procedure, who would give corrections on their head position or their articulation of vowels. For VT08 and VT10 who were not supervised, this may have contributed to MRI imaging artifacts (e.g. head not being centred) or inaccurate representations of vowels. In future, these may be eliminated by having one phonetically trained person supervise all participants.
+
+Secondly, for some speakers, the vowels were not repeated for a second set, which reduced the data set available for intra-speaker correlations, and ruled out the possibility of a fully combined dataset (12 VTs, both sets) as this would mean that the speakers with two full sets are overrepresented. [What would be the point of doing analysis on a full set like this though? What kinds of analyses does this sort of super-data-set allow?]
+
+\subsection{Future work on methodology}
+
+Overall, this method of extracting phonetic data from MRI images described in Chapter  \ref{ch:methods} has proven itself to have great potential for exploring large, varied data sets. With the only drawback being the manual, variable nature of the initial mark-up process, there is much scope for the process to be expanded with different analyses and ways of interpreting the output area functions. Principal component analysis is just one way in which these aggregated area functions may be distilled into useful quantities. Other analyses such as [example and example] may also be appropriate options which extract different values from the same MRI data set. Extending the view further, now that area functions have been validated as a source of phonetic information, performing PCA and correlations on volume functions may also produce some interesting results.
+
+\section{Implications for voice science and speech technology}
+
+Vowel studies which use MRI-derived data (as opposed to sound recordings or acoustic reflectometry) rarely combine multiple speaker data into one set, rather choosing to treat each participant's results individually [long list of citations needed]. In doing so, we forgo the possibility of uncovering group trends and generalisations on vocal tract anatomy and acoustics from this data. Watson's paper \cite{watson2014mappings} is the first study in acoustic phonetics literature to combine MRI-derived area function data from speakers of different ages and genders. Watson found that the combined data set could still be distilled down to key phonetic information such as phonetic height and backness with the use of principal component analysis and resonance analysis. 
+
+This project further validates this methodology with an expanded 12 speaker data set, which is considered large in the field of voice science particularly for an MRI-based study. It makes headway into exploring the variations which exist in the underlying physioacoustic system that controls human speech, across different demographics. The results of this project strongly suggest that this methodology is able to extract meaningful, quantitative measurements of vowel qualities such as phonetic height and backness from MRI images, giving validity and significance to any future trends and transformations that are discovered using this physiologically-based method.
+
+A system that allows accurate, nuanced accent transformations will become increasingly valuable as language change accelerates in our increasingly multicultural society \cite{jacewicz2016acoustics}.

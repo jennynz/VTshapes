@@ -1,0 +1,46 @@
+\section{Principal component analysis on combined area function}
+
+[INCOMPLETE]
+
+Once the area functions for VT04 and VT07 were extracted, this data was combined with the area functions from all of the other vocal tracts into a single data frame using R\footnote{The area functions derived from the other speaker datasets by previous students included just Set 1 from VT01, VT02 [ETC] by Helen, and both Set 1 and Set 2 for VT03, VT05, VT08, VT09, VT10 by Daniel. For this reason, I had only analysed Set 1, and thus chose to include only Set 1 from the speakers that Daniel had analysed to avoid overrepresenting those five speakers in the combined dataset.}. This gave a combined data frame of 132 area functions (11 vowels per speaker $\times$ 12 speakers). Principal component analysis was then performed using the \verb|prcomp| function in R. 
+
+
+Only take X2 to X28 because lips are Excluding first column X1 because of unreliability of first frame of MRI images (lips are usually poorly defined), and last column X29 because glottis is zero by definition
+
+
+NORMALISATION vowel and speaker specific
+
+It outputs a set of principal components (vectors) encoding the dimensions along which there is the most variation, in decreasing order – so the first principal component is in the direction where there is the most variance in the data, the second is the second-most-varied dimension/direction and so on.
+The principal components are actually the eigenvectors of the covariance matrix, and they encode the variation in each dimension of a dataset. The analysis is often used to reduce irrelevant dimensions.
+
+The analysis is performed on calculated area functions, to investigate how area functions vary across vowels and/or speakers.
+To account for different speaker, all area functions were normalised by expressing all cross-sectional areas as a proportion of the maximum cross-sectional area.
+
+Now, the area functions of all 12 participants could be analysed together as a combined vowel space. 
+
+The resulting vowel quadrilaterals based on the first two principal components and the first two resonances of the area functions were very similar to the quadrilaterals that had been generated previously with just the 10 participants (before VT04 and VT07 had been analysed).
+
+\subsection{Proportions of variance}
+
+\subsection{Validating individual speaker data}
+
+Check that VT04 and VT07 are worth including into the dataset, since Catherine was skeptical of how clearly these two speakers articulated the vowels during MRI imaging (mumbling, not opening mouth very much). Also compare against variance in interspeech as a validation of pca method step.
+
+\subsection{Validation of code}
+
+First, I attempted to reproduce the results achieved in Dr Catherine Watson's previous paper \cite{watson2014mappings}, which 
+tried to reproduce Catherine's 5VT Set 2
+
+\begin{table}[H]
+\centering
+\caption{Proportions of variance (\%) accounted for by first three principal components of various datasets.}
+\label{variance}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Variance} & \textbf{PC1}   & \textbf{PC2}   & \textbf{PC3}   & \textbf{PC1+PC2}  \\ \hline
+5VT 2 Sets \cite{watson2014mappings}  & 39.6           & 20.8           & 10.9           & 60.4              \\ \hline    
+5VT 2Set          & 42.7           & 21.2           & 10.4           & 63.8              \\ \hline
+5VT 2Set including glottis      & 41.7           & 20.43           & 10.44           & 61.5\\ \hline
+12VT 1 Set         & 39.8           & 20.3           & 9.4           & 60.1              \\ \hline
+\end{tabular}
+\end{table}

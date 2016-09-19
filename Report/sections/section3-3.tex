@@ -1,0 +1,56 @@
+\section{Inter-speaker PCA correlations and demographic trends}\label{results-inter}
+
+The results of the Pearson product-moment correlations showed generally very strong correlations for PC1 around 90\% (Figure \ref{fig:inter_PC1}), with p-values well under 0.005 (Figure \ref{fig:inter_PC1_p}), with the exception of VT02 which only shows weak correlations of around 60\% to 70\%. This irregularity was further explored in the subsection below. PC2 correlations were mostly weak (approximately 65\% to 75\%) with a few completely uncorrelated pairings, again particularly in VT02\footnote{VT10 also has slightly lower PC2 correlations than the other speakers, however this difference may be attributed to the fact that a phonetician was unavailable to supervise the MRI session unlike for all the other speakers.} (Figure \ref{fig:inter_PC2}). The corresponding p-values were also mostly insignificant (Figure \ref{fig:inter_PC2_p}). As for PC3, there is virtually no correlation between the speakers.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/inter_PC1}
+    \caption{Correlations between the first principal components of speakers' area functions. Correlation estimates are colour-coded with green being high and red being low, with yellow at 70\% to indicate the general threshold for correlation. The relatively low correlations for VT02 are clearly visible.}
+    \label{fig:inter_PC1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/inter_PC2}
+    \caption{Correlations between the second principal components of speakers' area functions.}
+    \label{fig:inter_PC2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/inter_PC3}
+    \caption{Correlations between the third principal components of speakers' area functions.}
+    \label{fig:inter_PC3}
+\end{figure}
+
+\subsection{Age}
+
+When the correlation values between the principal components of pairs within the same age group\footnote{For age groups, see participants list in Appendix \ref{ch:pvalues}.} were analysed, it was found that being in the same age group appeared to have no effect on the correlation values across all three principal components (Figures \ref{fig:inter_PC1}-\ref{fig:inter_PC3}). However, research suggests that aging may have a disproportionate effect on the pharyngeal cavity \cite{xue1999age}. There has been some research which suggests enlargement of oral cavity volume with age \cite{xue2003changes}, and also the effect of age on the participants lying in a supine position in the MRI scanner, causing the pharyngeal cavity to collapse and narrow due to gravity and lesser muscle tone \cite{martin1997effect}. The same inter-speaker correlation analysis was run on just the data from the pharyngeal regions to further probe at any characteristics specific to the older speaker group (VT01, VT02, VT11).
+
+Correlations generally decreased significantly when the oral cavity data was removed (the average correlation in the full analysis was 88.39\%, while the correlations between just the pharyngeal data averaged 73.34\%). Interestingly, the intersections within the two older age groups (middle-aged and senior, in blue and purple respectively in figure \ref{fig:inter_pharyngeal_age}) appeared to be slightly higher than with the young age group, and there was an increase in correlation between the senior speakers despite drops in most other pairings. Correlation between VT01 and VT02 increased from 65.15\% in the full analysis to 80.62\% in the pharyngeal only correlations. Between VT01 and VT11, there was a very slight drop from 93.83\% to 91.69\%, an increase from 74.09\% to 82.00\% between VT02 and VT11. Unfortunately, given the small number of samples in the older age groups and the generally qualitative nature of correlations, is difficult to attribute these minor changes to age. PC2 and PC3 showed little to no correlation across all speakers.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/inter_pharyngeal_age}
+    \caption{Correlations between the first principal components of area functions of the pharyngeal cavity only. Young, middle and senior age groups are highlighted with green, blue and purple borders respectively.}
+    \label{fig:inter_pharyngeal_age}
+\end{figure}
+
+It is still possible that the pharyngeal region decreases in volume uniformly while maintaining consistent vocal tract shapes for the different vowels (hence giving the similar correlations), but we do not have the data to make these assumptions. Comparing unnormalised area functions will not give any evidence towards the effect of age on pharyngeal cavity volume, since there is already natural variation in vocal tract sizes between participants.
+
+Correlations with VT02 did not decrease dramatically as with the other VTs - they either remained similar or even increased (in Figure \ref{fig:inter_pharyngeal_age} VT02 is not an outlier as it is in Figure \ref{fig:inter_PC1}). This supports the hypothesis that PCA is able to extract vowel information from noisy, MRI-derived data, since differences in vowel information due to accent (Australian, in this case) would mostly be seen in the oral cavity. By excluding the oral cavity, we are comparing the rather similar pharyngeal configurations of AusE and NZE, which may therefore showing higher correlations. This was supported by the fact that when the same analysis was run on only the \textit{oral} cavity (this time excluding the pharyngeal cavity), correlations remained reasonably high except in VT02 and VT10, the latter having not had supervision from a phonetician during the MRI acquisition (Figure \ref{fig:inter_oral_PC1}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/inter_oral_PC1}
+    \caption{Correlations between the first principal components of area functions of the oral cavity only.}
+    \label{fig:inter_oral_PC1}
+\end{figure}
+    
+\subsection{Gender}
+
+There were no visible trends of correlations being higher or lower within gender groups. This follows literature which states that there are no physiological differences between male and female VT shapes except in size [citation needed], which is normalised in these analyses.
+
+\subsection{Accents}
+
+The same analysis to extract area functions was used on the Story MRI data. [TO DO]

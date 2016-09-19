@@ -1,0 +1,101 @@
+\documentclass[a4paper,12pt,table,xcdraw]{book}
+\usepackage{import}
+\usepackage[left=2cm,right=2cm,bottom=3cm,bindingoffset=1cm]{geometry}
+\usepackage{preamble}
+\setmainfont[
+  Ligatures=TeX,
+  BoldFont={timesbd.ttf}, 
+  ItalicFont={timesi.ttf},
+  BoldItalicFont={timesbi.ttf}
+ ]{times.ttf}
+
+\makeindex
+
+\begin{document}
+
+\frontmatter
+
+\import{./}{title.tex}
+\pagebreak
+\clearpage
+\thispagestyle{empty}
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+\chapter{Abstract}
+\import{sections/}{abstract.tex}
+\clearpage
+\thispagestyle{empty}
+
+\chapter{Acknowledgements}
+\import{sections/}{acknowledgements.tex}
+\clearpage
+\thispagestyle{empty}
+
+\tableofcontents
+
+\chapter{Notation List}
+\import{sections/}{notation.tex}
+
+\mainmatter
+
+\chapter{Introduction}
+\epigraph{Language is the most massive and inclusive art we know, a mountainous and anonymous work of unconscious generations.}{\textit{Edward Sapir}}
+\import{sections/}{section1-1.tex}
+\import{sections/}{section1-2.tex}
+\import{sections/}{section1-3.tex}
+
+\chapter{Methods} \label{ch:methods}
+\import{sections/}{section2-1.tex}
+\import{sections/}{section2-2.tex}
+\import{sections/}{section2-3.tex}
+\import{sections/}{section2-4.tex}
+\import{sections/}{section2-5.tex}
+\import{sections/}{section2-6.tex}
+\import{sections/}{section2-7.tex}
+
+\chapter{Results}
+\import{sections/}{section3-1.tex}
+\import{sections/}{section3-2.tex}
+\import{sections/}{section3-3.tex}
+\import{sections/}{section3-4.tex}
+\import{sections/}{section3-5.tex}
+\import{sections/}{section3-6.tex}
+
+\chapter{Discussion}
+\import{sections/}{section4-1.tex}
+
+\chapter{Conclusions}
+\import{sections/}{conclusions.tex}
+
+\begin{appendices}
+
+\chapter{Data point placement on CMGUI} \label{ch:cmgui}
+\import{sections/appendices/}{cmgui.tex}
+
+\chapter{11 monophthongs of NZE} \label{ch:monophthongs}
+\import{sections/appendices/}{vowels.tex}
+
+\chapter{Participant list} \label{ch:participants-list}
+\import{sections/appendices/}{participants.tex}
+
+\chapter{Correlation p-values} \label{ch:pvalues}
+\import{sections/appendices/}{p-values.tex}
+
+\chapter{Results from Watson (2014)} \label{ch:interspeech}
+\import{sections/appendices/}{interspeech.tex}
+
+\chapter{Additional correlations} \label{ch:correlations}
+\import{sections/appendices/}{correlations.tex}
+
+\end{appendices}
+
+\backmatter
+
+\renewcommand\bibname{References}
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\end{document}

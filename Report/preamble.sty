@@ -1,0 +1,91 @@
+\ProvidesPackage{preamble}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, english]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{blindtext}
+\usepackage{textcomp}
+\usepackage{pgfplots}
+\usepackage{lscape}
+\usepackage{tipa}
+\usepackage{setspace}
+\usepackage{fontspec}
+\usepackage{url}
+\usepackage{epigraph}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{makeidx}
+\usepackage[titletoc, page]{appendix}
+\pgfplotsset{width=10cm,compat=1.9}
+
+%Header styles
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+\fancyhf{}
+%\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\textbf{\textit{\nouppercase{\leftmark}}}}
+\fancyhead[LO]{\textbf{\textit{\nouppercase{\rightmark}}}}
+\fancypagestyle{plain}{ %
+\fancyhf{} % remove everything
+\renewcommand{\headrulewidth}{0pt} % remove lines as well
+\renewcommand{\footrulewidth}{0pt}}
+
+% Have page numbers at the center of the footer rather than on the fancy header
+\cfoot{\thepage}
+
+%makes available the commands \proof, \qedsymbol and \theoremstyle
+\usepackage{amsthm}
+
+%Ruler
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+%Lemma definition and lemma counter
+\newtheorem{lemma}{Lemma}[section]
+
+%Definition counter
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+%Corolary counter
+\newtheorem{corolary}{Corolary}[section]
+
+%Commands for naturals, integers, topology, hull, Ball, Disc, Dimension, boundary and a few more
+\newcommand{\E}{{\mathcal{E}}}
+\newcommand{\F}{{\mathcal{F}}}
+\newcommand{\Bs}{{\mathcal{B}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\Nt}{{\mathbb{N}}}
+\renewcommand{\S}{{\mathbf{S}}}
+\newcommand{\K}{{\mathfrak{C}}}
+\newcommand{\N}{{\mathfrak{N}}}
+\newcommand{\I}{{\mathbf{I}}}
+\newcommand{\dime}{{\rm dim}\,}
+\newcommand{\est}{{\rm Est}\,}
+\newcommand{\inte}{{\rm int}\,}
+\newcommand{\conv}{{\rm conv}\,}
+\renewcommand{\max}{{\rm sup\,}}
+\newcommand{\diam}{{\rm di\acute{a}m\,}}
+\newcommand{\leyenda}[1]{\caption{{\small \textsf{#1}}}}
+\renewcommand{\inf}{{\rm \acute{i}nf}\,}
+
+%Example cenvironment
+\theoremstyle{remark}
+\newtheorem{examle}{Example}
+
+%Example counter
+\newcommand{\reiniciar}{\setcounter{example}{0}}
+
+%TOC spacing
+\usepackage{tocloft}
+\renewcommand\cftchapafterpnum{\vskip10pt}

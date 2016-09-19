@@ -1,0 +1,51 @@
+\section{Previous research}
+
+Previously, Dr Catherine Watson had gathered MRI image data of the vocal tract during phonation for 12 speakers of New Zealand English (NZE). Area functions (cross-sectional area of air space in mouth, plotted against distance) were extracted from MRI images, and transformed using principal component analysis (PCA) and resonance analysis to describe the mappings between vocal tract area functions, vocal tract resonances and speech formants \cite{watson2014mappings}.
+
+\subsection{PCA on VT Shape}
+
+When principal component analysis was performed on the area functions for all vowels, for each individual speaker, Watson found that the first two principal components (PCs) accounted for an average 78\% of the variance for each speaker. Watson then checked the correlation between the first two PCs for each speaker, and found very strong, significant correlations. 
+The first and second principal components across the speakers had a mean absolute values of correlation of 0.9 and 0.76 respectively. We can see this strong correlation between the area data for each speaker in Figure \ref{fig:pcplot}, where the same vowel for each speaker (each speaker's vowels are in different colours) is clustered into relatively precise areas on the PC2/PC1 plane. We can also see that PC1 appears to separate out the vowels based on phonetic backness, while PC2 does so for phonetic height. For example, the high-front vowel /i/ [FINISH THIS DESCRIPTION]
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 0.5\textwidth]{img/PCplot}
+\caption{Plot of the vowel data on a PC2/PC1 plane}
+\label{fig:pcplot}
+\end{figure}
+
+Principal component analysis was then performed on the entire combined dataset of 11 vowels for all 5 speakers. The same results were found where the first two PCs accounted for the majority of the variance, and PC1 and PC2 correspond to backness and height respectively. From this, we can say that the variation accounted for by the first two PCs is due to difference in vowel quality, namely phonetic height and backness, instead of individual speaker variation which are likely to be encoded in the higher order PCs.
+
+\subsection{Resonances from VT Shape}
+
+The first four resonance frequencies were then estimated from the area functions, and plots of the first and second resonances (R1 and R2) made. Resonant frequencies are estimated from an area function using a Linear Predictive Coefficient spectra. This is a common formant extraction technique in speech signal processing, similar to a fast Fourier transform but resulting in a smoother frequency spectrum which allows more precise identification of peaks on the frequency spectrum. The Bark frequency scale\footnote{A frequency scale on which equal distances correspond with perceptually equal distances.} used to reduce speaker differences since there was one female speaker. Lobanov normalisation\footnote{This algorithm scales speaker’s formant values as proportion of speaker’s maximum formant frequency, allowing better comparison between speakers with different average pitches.} was also applied to data for each speaker as further neutralisation of individual speaker differences was required. From the R1/R2 plot (Figure \ref{fig:resonanceplot}), we saw that the vowel distribution was very similar to that of the PCA plots. R1 and R2 appeared to correlate with phonetic height and backness respectively.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = \textwidth]{img/resonanceplot}
+\caption{Plot of the vowel data on a R1/R2 plane. Left: Combined dataset with different colours for each speaker. Right: Centroid values for each vowel.}
+\label{fig:resonanceplot}
+\end{figure}
+
+\subsection{Formants from Speech Recording}
+
+The first and second formants were extracted from speech recordings of the participants and used to create an F1/F2 plot, the original definition of the vowel quadrilateral. Figure \ref{fig:formantsplot}, again normalised using the Bark scale and Lobanov normalisation, showed great similarities to the vowel distribution seen in the PC and resonance plots derived from the transformed area data. From this, it could be inferred that the principal components and the resonances derived from the MRI image data are a good representation of vowel position.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = \textwidth]{img/formantsplot}
+\caption{Combined \& centroid plots of vowel data on F1/F2 plane.}
+\label{fig:formantsplot}
+\end{figure}
+
+\subsection{Project Aims}
+
+Watson's \cite{watson2014mappings} study analysed the vocal tract shape data from MRI images of vowel sounds for five NZE speakers. The first two principal components from the area functions accounted for most of the variability both within individual speakers and between speakers, and appear to capture phonetic height and backness due to the strong mappings between vocal tract shape (PC1 and PC2 values), vocal tract resonances (R1 and R2), and measured formants from the recorded speech signals (F1 and F2). These strong correlations suggest that MRI images of the vocal tract are a source of phonetic information. It also suggests that combining area function data for multiple speakers is a valid way of eliminating individual speaker differences and enabling group trends to be analysed such as the impact of aging.
+
+From here, this Part IV Project aims to extend this analysis by:
+
+\begin{enumerate}
+    \item Further validating the feasibility of using combined vocal tract area data from MRI images \textit{across multiple speakers}, while ignoring individual speaker differences (like the tone, volume, or pitch of someone’s voice) so that group trends on vowel sounds such as the impact of aging can be studied. This will be done by performing the above analysis on a larger dataset of 12 speakers rather than 5.
+    \item Repeating the analysis on an American English (AmE) dataset to quantify the effect of accent.
+    \item Comparing the results between NZE and AmE, and determining if a rotation vector may be identified to transform between the NZE vowel space and the AmE vowel space. This provides further validation of MRI as a valid source of speech data by showing that such transformations still hold for these MRI-derived vowel spaces.
+\end{enumerate}

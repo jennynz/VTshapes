@@ -1,0 +1,34 @@
+\section{Intra-speaker PCA correlations}\label{sec:results-intra}
+
+Intra-speaker correlations were carried out between Set 1 and Set2 for each speaker who had both full sets of vowels available for analysis. The area functions within speakers were mostly strongly correlated for PC1, PC2, and even PC3 (Figure \ref{fig:intra}). Between higher order PCs, there is virtually no correlation - this may suggest that individual speaker effects are not able to be captured by principal component analysis. Though perhaps impractical to acquire, more repetitions within the same speaker would help with identifying the speaker-specific contributions in these correlations - currently, it is difficult to say whether a correlation or lack thereof indicates an underlying effect, or is merely a product of chance.
+
+When these values were compared against the PC1 intraspeaker correlations in Watson's Interspeech paper \cite{watson2014mappings}, the estimates were very close, but not exactly the same despite the same data being used (see Figure \ref{fig:intra_interspeech}). It was decided that the discrepancy was too small to invalidate the current methodology.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/intra}
+    \caption{Intra-speaker correlations for principal components 1 to 5. Alternative speaker numbering refers to the data set's reference number in Watson \cite{watson2014mappings}. [ADD IN VT04 AND VT07 SET 2'S IF TIME ALLOWS]}
+    \label{fig:intra}
+\end{figure}
+
+\subsection{Analysing oral and pharyngeal cavities separately}
+
+We had expected intra-speaker correlations between Set 1 an Set 2 of VT11 to increase when we only analyse the pharyngeal region, given that only the oral cavity was affected by an imaging artifact which may have compromised the consistently between the markups for VT11's Set 1 and Set 2 (Figure \ref{fig:intra_pharyngeal}). Instead, we found that intra-speaker correlations all decreased when compared with full area functions (Figure \ref{fig:intra}). PC1s were still strongly correlated except in VT08 which dropped from an intra-speaker correlation of 88.27\% to 45.81\%. On the other hand, PC2s which had also been well correlated (except VT08 which had an original intra-speaker correlation value of 36.23\%) have mostly dropped to below 50\%. 
+
+It was suspected that the decreases in correlation may have simply been due to the smaller data set which amplifies the effect of noise. To check this, the oral region was also isolated and intra-speaker correlations calculated (Figure \ref{fig:intra_oral}). PC1 correlations were just as high or very slightly lower than the correlations for full area functions. PC2 correlations for just the oral cavity were the highest, higher than those of full area functions and much higher than those of only the pharyngeal cavity (Table \ref{intra-cavities}). This would suggest that the decrease in correlation when only the pharyngeal cavity was analysed is not the result of a smaller data set, but truly reflective of the variation in the pharyngeal cavity across VT11's two sets, while its oral cavity area function values are quite consistent. It may be that the area function of the pharyngeal region is only able to capture one dimension along which vowel property may change, such as backness. This would anatomically make sense, since the pharyngeal cavity can only really narrow as the tongue's back and root shift forward and back. Conversely, the size and shape of the oral cavity can encode backness and height due to the dexterity of the tongue's tip and front. This was supported by a quick analysis of variance which showed [that PC1 alone accounted for 50\% to 60\% of the variance in pharyngeal area functions, while in oral area functions, PC1 and PC2 shared the variance more evenly.]
+
+\begin{table}[H]
+\centering
+\caption{Summary of intra-speaker correlations between the first three principal components for isolated and combined regions of the vocal tract.}
+\label{intra-cavities}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{} & \textbf{Oral} & \textbf{Both} & \textbf{Pharyngeal} \\ \hline
+\rowcolor[HTML]{86DD85} 
+\cellcolor[HTML]{EFEFEF}\textbf{PC1} & Very Strong & Very Strong & Very Strong \\ \hline
+\cellcolor[HTML]{EFEFEF}\textbf{PC2} & \cellcolor[HTML]{86DD85}Very Strong & \cellcolor[HTML]{FFFC9E}Strong & \cellcolor[HTML]{F7C68C}Weak \\ \hline
+\rowcolor[HTML]{F7C68C} 
+\cellcolor[HTML]{EFEFEF}\textbf{PC3} & Weak & Weak & \cellcolor[HTML]{F7817E}Very Weak \\ \hline
+\end{tabular}
+\end{table}

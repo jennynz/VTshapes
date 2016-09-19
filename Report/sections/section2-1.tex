@@ -1,0 +1,39 @@
+\section{Area functions from MRI images}
+
+The initial step in this project was to extract area functions from the two vocal tracts in the MRI data set which were yet to be analysed, VT04 and VT07. The method and scripts for extracting the vocal tract shape from these MRI images were provided by Dr. Catherine Watson\footnote{See Acknowledgements for further details on those who contributed to the development of this procedure.}. In order to extract the area functions from the MRI images, CMGUI\footnote{The interactive front-end of the software CMISS, which stands for Continuum Mechanics, Image Analysis, Signal Processing and System Identification.} (version 2.7.0) was used to generate cross-sectional slices\footnote{These are initially coronal at the mouth, and become increasingly transverse as the vocal tract curves down the throat capturing the cross-sectional area of the cavity.} along the curve of the vocal tract from the sagittal MRI images, from the lips to the glottis. Data points were then manually placed around the boundary of the oral and pharyngeal cavities\footnote{The air space between the tongue and the upper/back surface of the mouth and throat.} seen on these slices, to outline the cross-sectional area be measured on each slice. A Perl script is then used to calculate the cross-sectional areas on each slice, and a MATLAB script used to calculate the distance of each slice along the vocal tract curve from the lips. An area function is produced when these cross-sectional areas (y-axis) are plotted against the distance from the lips (x-axis). This process was completed initially for one set of vowels (of two) for VT04 and VT07 each\footnote{Only Set 1 vowels were processed to begin with, since only one set of vowels per speaker would be needed for inter-speaker PCA and resonance correlation analyses.}, but further sets for VT11 (Set 2) and VT04 (Set 1 cardinal vowels repeated) were also completed for intraspeaker correlations (Section \ref{sec:results-intra}) and methodology validation respectively (Section \ref{sec:methodology-validation}).
+
+\subsection{Acquisition of MRI images}
+
+Previous to this project, MRI images of vocal tracts of 12 participants (henceforth referred to as `speakers') were captured using 1.5T and 3.0T Siemens Magnetom Avanto MRI scanners \cite{watson2014mappings}. For each speaker, 13 saggital sections of the head were taken from jaw edge to jaw edge, with 6 mm separations between each scan. The resolution of the images was 1 mm with a field of view of approximately 200 $\times$ 250 mm. The participants were all speakers of New Zealand English (NZE), with a range of age and genders (see Appendix C). They were instructed to articulate and hold one vowel at a time for 15 seconds while the scans were taken. The vowels which were captured were the 11 NZE monophthongs (simple vowels) /\textipa{i:}, \textipa{I}, \textipa{e}, \textipa{3:}, \textipa{\ae}, \textipa{A:}, \textipa{6}, \textipa{2}, \textipa{O}, \textipa{U}, \textipa{u}/, uttered in /hVd/ syllable frames\footnote{The `V' in /hVd/ is a variable which would be replaced by the vowel in question, with a voiceless glottal fricative /h/ and a voiced alveolar stop /d/ on either side. Such vowel frames are popular in studying phonetics for the neutralising effect that they have on the vowel, which allows a `purer' vowel sound for analysis. Examples of vowels in an hVd frame would include \textit{had}, \textit{hid} and \textit{head}. See Appendix B for the full list.}. The sequence of 13 parallel saggital scans was repeated twice for each of the 11 NZE monophthongs, creating two sets for each speaker. 
+
+\subsection{Defining the vocal tract in CMGUI}
+
+\subsubsection{Defining the curve of the vocal tract}
+
+These MRI images were then read into CMGUI using the provided com files. For each individual vowel, the following procedure was carried out twice - once for the oral cavity, and once for the pharyngeal cavity. The mid-saggital section from the vowel's 13-slice set (Slice 7) would be displayed in the CMGUI graphics window with the command file \verb|snake.com|. The user would then place data points manually along the centre of the vocal tract to define the curve along which cross-sectional slices would be generated. Figure \ref{fig:slices} shows the curvature of the oral cavity from lips to uvula; a separate curve would be made for the pharyngeal cavity, from the uvula to the glottis. The command \verb|create_curve| would generate 15 equispaced data points along this user-defined trajectory, and the coordinates of these equispaced data points automatically saved to a file called \verb|curve.exnode|.
+
+\subsubsection{Creating orthogonal slices}
+
+The output \verb|curve.exnode| were fed into \verb|CreateSlices.pl| which automatically generated CMGUI \verb|.exnode| and \verb|.exelem| files. These files represented a set of 15 planes at each of the 15 data points, orthogonal to the curve (Figure \ref{fig:slices}). The command file \verb|create_slices.com| then produced a sequence of images progressing through vocal tract orthogonally throughout its length, by interpolating between the 13 original MRI sections and projecting the resulting 3D volume texture onto the orthogonal planes. These slices were displayed on the orthogonal slices along with the mid-saggital section using \verb|data_point_placement.com|.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{img/slices}
+  \caption{Right: Data points defining the curvature of the oral cavity in CMGUI's graphics window. Left: Slices orthogonal to the user-defined curvature of the oral cavity are displayed on a mid-saggital MRI section.}
+  \label{fig:slices}
+\end{figure}
+
+\subsubsection{Outlining vocal tract cross-sections}
+
+ From here, the user outlined the vocal tract boundary on each slice, one at a time, marking this boundary with data points (Figure \ref{fig:mark_boundary}). The vocal tract appears as an area of lower signal on the MRI image in the centre of the slice, usually symmetrical in shape. Once all 15 slices are annotated with data points, the function \verb|write_to_file| saves the data point coordinates to \verb|.exnode| files for display, and \verb|.exdata| files for the next step in area function calculation. As a final review step before calculating area functions, all of the slices and their associated data points can be viewed using \verb|data_point_viewer.com| with the function \verb|read_from_file|.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/mark_boundary}
+  \caption{The boundary of the oral cavity on one of the planes being marked up by data points. The cross-sectional slice at the front shows a cross-section of the tongue, upper lip, and near the top, the beginning of the nasal cavity.}
+  \label{fig:mark_boundary}
+\end{figure}
+
+\subsection{Calculating area and distance}
+
+The \verb|.exdata| files are called by the script \verb|calculate_area.perl|, which outputs 15 values in a .txt file: the cross-sectional areas bounded by the data points on each of the 15 planes (in mm$^2$). Once the above process has been repeated for all eleven vowels of one speaker, the MATLAB script \verb|areacalc.m| can then be run to combine the two \verb|area.txt| file for each vowel (oral and pharyngeal) and to calculate the corresponding distances of the slices from the lips. The results are printed to individual .txt files named after each vowel (e.g. \verb|had.txt|, \verb|hard.txt|) in the folder \verb|distance_area/|. Area functions may also be visualised using \verb|areaplot.m|, which lay out each vowel's area function in its approximate position on a vowel quadrilaterl (see Figures \ref{fig:vt04area} and \ref{fig:vt07area} in Results). 
