@@ -51,13 +51,13 @@ m.mean <- apply(combined.df[m,1:M+2], 2, mean, na.rm = T)
 s.mean <- apply(combined.df[s,1:M+2], 2, mean, na.rm = T)
 
 par(lwd = 2)
-plot(y.mean, type="l", col="darkorange2", main="Mean area functions for different age groups",
+plot(y.mean, type="l", col="purple3", main="Mean area functions for different age groups",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
      xlim = c(0,44), ylim = c(0,3.5))
 lines(m.mean, type="l", lty=2, col="dodgerblue3")
-lines(s.mean, type="l", lty=3, col="purple3")
+lines(s.mean, type="l", lty=3, col="darkorange2")
 legend("bottomleft", bty="n", c("20 - 30 years (10 speakers)", "30 to 55 years (6 speakers)",
-       "55+ years (3 speakers)"), lty=c(1,2,3), col=c("darkorange2","dodgerblue3","purple3")) 
+       "55+ years (3 speakers)"), lty=c(1,2,3), col=c("purple3","dodgerblue3","darkorange2")) 
 
 
 # Gender ==================================================
@@ -70,8 +70,8 @@ m.mean <- apply(combined.df[m,1:M+2], 2, mean, na.rm = T)
 plot(f.mean, type="l", col="deeppink", main="Mean area functions for female and male speakers",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
      xlim = c(0,44), ylim = c(0,3.5))
-lines(m.mean, type="l", col="dodgerblue")
-legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
+lines(m.mean, type="l", lty=2, col="dodgerblue")
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,2), col=c("deeppink","dodgerblue3"))
 
 
 # Accent ==================================================
@@ -82,8 +82,8 @@ AmE.mean <- apply(combined.df[132:numVowels,1:M+2], 2, mean, na.rm = T)
 plot(NZE.mean, type="l", col="black", main="Mean area functions for NZE and AmE",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
      xlim = c(0,44), ylim = c(0,3.5))
-lines(AmE.mean, type="l", col="red")
-legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
+lines(AmE.mean, type="l", lty=2, col="red")
+legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,2), col=c("black","red"))
 
 
 
