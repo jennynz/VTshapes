@@ -12,16 +12,8 @@ graphics.off() # close all graphics windows
 
 path <<- "H:\\Documents\\Part IV Project\\All VT data"
 
-# Normalise area functions? (F, "spk" for speaker-specific or "vow" for vowel-specific)
-# Probably not a great idea for this one where we are literally comparing pure magnitudes
-do.norm <- F
-
 # Interpolate to how many points (if at all)?
 M <- 44
-
-# Divide NZE$data by 100 to convert to cm2? 
-# Probs should do for this, see reason above.
-do.cm2 <- T
 
 # Fit a smoothing spline when reading in area functions
 do.spline <- F
@@ -40,28 +32,68 @@ source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
 NZE <- read.NZE.data(path = path, interpN = M, smooth = do.spline)
 
 # Divide NZE by 100 to convert from mm2 to cm2
-if (do.norm == F) { if (do.cm2) { NZE$data[,3:M+2] <- NZE$data[,3:M+2]/100 } }
+NZE$data[,1:M+2] <- NZE$data[,1:M+2]/100
 
 # Combine datasets
 numVTs <- AmE$numVTs + NZE$numVTs
 VTlist <- c(NZE$VTlist, AmE$VTlist)
+combined.df <- rbind(NZE$data, AmE$data)
+numVowels <- dim(combined.df)[1]
 
-if (do.norm == "spk") {
-  # Normalise data specific to speaker only
-  maxArea <- vector(length = numVTs)
-  for (i in 1:numVTs) {
-    m <- grep(VTlist[i], combined.df$spk)
-    maxArea[i] <- max(combined.df[m,3:46], na.rm = TRUE)
-    combined.df[m,3:46] <- combined.df[m,3:46]/maxArea[i]
-  }
-} else if (do.norm == "vow") {
-  # Normalise data specific to each individual vowel
-  maxArea <- apply(combined.df[,3:46],1,max)
-  combined.df[,3:46] <- combined.df[,3:46]/maxArea
-} 
-if (do.norm != F) {stopifnot(max(combined.df[,3:46], na.rm=T) == 1)}
 
-# Combined mean ==================================================
 # Age ==================================================
+
+y <- grep('^(VT03|VT04|VT05|VT06|VT07|VT10|VT12|SF|)', combined.df$spk[-row.skip]) # cutoff for young at 30 years
+m <- grep('^(VT08|VT09|VT12|SM)', combined.df$spk[-row.skip])
+s <- grep('^(VT01|VT02|VT11)', combined.df$spk[-row.skip])
+y.mean <- apply(combined.df[y,1:M+2], 2, mean, na.rm = T)
+m.mean <- apply(combined.df[m,1:M+2], 2, mean, na.rm = T)
+s.mean <- apply(combined.df[s,1:M+2], 2, mean, na.rm = T)
+
+par(lwd = 2)
+plot(y.mean, type="l", col="darkorange2", main="Mean area functions for different age groups",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,3.5))
+lines(m.mean, type="l", lty=2, col="dodgerblue3")
+lines(s.mean, type="l", lty=3, col="purple3")
+legend("bottomleft", bty="n", c("20 - 30 years (10 speakers)", "30 to 55 years (6 speakers)",
+       "55+ years (3 speakers)"), lty=c(1,2,3), col=c("darkorange2","dodgerblue3","purple3")) 
+
+
 # Gender ==================================================
+
+f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk[-row.skip])
+m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk[-row.skip])
+f.mean <- apply(combined.df[f,1:M+2], 2, mean)
+m.mean <- apply(combined.df[m,1:M+2], 2, mean, na.rm = T)
+
+plot(f.mean, type="l", col="deeppink", main="Mean area functions for female and male speakers",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,3.5))
+lines(m.mean, type="l", col="dodgerblue")
+legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
+
+
 # Accent ==================================================
+
+NZE.mean <- apply(combined.df[1:132,1:M+2], 2, mean)
+AmE.mean <- apply(combined.df[132:numVowels,1:M+2], 2, mean, na.rm = T)
+
+plot(NZE.mean, type="l", col="black", main="Mean area functions for NZE and AmE",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,3.5))
+lines(AmE.mean, type="l", col="red")
+legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
+
+
+
+
+
+
+
+
+
+
+
+
+
