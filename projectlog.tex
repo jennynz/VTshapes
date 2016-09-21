@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{tipa} 
 \usepackage{url}
+\usepackage{color, soul}
 \usepackage{enumitem}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage[colorlinks=true]{hyperref}
@@ -2031,7 +2032,7 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
                 \item Vowel-and-speaker-specific normalisation gives a correlation advantage to 
                 \item Hey, why don't I check what kind of normalisation Story used?
                 \item Doesn't mention any normalisation. I wonder what sorts of units these are in, in that case. cm2 looks about right. Would just need to multiply by 100 to get to mm2 like I've got. Checking Story et. al. (1996) just in case. 
-                \item No normalisation of area, only of length if at all, and yes they are in cm$^2$. So imma divide mine by 100 to get cm^2 too, and not use any normalisation.
+                \item No normalisation of area, only of length if at all, and yes they are in cm$^2$. So imma divide mine by 100 to get cm$^2$ too, and not use any normalisation.
                 \item Why no normalisation? Because it exaggerates VT shapes (increases their amplitudes), e.g. for vowel-specific normalisation a rather flat area function where the tongue is quite plateaued may look very voluptuously up-and-down-y because it has been scaled to look that way. Speaker-specific normalisation does the same, but on a speaker scale e.g. if a particular speaker is very mumbly and doesn't move their tongue a lot, that effect is minimised, and the movements the tongue does make are amplified.
             \end{itemize}
             \item N.B. when doing PC1-PC2 plots that the order of vowels in AmE is different to the order in NZE!
@@ -2199,7 +2200,7 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
     \end{itemize}
 \end{itemize}
 
-\section*{19/09/16 Monday Week 8, D-3: Everything}
+\section*{19/09/16 Monday/Tuesday Week 8, D-3/2: The days blur into one}
 \begin{itemize}
     \item VT11 Set 1 Cardinal Vowels (Had, Heed, Hod, Who'd) for quantifying variability between users
     \begin{itemize}
@@ -2211,6 +2212,136 @@ passages) were precisely designed to elicit dialect variation, and therefore fac
         \item Who'd: done
         \item Now just need to run areacalc.m on matlab to get the distance\_areas and run through quantify\_variability.R
     \end{itemize}   
+    \item Meeting with Catherine
+    \begin{itemize}
+        \item Normalisation and scaling for area functions before PCA
+        \begin{itemize}
+            \item If you think unnormalised, \hl{do unnormalised}.
+            \item Agreed that vowel-specific normalisation is probably not a good idea.
+            \item There is no need to tinker with data further than necessary, so no point in speaker normalisation.
+            \item I thought why don't we do correlations between raw area functions, and this is because if we did that, we would need 29 dimensions to represent the data (since there are 29 data points in the area functions). PCA is all about reducing dimensionality, and that we way can capture the MAIN DIFFERENCES, height and backness, really well, and use that to create these meaningful plots. This is intuitive basic stuff, I think I just got way too stuck in the details and forgot the big picture.
+        \end{itemize}
+        \item Resonance plots
+        \begin{itemize}
+            \item NZE vs AmE vowel space
+            \begin{itemize}
+                \item Who'd vowel \textit{should} be back for AmE, not fronted like it said in Wikipedia. [reference: Peterson \& Barney, 1952]
+                \item AmE vowel spaces tend to be very quadrilateral (i, ae, @, u), while NZE is more triangular (i, @, o; with u being high-central rather than high-back).
+                \item e/ae merger for \textit{some} words but not all.
+                \item Despite what we say about NZE `fush'n'chups', our hid vowel is still higher than AmE hid, even AmE \textipa{3}.
+                \item ARPABET (AO, AA, AE) - remember that the phonemic boundaries for AmE vowels are different to those of NZE.
+                \item \hl{Plot Story (2005)'s formants from Table V} to compare our calculated resonances with his (see to be the F$^C$ ones). `o' vowel should merge with our `horde', even if phonemically they are different. 
+                \item Lip rounding*
+                \begin{itemize}
+                    \item For our herd vowel (the one that looks like a 3), NZE tends to lip round to achieve this, while AmE speakers don't lip round, instead rhoticising.
+                    \item Lip rounding decreases F1 and F2 (figure in Norman Lass, Principles of Experimental Phonetics, Chapter 5, page 191; also in Ken Stevens, Handbook of phonetic sciences)
+                    \item This effect is seen in the herd vowel on the NZE vowel space which is significantly higher and more back than that os AmE.
+                \end{itemize}
+            \end{itemize}
+            \item *MRI images provide a better way of analysing resonances of the vocal tract without contributions from lip rounding.
+            \begin{itemize}
+                \item F1/F2 are the sounds which result from speech. They are what we hear.
+                \item This sound that we hear can not directly represent the resonances of the vocal tract, because it has been combined with the effects of lip rounding, and the wave shape coming out of the glottal filter.
+                \item Resonance plots derived from MRI images are free from such factors. It allows us to look just at the resonances of the vocal tract. This can help with better modelling the vocal tract from a physiological/acoustic perspective.
+                \item Resonance plots could also be derived from acoustic reflectometry data, but the device enforces lip rounding which as seen above, has a significant effect on the formants of the vocal tract.
+                \item \hl{Make some formant plots with Daniel's formant data} to help when describing this, to show how different the formant plot is and vowels with lip rounding (3, u etc.) moving up and back.
+                \item NZE tends to be crowded at the front only in formant plots - on our resonance plots, we don't really see this. If we assume that the crowding is due to the auxiliary effects of lip rounding, glottal waveform, and all the other things we're simplifying like the elasticity of the vocal tract walls, the size of the teeth (since we are assuming that the R1/R2 plot is the most `pure' representation of vocal tract shape/tongue position, which is the main determinant of vowel quality), we could argue that it's not that NZE speakers are lazy with tongue position, it's just that our tendency to lip round some vowels results in crowding of the VT space, despite this decreasing the phonetic distance between the phonemically distinct vowels. So really, 1) NZE speakers are not lazy in how we speak (it's not our intention, or not our VT shapes' intention anyway, to not move around a lot) and 2) NZE speakers have great ears for distinguishing similar vowels!
+            \end{itemize}
+            \item \hl{Try R1/R2 plots splitting by gender}
+            \item NZE `lazy'
+            \begin{itemize}
+                \item It is not valid to say that NZE looks more clumped therefore supports the stereotype that NZE speakers are lazy with enunciation.
+                \item If anything, NZE vowels seem to crowd the front space, but AmE seems to crowd the back. Their vowels are overall more back than us.
+                \item N.B. these were isolated vowel sounds from hVd frames, not conversational speech. In the case of conversational speech, it might be a totally different story.
+            \end{itemize}
+            \item Bark scaling
+            \begin{itemize}
+                \item I had argued that there's no point in using Bark scaling because it didn't seem to change the shape at all.
+                \item But Bark scaling isn't supposed to change the shape, it just makes the ranges for F1/F2 or R1/R2 more equal.
+                \item The square the formant plots that we're used to give the illusion that the ranges in F1 are the same as the ranges in F2. However, the range for F1 is way smaller than that of F2.
+                \item As a result, F2 actually has a bigger magnitude weighting when the numerical values are taken into account, rather than just the shapes.
+                \item Bark scale evens this out so that when you are doing any 2D analyses like Euclidean distance between vowels, things aren't disproportionately weighted by F2 (backness). 
+            \end{itemize}
+            \item Resonances were too low, by a factor of 10. Turned out I had dropped a zero converting speed of sound in air from m/s to cm/s. All fixed now.
+        \end{itemize}
+        \item Resonance correlations
+        \begin{itemize}
+            \item Actually the resonance correlations are very reasonable.
+            \item We would expect fairly good correlations since they are the same vowels we're testing.
+            \item And the lower correlations between different accents is actually pretty significant/interesting. Yes, we can't validate, we would need to take MRI of AmE speakers ourselves and process the images in the same way we did for NZE, and then compare against NZE to ensure that any significant correlation decrease trends between AmE and NZE are definitely due to accent, not method.
+            \item The fact that R1 showed the these lower correlations across accents better than R2 makes sense. R1 encodes height, jaw movement, which mostly affects the oral cavity. The oral cavity is where also where most of the accent differences take place. So it makes sense that R1 showed such differences more clearly.
+            \item In some ways, that difference - the fact that R1 showed bigger drops in corr between accents than R2 - supports the idea that the drop in correlation was due to accent differences, NOT methods. Because if it had been methods, R2 should have dropped by the same proportional amount, but it didn't. R2's correlations were overall higher than R1, and yet the absolute drop in the inter-accent region was actually much less, making its relative drop even less.
+            \item Maybe we're reaching the limits of what we can infer from correlations. Try mean area plots?
+        \end{itemize}
+        \item \hl{Mean area function plots}
+        \begin{itemize}
+            \item Do for accent (NZE should have higher pharyngeal cavity area since our vowels are crowded in the front), age (maybe pharyngeal smaller due to collapse? But conflicting literature), gender (shouldn't be any differences, even when combining accents since we have a roughly equal number of males and females for each accent, those accent differences should cancel themselves out?).
+        \end{itemize}
+        \item \hl{Use GenAm instead of AmE} to keep things consistent with Story, and because AmE could mean anything, while General American is actually a thing.
+        \item PCA for resonances? Nope
+        \begin{itemize}
+            \item The code that was in \verb|acquiring spectrum from areas.txt| was Catherine just trying things out, that actually led nowhere. PC on resonances isn't really valid/doesn't give great results.
+            \item The endbin thing that I was missing seemed to truncate the frequency spectrum x-axis at a certain point specific for each vowel.
+            \item Catherine explained that this was because the maximum frequency in the spectrum (the maximum value of the x-axis) was determined by vocal tract length (from that equation), and so the maximum frequency expressed by the spectra were different for all the speakers. To make sure the comparisons were valid, she was truncating the spectrum at probably the smallest maximum frequency across all the speakers.
+            \item I don't have to worry about this because I'm just taking the lowest three peaks and that's it.
+        \end{itemize}
+    \end{itemize}
+    \item PC plots without any normalisation
+    \begin{itemize}
+        \item Vowel plots are nooot looking good without any normalisation.
+        \item Tried speaker-specific normalisation, slightly better, but doesn't look like Catherine's one at all.
+        \item Vowel-specific normalisation was what we had, and since Catherine had done this normalisation as well, it looks just like it.
+        \item Could justify that since vowel-specific normalisation gave the right plots, it must be that none of the area functions are particularly flat and spiky, in which case vowel-specific normalisation would exacerbate that. 
+    \end{itemize}
+    \item PCA plots of AmE
+    \begin{itemize}
+        \item Tried these, none are great.
+        \item Need to delete the NA row (48 out of 66) for eplots to work
+        \item Vowel-specific normalisation: Can't get it vowel plots oriented the right way up to compare with Interspeech OR actual vowel quad.
+        \item No normalisation: Looking similar to resonance plots...
+        \item Okay tbh it's going to take far too long. Leave this for later. AmE was only studied for inter-speaker correlations and resonance analysis, not the first area function PC plots. Because I forgot.
+    \end{itemize}
+    \item AmE unnormalised unscaled
+    \begin{itemize}
+        \item 
+    \end{itemize}
+    \item Correlation tables formatting
+    \begin{itemize}
+        \item Color bars going from red to blue rather than red to green - I put my correlation tables through a color blindness simulator and the red/green was pretty clear because the green comes out darker/purpler - I must have chosen a green with quite a bit of blue in it. I'm going to keep it as is, because going from red to yellow to blue has this gross greyish colour between yellow and blue that is not intuitive.
+        \item Increased the font size quite a bit.
+    \end{itemize}
+    \item Re-running interspeaker correlations for oral and pharyngeal with no normalisation, for NZE AND AmE.
+    \begin{itemize}
+        \item Need to rework code to accommodate AmE.
+        \item Dang I'm copying and pasting things again! I need to re-write big chunks of this into functions that I just source and use.
+        \item Oh wait, nah I don't, because no older speakers in AmE.
+    \end{itemize}
+    \item Re-run intraspeaker correlations. No normalisation shouldn't make much of a difference. 
+    \item Vowel-specific normalisation biases the data towards correlation - it eliminates differences between flatter area functions and more up-and-down-y area functions, causing them to look like each other and to correlate highly as long as they have the same underlying shape. Since correlations increase if the magnitudes with which two datasets increase/decrease in relation to each other, amplifying similar shapes will definitely increase correlations. But this is not valid because a vowel being flatter vs. curvier is what defines a vowel, we can't take that away~.
+    \item Vowel plots omitted some of the labels when resized small before exporting as an image as eps. Instead, save as png (not vector but oh well)
+    \item R1/R2 plots by gender - as expected, male speakers have lower R1 and R2s.
+\end{itemize}
+
+\section*{21/09/16 Wednesday Week 8, D-1: FINAL DAY}
+\begin{itemize}
+    \item Quantifying variability for VT11 Set 1
+    \begin{itemize}
+        \item Great results again, crazy high correlations\begin{verbatim}
+            > corr
+                Correlation     P-value
+            PC1   0.9941988 0.005801243
+            PC2   0.9981374 0.001862589
+            PC3   0.9948766 0.005123351
+            > vars
+                  PC1+PC2    PC1     PC2     PC3
+            Rep 1 0.93036 0.6629 0.26746 0.06964
+            Rep 2 0.95322 0.7630 0.19022 0.04677
+        \end{verbatim}
+    \end{itemize}
+    \item Organised LaTeX project into neat folders for different sections and images. Wow procrastination.
+    \item Omg sidecap is not compatible with the float specifier `H' so you have to use `h' (or `ht' because `h' is too strict apparently)
+    \item Realised that the middle aged line on my mean area plot for age was actually plotting the male speakers. Re-did it, middle aged speaker areas highest.
+    \item Discussion with Catherine on female mean area function being higher than male. See email conversation thread.
 \end{itemize}
 
 \end{document}
