@@ -151,9 +151,40 @@ plot(NZE.mean, type="l", col="black", main="Mean area functions for NZE and AmE"
 lines(AmE.mean, type="l", lty=2, col="red")
 legend("bottomleft", bty="n", c("NZE", "AmE"), lty=c(1,2), col=c("black","red"))
 
+# High vs. Low vowels
+
+high <- grep('^(heed|hid|whod)', combined.df$vow)
+low <- grep('^(had|hard|head|hod)', combined.df$vow)
+mid <- grep('^(heard|hoard|hood|hud)', combined.df$vow)
+high.mean <- apply(combined.df[high,1:M+2], 2, mean)
+low.mean <- apply(combined.df[low,1:M+2], 2, mean, na.rm = T)
+mid.mean <- apply(combined.df[mid,1:M+2], 2, mean, na.rm = T)
+
+plot(high.mean, type="l", col="mediumorchid1", main="Mean area functions by vowel height",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,4/x))
+#lines(mid.mean, lty=2, col="mediumpurple2")
+lines(low.mean, lty=2, col="darkturquoise")
+#legend("bottomleft", bty="n", c("High vowels", "Mid vowels", "Low vowels"),
+       #lty=c(1,2,3), col=c("mediumorchid1", "mediumpurple2", "darkturquoise"))
+legend("bottomleft", bty="n", c("High vowels", "Low vowels"),
+       lty=c(1,2), col=c("mediumorchid1", "darkturquoise"))
 
 
+front <- grep('^(had|hard|head|heed)', combined.df$vow)
+back <- grep('^(hoard|hod|hud|whod)', combined.df$vow)
+central <- grep('^(heard|hid|hood|)', combined.df$vow)
+front.mean <- apply(combined.df[front,1:M+2], 2, mean)
+back.mean <- apply(combined.df[back,1:M+2], 2, mean, na.rm = T)
+central.mean <- apply(combined.df[central,1:M+2], 2, mean, na.rm = T)
 
+plot(front.mean, type="l", col="red", main="Mean area functions by vowel backness",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,4/x))
+lines(back.mean, lty=2, col="darkorange")
+lines(central.mean, lty=3, col="darkgoldenrod1")
+legend("bottomleft", bty="n", c("Front vowels", "Central vowels", "Back vowels"),
+       lty=c(1,2,3), col=c("red", "darkorange", "darkgoldenrod1"))
 
 
 

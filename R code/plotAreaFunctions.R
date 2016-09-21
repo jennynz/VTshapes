@@ -26,16 +26,18 @@ for(i in 1:numVowels) {
 }
 
 # Colour lists
-cols.warm <- c("red", "maroon", "orange", "yellow")
-cols.cold <- c("green1", "green4", "aquamarine3", "aquamarine1", "blue4")
-cols.dark <- c("maroon", "blue4", "blue1", "purple")
+cols.warm <- c("firebrick4", "chocolate4", "darkgoldenrod", "chartreuse4")
+cols.cold <- c("aquamarine4", "darkcyan", "deepskyblue4", "darkslateblue", "darkorchid4")
+cols.dark <- c("maroon", "deeppink4", "indianred4", "gray4")
 cols.all <- c(cols.warm, cols.cold, cols.dark)
+cols.all <- rainbow(numVowels, s = 1, v = 1, start = 0.7,
+                    end = max(1, numVowels - 1)/numVowels, alpha = 1)
 
 "maxVTvals"<-function(spk)
 {
-  Dirpath=paste(path,spk,"Set1","distance_area",sep="\\")
-  filesInDir=dir(Dirpath)
-  alldat=NULL
+  Dirpath <- paste(path,spk,"Set1","distance_area",sep="\\")
+  filesInDir <- dir(Dirpath)
+  alldat <- NULL
   for(i in 1:length(filesInDir))
   {
     filepath=paste(Dirpath,filesInDir[i],sep="\\")
@@ -47,20 +49,23 @@ cols.all <- c(cols.warm, cols.cold, cols.dark)
 
 "makeplot"<-function(spk, vow="had", col="red", xlim=c(0,180), ylim=c(0,250))
 {
-  fullpath=paste(path,spk,"Set1","distance_area",paste(vow,"txt",sep="."),sep="\\")
-  datfile=read.table(fullpath)
-  plot(datfile[,1],datfile[,2],type="l",col=col,xlim=xlim,ylim=ylim,xlab="distance from lips",ylab="cross-sectional area")
+  fullpath <- paste(path,spk,"Set1","distance_area",paste(vow,"txt",sep="."),sep="\\")
+  datfile <- read.table(fullpath)
+  plot(datfile[,1], datfile[,2], type="l", col = col,
+       xlim = xlim, ylim = ylim, xlab = "Distance from lips (mm)",
+       ylab = expression(Cross-sectional ~ area ~ (cm^{2})))
 }
 
 "plotMRI"<-function(spk, vowels="All", xlim=c(0,175), ylim=c(0,510))
 {
   switch(vowels, 
     "All" = {indices <- 1:numVowels},
-    "Front" = {indices <- c(1,3,4,5)},
-    "Back" = {indices <- c(2, 7, 8, 9, 10)},
-    "Mid" = {indices <- c(5, 6, 9, 11)},
-    "High" = {indices <- c(4, 7, 11)},
-    "Central" = {indices <- c(1, 3, 5, 6, 10)}
+    "Front" = {indices <- c(1,2,3,4)},
+    "Back" = {indices <- c(7,8,10,11)},
+    "Central" = {indices <- c(5,6,9)},
+    "High" = {indices <- c(4,6,11)},
+    "Low" = {indices <- c(1,2,3,8)},
+    "Mid" = {indices <- c(5,7,9,10)}
   )
   for (i in indices) {
     makeplot(vow=vowelNames[i], col=cols.all[i], xlim=xlim, ylim=ylim, spk=spk)
@@ -75,14 +80,14 @@ for (v in VTlist) {
 }
 
 # Optimal axis limits
-x <- c(190, 190, 175, 175, 155, 190, 190, 160, 205, 190, 190, 195)
-y <- c(650, 650, 510, 510, 400, 650, 650, 640, 780, 650, 650, 890)
+x <- c(200, 200, 200, 175, 155, 190, 190, 160, 205, 190, 190, 195)
+y <- c(800, 700, 550, 550, 550, 550, 550, 650, 950, 800, 700, 1200)
 
 ## Plot vowels
-selection <- c("All", "Front", "Back", "Mid", "High", "Central")
+selection <- c("All", "Front", "Central", "Back", "High", "Mid", "Low")
 for (j in selection) {
-  par(mfrow=c(3,4),lwd=1)
+  par(mfrow=c(3,4), lwd=1, cex=0.8)
   for (i in 1:numVTs) {
-    plotMRI(spk = VTlist[i], vowels = j, xlim = c(0,x[i]), ylim = c(0,y[i]))
+    plotMRI(spk = VTlist[i], vowels = "High", xlim = c(0,200), ylim = c(0,y[i]))
   }
 }

@@ -13,7 +13,6 @@ filename <- "resonances_correlations.csv"
 
 # Number of resonances or principal components to analyse
 p.max <- numRes
-stopifnot(r.max <= numRes)
 
 # Do PCA on the resonances before correlation analysis?
 do.pca <- F

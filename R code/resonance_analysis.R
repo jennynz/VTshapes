@@ -224,14 +224,14 @@ eplot(r1r2[133:197,], labs = as.character(combined.df[c(133:179,181:198),2]), ce
 legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
 
 # Bark scaled
-par(new=F)
+par(new=F, cex=1)
 eplot(bark(r1r2[1:132,]), labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE and AME centroids",
       xlab = "", ylab = "", formant = T, doellipse = F, col = "black",
-      xlim = c(8,16), ylim = c(2,8))
+      xlim = c(8.5,15), ylim = c(2,8))
 par(new=T)
 eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
       xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "red",
-      xlim = c(8,16), ylim = c(2,8))
+      xlim = c(8.5,15), ylim = c(2,8))
 legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
 
 ## Genders ----
@@ -252,11 +252,11 @@ legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","bl
 par(new=F)
 eplot(bark(r1r2[f,]), labs = as.character(combined.df[f,2]), centroid = T, main="Female and male centroids",
       xlab = "", ylab = "", formant = T, doellipse = F, col = "deeppink",
-      xlim = c(8,16), ylim = c(2,7))
+      xlim = c(8.5,15), ylim = c(2.5,7))
 par(new=T)
 eplot(bark(r1r2[m,]), labs = as.character(combined.df[m,2]), centroid = T,
       xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "dodgerblue3",
-      xlim = c(8,16), ylim = c(2,7))
+      xlim = c(8.5,15), ylim = c(2.5,7))
 legend("topleft", bty="n", c("Female", "Male"), lty=c(1,1), col=c("deeppink","dodgerblue3"))
 
 ## Story formants, resonance calculation validation ----
