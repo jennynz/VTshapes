@@ -10,7 +10,7 @@ rm(list=ls()) # clear workspace
 graphics.off() # close all graphics windows
 setwd("~/Part IV Project/R code")
 
-path<<-"H:\\Documents\\Part IV Project\\All VT data\\VT04\\Set1\\distance_area"
+path<<-"H:\\Documents\\Part IV Project\\All VT data\\VT11\\Set1\\distance_area"
 
 # List of vowel names (hadd, heed...) including repetitions
 areaFiles <- dir(path)[c(1,2,5,6,10,11,14,15)]

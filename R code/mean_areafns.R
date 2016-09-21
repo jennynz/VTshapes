@@ -15,6 +15,9 @@ path <<- "H:\\Documents\\Part IV Project\\All VT data"
 # Interpolate to how many points (if at all)?
 M <- 44
 
+# Speaker-specific normalisation?
+do.norm <- F
+
 # Fit a smoothing spline when reading in area functions
 do.spline <- F
 
@@ -40,6 +43,19 @@ VTlist <- c(NZE$VTlist, AmE$VTlist)
 combined.df <- rbind(NZE$data, AmE$data)
 numVowels <- dim(combined.df)[1]
 
+# Speaker-specific normalisation
+x <- 1
+if (do.norm == "spk") {
+  # Normalise data specific to speaker only
+  maxArea <- vector(length = numVTs)
+  for (i in 1:numVTs) {
+    m <- grep(VTlist[i], combined.df$spk)
+    maxArea[i] <- max(combined.df[m,3:46], na.rm = TRUE)
+    combined.df[m,3:46] <- combined.df[m,3:46]/maxArea[i]
+  }
+  x <- 7
+}
+
 
 # Age ==================================================
 
@@ -53,7 +69,7 @@ s.mean <- apply(combined.df[s,1:M+2], 2, mean, na.rm = T)
 par(lwd = 2)
 plot(y.mean, type="l", col="purple3", main="Mean area functions for different age groups",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
-     xlim = c(0,44), ylim = c(0,3.5))
+     xlim = c(0,44), ylim = c(0,3.5/x))
 lines(m.mean, type="l", lty=2, col="dodgerblue3")
 lines(s.mean, type="l", lty=3, col="darkorange2")
 legend("bottomleft", bty="n", c("20 - 30 years (10 speakers)", "30 to 55 years (6 speakers)",
@@ -63,16 +79,66 @@ legend("bottomleft", bty="n", c("20 - 30 years (10 speakers)", "30 to 55 years (
 # Gender ==================================================
 
 f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk[-row.skip])
+f.no12 <- grep('^(SF|VT02|VT06|VT07|VT08|VT11)', combined.df$spk[-row.skip])
 m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk[-row.skip])
 f.mean <- apply(combined.df[f,1:M+2], 2, mean)
+f.no12.mean <- apply(combined.df[f.no12,1:M+2], 2, mean)
 m.mean <- apply(combined.df[m,1:M+2], 2, mean, na.rm = T)
 
 plot(f.mean, type="l", col="deeppink", main="Mean area functions for female and male speakers",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
-     xlim = c(0,44), ylim = c(0,3.5))
+     xlim = c(0,44), ylim = c(0,3.5/x))
+lines(f.no12.mean, type="l", lty=3, col="deeppink")
 lines(m.mean, type="l", lty=2, col="dodgerblue")
-legend("topleft", bty="n", c("Female", "Male"), lty=c(1,2), col=c("deeppink","dodgerblue3"))
+legend("bottomleft", bty="n", c("Female", "Female with VT12 excluded", "Male"), lty=c(1,3,2), col=c("deeppink","deeppink","dodgerblue3"))
 
+# Separate by accent
+
+# NZE
+nz.f <- grep('^(VT02|VT06|VT07|VT08|VT11|VT12)', combined.df$spk)
+nz.m <- grep('^(VT01|VT03|VT04|VT05|VT9|VT10)', combined.df$spk)
+nz.f.mean <- apply(combined.df[nz.f,1:M+2], 2, mean)
+nz.m.mean <- apply(combined.df[nz.m,1:M+2], 2, mean, na.rm = T)
+
+# AmE
+am.f <- grep('^(SF)', combined.df$spk)
+am.m <- grep('^(SM)', combined.df$spk)
+am.f.mean <- apply(combined.df[am.f,1:M+2], 2, mean)
+am.m.mean <- apply(combined.df[am.m,1:M+2], 2, mean, na.rm = T)
+
+plot(nz.f.mean, type="l", col="black", main="Mean area functions for female and male speakers",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlim = c(0,44), ylim = c(0,3.5/x))
+lines(nz.m.mean, lty=2, col="black")
+lines(am.f.mean, lty=1, col="red")
+lines(am.m.mean, lty=2, col="red")
+legend("bottomleft", bty="n", c("NZE Female", "NZE Male", "GenAm Female", "GenAm Male"),
+       lty=c(1,2,1,2), col=c("black", "black", "red","red"))
+
+# Trying to figure out why female area functions are bigger than men
+f.max <- apply(combined.df[c(nz.f, am.f), 1:M+2], 1, max)
+max(f.max)
+mean(f.max)
+
+m.max <- apply(combined.df[c(nz.m, am.m), 1:M+2], 1, max)
+max(m.max[-70])
+mean(m.max[-70])
+
+# With distances from lips
+
+nz.f.x <- apply(NZE$distances[nz.f,1:M+2], 2, mean)
+nz.m.x <- apply(NZE$distances[nz.m,1:M+2], 2, mean)
+
+plot(nz.f.x, nz.f.mean, type="l", col="black", main="Mean area functions for NZE female and male speakers",
+     ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
+     xlab = "Distance from lips (mm)", xlim = c(0,180), ylim = c(0,3.5/x))
+lines(nz.m.x, nz.m.mean, lty=2, col="black")
+lines(am.f.mean, lty=1, col="red")
+lines(am.m.mean, lty=2, col="red")
+legend("bottomleft", bty="n", c("NZE Female", "NZE Male", "GenAm Female", "GenAm Male"),
+       lty=c(1,2,1,2), col=c("black", "black", "red","red"))
+legend("bottomleft", bty="n", c("NZE Female", "NZE Male"),
+       lty=c(1,2,1,2), col=c("black", "black"))
 
 # Accent ==================================================
 
@@ -81,9 +147,9 @@ AmE.mean <- apply(combined.df[132:numVowels,1:M+2], 2, mean, na.rm = T)
 
 plot(NZE.mean, type="l", col="black", main="Mean area functions for NZE and AmE",
      ylab = expression(Average ~ cross-sectional ~ area ~ (cm^{2})),
-     xlim = c(0,44), ylim = c(0,3.5))
+     xlim = c(0,44), ylim = c(0,3.5/x))
 lines(AmE.mean, type="l", lty=2, col="red")
-legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,2), col=c("black","red"))
+legend("bottomleft", bty="n", c("NZE", "AmE"), lty=c(1,2), col=c("black","red"))
 
 
 

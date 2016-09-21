@@ -18,6 +18,7 @@
   if (interpN) { n <- interpN }
   else { n <- nrow(read.table(paste(path,spk,"Set1","distance_area",areaFiles[1],sep="\\"))) }
   alldat <- matrix(nrow=numVowels,ncol=n,byrow=T)
+  dist <- matrix(nrow=numVowels,ncol=n,byrow=T)
   
   # for each speaker, go into their directory, reading the vocal tract data for each vowel, interpolate the cross-sectional areas
   #use file name to determine vowel name, write the cross-sectional areas - only to data matrix
@@ -33,15 +34,21 @@
     y <- LinDatfil$y
     
     # Fit a smoothing spline to the area function
-    if (smooth) {y <- smooth.spline(y ~ x, nknots=15)$y }
+    if (smooth) {
+      s <- smooth.spline(y ~ x, nknots=15)
+      y <- s$y
+      x <- s$x
+    }
     
+    dist[i,] <- x
     alldat[i,] <- y
     
   }
   
   # Create data frame with speaker labels, vowel labels, and cross-sectional areas. 
-  alldat.df=data.frame(spk=factor(rep(spk,numVowels)),vow=factor(vowelNames),alldat)
-  return(list("areas" = alldat.df, "lengths" = VTlengths))
+  alldat.df <- data.frame(spk=factor(rep(spk,numVowels)), vow=factor(vowelNames), alldat)
+  distances.df <- data.frame(spk=factor(rep(spk,numVowels)), vow=factor(vowelNames), dist)
+  return(list("areas" = alldat.df, "lengths" = VTlengths, "distances" = distances.df))
 }
 
 "read.NZE.data" <- function(path = "H:\\Documents\\Part IV Project\\All VT data", interpN = FALSE, smooth = FALSE) {
@@ -61,6 +68,7 @@
   }
   
   allSpeakers.df <- NULL
+  distances <- NULL
   VTlengths <- c()
   
   for (i in 1:numVTs)
@@ -69,10 +77,12 @@
                                     vowelNames = vowelNames, VTlist = VTlist, path = path,
                                     spk=VTlist[i], VTlengths <- VTlengths, interpN = interpN, smooth = smooth)
     VTlengths <- allVowels.df$lengths
+    distances <- rbind(distances, allVowels.df$distances)
     allSpeakers.df <- rbind(allSpeakers.df, allVowels.df$areas)
   }
   
-  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist, "vowelNames" = vowelNames, "lengths" = VTlengths)
+  output <- list("data" = allSpeakers.df, "numVTs" = numVTs, "VTlist" = VTlist,
+                 "vowelNames" = vowelNames, "lengths" = VTlengths, "distances" = distances)
   return(output)
   
 }

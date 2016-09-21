@@ -10,10 +10,10 @@ rm(list=ls()) # clear workspace
 graphics.off() # close all graphics windows
 
 # Normalise area functions? (F, "spk" or "vow")
-do.norm <- F
+do.norm <- "vow"
 
 # NZE or AmE?
-set <- "AmE"
+set <- "NZE"
 
 path <<- "H:\\Documents\\Part IV Project\\All VT data"
 
@@ -79,14 +79,21 @@ eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=T,
       doellipse = F, xlim = c(8,-8), ylim = c(8,-8))
 title(main = "Vowel centroids on PC1-PC2 planes (12 VTs x 1 Set)", xlab = "PC1", ylab = "PC2")
 
-# Compare with interspeech
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
-      font=2, doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
-title(main = "Vowel centroids on negative PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
+# Gender
+f <- grep('^(SF|VT02|VT06|VT07|VT08|VT11|VT12)', allSpeakers.df$spk)
+m <- grep('^(SM|VT01|VT03|VT04|VT05|VT9|VT10)', allSpeakers.df$spk)
+
+eplot(pca$x[f,1:2], labs=as.character(allSpeakers.df[f,2]), centroid=T, formant=F, col="deeppink",
+      font=2, doellipse = F, xlim = c(8,-9), ylim = c(4, -5))
+par(new=T)
+eplot(pca$x[m,1:2], labs=as.character(allSpeakers.df[m,2]), centroid=T, formant=F, col="dodgerblue",
+      font=2, doellipse = F, xlim = c(8,-9), ylim = c(4, -5))
+title(main = "Vowel centroids on PC1-PC2 planes for GenAm female and male speakers", xlab = "PC1", ylab = "PC2")
+legend("bottomright", bty="n", c("Female","Male"), lty=c(1,1), lwd=c(2,2), col=c("deeppink", "dodgerblue"))
 
 # Most vowel-quad-like
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
-      doellipse = F, xlim = c(-6,6), ylim = c(4, -4))
+      doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
 title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Plot of standard deviations 

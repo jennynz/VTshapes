@@ -17,7 +17,7 @@ path <<- "H:\\Documents\\Part IV Project\\All VT data"
 filename <- "NZE_AmE_combined.csv"
 
 # Normalise area functions? (F, "spk" for speaker-specific or "vow" for vowel-specific)
-do.norm <- F
+do.norm <- "vow"
 
 # Plot normalised area functions?
 do.plots <- F
@@ -42,9 +42,9 @@ p.max <- 3
 # Pre-amble ====================================================
 
 source('~/Part IV Project/R code/Story (2005)/readAreaFunctions_Story.R')
-AmE <- read.Story.data(interpN = 20)
+AmE <- read.Story.data(interpN = 44)
 source('~/Part IV Project/R code/readAreaFunctions_1Set.R')
-NZE <- read.NZE.data(path = path, interpN = 20, smooth = do.spline)
+NZE <- read.NZE.data(path = path, interpN = 44, smooth = do.spline)
 
 # Tests to see if interpolation or smoothing is needed (comment out later)
 # NZE1 <- read.NZE.data()
