@@ -64,7 +64,24 @@ pca <- prcomp(~., data = allSpeakers.df[,r], scale=T)
 
 pca.summ <- summary(pca)
 
+# Most vowel-quad-like
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
+      doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
+title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
+
+# For poster
+colpalette <- c("chartreuse4","slategray4","slategray4","chartreuse4","slategray4","slategray4",
+                "slategray4","chartreuse4","slategray4","slategray4","chartreuse4")
+par(cex.axis=1, cex.lab=1, cex.main=1, cex=2.5, col.axis="#1d3c6d", col.lab="#1d3c6d", col.main="#1d3c6d")
+eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
+      doellipse = F, xlim = c(6,-5), ylim = c(2.5, -3))
+box(col = "#1d3c6d")
+title(main = "Average PC values for 18 speakers", xlab = "PC1", ylab = "PC2")
+
 # Plot of PC1 and PC2, all vowels
+colpalette <- c("firebrick4","chocolate4","darkgoldenrod","chartreuse4","aquamarine4",
+                "darkcyan","deepskyblue4","darkslateblue","darkorchid4","deeppink4","indianred4")
+par(cex=1)
 eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=F, formant=T, col=colpalette,
       doellipse = F, dopoints = T)
 title(main = "Vowels on PC1-PC2 planes (12 VTs x 1 Sets)", xlab = "PC1", ylab = "PC2")
@@ -90,11 +107,6 @@ eplot(pca$x[m,1:2], labs=as.character(allSpeakers.df[m,2]), centroid=T, formant=
       font=2, doellipse = F, xlim = c(8,-9), ylim = c(4, -5))
 title(main = "Vowel centroids on PC1-PC2 planes for GenAm female and male speakers", xlab = "PC1", ylab = "PC2")
 legend("bottomright", bty="n", c("Female","Male"), lty=c(1,1), lwd=c(2,2), col=c("deeppink", "dodgerblue"))
-
-# Most vowel-quad-like
-eplot(pca$x[,1:2], labs=as.character(allSpeakers.df[,2]), centroid=T, formant=F, col=colpalette,
-      doellipse = F, xlim = c(6,-6), ylim = c(4, -4))
-title(main = "Vowel centroids on unrotated PC1-PC2 planes", xlab = "PC1", ylab = "PC2")
 
 # Plot of standard deviations 
 plot(pca$sdev, type="p", xlab="Principal component #", ylab="Standard deviation")

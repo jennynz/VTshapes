@@ -178,7 +178,7 @@ for(i in 1:numVowels){
     vtres[i,] <- vtspec[i, checked[1:numRes]+1]
     resfreq[i,] <- freqbins[i, checked[1:numRes]+1]    
   }
-
+  
 }
 
 ## Resonance plots (R1/R2) ===========================================================
@@ -233,6 +233,18 @@ eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2
       xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "red",
       xlim = c(8.5,15), ylim = c(2,8))
 legend("topleft", bty="n", c("NZE", "AmE"), lty=c(1,1), col=c("black","red"))
+
+# For poster
+par(cex.axis=1, cex.lab=1, cex.main=1, cex=2.5, col.axis="#1d3c6d", col.lab="#1d3c6d", col.main="#1d3c6d")
+eplot(bark(r1r2[1:132,]), labs = as.character(combined.df[1:132,2]), centroid = T, main="NZE and AME centroids",
+      xlab = "", ylab = "", formant = T, doellipse = F, col = "black",
+      xlim = c(8,16), ylim = c(2,8))
+par(new=T)
+eplot(bark(r1r2[133:197,]), labs = as.character(combined.df[c(133:179,181:198),2]), centroid = T,
+      xlab = "R2 (Bark scaled)", ylab = "R1 (Bark scaled)", formant = T, doellipse = F, col = "red",
+      xlim = c(8,16), ylim = c(2,8))
+legend("bottomleft", c("NZE", "AmE"), bty = "n", lty=c(1,1), lwd=c(5,5), col=c("black","red"), cex=0.7)
+box(col = "#1d3c6d")
 
 ## Genders ----
 

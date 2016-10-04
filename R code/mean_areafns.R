@@ -186,11 +186,40 @@ lines(central.mean, lty=3, col="darkgoldenrod1")
 legend("bottomleft", bty="n", c("Front vowels", "Central vowels", "Back vowels"),
        lty=c(1,2,3), col=c("red", "darkorange", "darkgoldenrod1"))
 
+# Heed, had, hot for the poster
 
+heed <- grep('^(heed)', combined.df$vow)
+heed.mean <- apply(combined.df[heed,1:M+2], 2, mean)
 
+had <- grep('^(had)', combined.df$vow)
+had.mean <- apply(combined.df[had,1:M+2], 2, mean, na.rm = T)
 
+hot <- grep('^(hod)', combined.df$vow)
+hot.mean <- apply(combined.df[hot,1:M+2], 2, mean, na.rm = T)
 
+par(cex.axis=1, cex.lab=1, cex.main=1, cex=2.5, col.axis="#1d3c6d", col.lab="#1d3c6d", col.main="#1d3c6d")
+plot(heed.mean, type="l", col="darkslategray3", main="Mean area functions for various vowels",
+     ylab = expression(Cross-sectional ~ area ~ (cm^{2})),
+     xlab = "Index (normalised distance from lips)",
+     xlim = c(0,44), ylim = c(0,6/x), lwd=4)
+lines(had.mean, lty=2, col="darkslategray4", lwd=4)
+lines(hot.mean, lty=3, col="darkslategrey", lwd=4)
+box(col = "#1d3c6d")
+legend("topright", bty="n", c("/i/ 'heed' high front vowel", 
+                                "/æ/ 'had' low central-front vowel",
+                                "/??/ 'hod' low back vowel"),
+  lty=c(1,2,3), lwd=4, col=c("darkslategray3", "darkslategray4", "darkslategrey"), cex=0.5)
 
-
+# Phonetic description of vowels (for poster)
+par(col="#1d3c6d")
+plot(x=1, type="n", main="Phonetic descriptions of vowel quality",
+     ylab = "Phonetic height",
+     xlab = "Phonetic backness",
+     xaxt='n', yaxt='n',
+     xlim = c(0,10), ylim = c(0,10))
+text(2, 8, "/i/\nheed", col="#62c1c1")
+text(4, 3, "/æ/\nhad", col="darkslategray4")
+text(8, 2, "/??/\nhod", col="darkslategrey")
+box(col = "#1d3c6d")
 
 
